@@ -39,8 +39,6 @@ const { data: customerData } = await useApi<any>(createUrl('/apps/ecommerce/cust
   }),
 )
 
-console.log(customerData)
-
 const customers = computed((): Customer[] => customerData.value.customers)
 const totalCustomers = computed(() => customerData.value.total)
 </script>

@@ -4,13 +4,13 @@ import { defineThemeConfig } from '@core'
 import { Skins } from '@core/enums'
 
 // ❗ Logo SVG must be imported with ?raw suffix
-import logo from '@images/logo.svg?raw'
+import logo from '@images/brain.svg?raw'
 
 import { AppContentLayoutNav, ContentWidth, FooterType, NavbarType } from '@layouts/enums'
 
 export const { themeConfig, layoutConfig } = defineThemeConfig({
   app: {
-    title: 'vuexy',
+    title: 'psychiatry',
     logo: h('div', { innerHTML: logo, style: 'line-height:0; color: rgb(var(--v-global-theme-primary))' }),
     contentWidth: ContentWidth.Boxed,
     contentLayoutNav: AppContentLayoutNav.Vertical,
@@ -25,11 +25,6 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
           isRTL: false,
         },
         {
-          label: 'French',
-          i18nLang: 'fr',
-          isRTL: false,
-        },
-        {
           label: 'Arabic',
           i18nLang: 'ar',
           isRTL: true,
@@ -37,7 +32,7 @@ export const { themeConfig, layoutConfig } = defineThemeConfig({
       ],
     },
     theme: 'system',
-    skin: Skins.Default,
+    skin: Skins.Bordered,
     iconRenderer: VIcon,
   },
   navbar: {

@@ -4,9 +4,6 @@ import { themeConfig } from '@themeConfig'
 
 // Components
 import Footer from '@/layouts/components/Footer.vue'
-import NavBarNotifications from '@/layouts/components/NavBarNotifications.vue'
-import NavSearchBar from '@/layouts/components/NavSearchBar.vue'
-import NavbarShortcuts from '@/layouts/components/NavbarShortcuts.vue'
 import NavbarThemeSwitcher from '@/layouts/components/NavbarThemeSwitcher.vue'
 import UserProfile from '@/layouts/components/UserProfile.vue'
 import NavBarI18n from '@core/components/I18n.vue'
@@ -17,6 +14,14 @@ import { VerticalNavLayout } from '@layouts'
 // SECTION: Loading Indicator
 const isFallbackStateActive = ref(false)
 const refLoadingIndicator = ref<any>(null)
+const isEditing = ref(false)
+const selectedState = ref(null)
+
+const items = [
+  'Alabama',
+  'Alaska',
+  'American Samoa',
+]
 
 // watching if the fallback state is active and the refLoadingIndicator component is available
 watch([isFallbackStateActive, refLoadingIndicator], () => {
@@ -45,7 +50,13 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
           />
         </IconBtn>
 
-        <NavSearchBar class="ms-lg-n3" />
+        <!-- <NavSearchBar class="ms-lg-n3" /> -->
+        <div class="d-flex align-center cursor-pointer">
+          <div>
+            <!-- <span>clinic A</span> -->
+          </div>
+        </div>
+
 
         <VSpacer />
 
@@ -53,9 +64,9 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
           v-if="themeConfig.app.i18n.enable && themeConfig.app.i18n.langConfig?.length"
           :languages="themeConfig.app.i18n.langConfig"
         />
-        <NavbarThemeSwitcher />
-        <NavbarShortcuts />
-        <NavBarNotifications class="me-1" />
+        <NavbarThemeSwitcher class="me-1"/>
+        <!-- <NavbarShortcuts /> -->
+        <!-- <NavBarNotifications class="me-1" /> -->
         <UserProfile />
       </div>
     </template>

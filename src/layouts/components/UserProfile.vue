@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
+
+const items = ['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']
 
 const router = useRouter()
 const ability = useAbility()
@@ -52,12 +54,11 @@ const userProfileList = [
       :color="!(userData && userData.avatar) ? 'primary' : undefined"
       :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
     >
-      <VImg
+      <!-- <VImg
         v-if="userData && userData.avatar"
         :src="userData.avatar"
-      />
+      /> -->
       <VIcon
-        v-else
         icon="tabler-user"
       />
 
@@ -67,35 +68,11 @@ const userProfileList = [
         width="240"
         location="bottom end"
         offset="12px"
+        @click.prevent=""
       >
         <VList>
           <VListItem>
-            <template #prepend>
-              <VListItemAction start>
-                <VBadge
-                  dot
-                  location="bottom right"
-                  offset-x="3"
-                  offset-y="3"
-                  color="success"
-                  bordered
-                >
-                  <VAvatar
-                    :color="!(userData && userData.avatar) ? 'primary' : undefined"
-                    :variant="!(userData && userData.avatar) ? 'tonal' : undefined"
-                  >
-                    <VImg
-                      v-if="userData && userData.avatar"
-                      :src="userData.avatar"
-                    />
-                    <VIcon
-                      v-else
-                      icon="tabler-user"
-                    />
-                  </VAvatar>
-                </VBadge>
-              </VListItemAction>
-            </template>
+
 
             <VListItemTitle class="font-weight-medium">
               {{ userData.fullName || userData.username }}
@@ -104,7 +81,7 @@ const userProfileList = [
           </VListItem>
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">
-            <template
+            <!-- <template
               v-for="item in userProfileList"
               :key="item.title"
             >
@@ -137,8 +114,8 @@ const userProfileList = [
                 v-else
                 class="my-2"
               />
-            </template>
-
+            </template> -->
+              
             <div class="px-4 py-2">
               <VBtn
                 block

@@ -68,3 +68,13 @@ export interface Order {
   time: string
   methodNumber: number
 }
+
+export interface Patient {
+  id: number
+  name: string
+  dob: number
+  gender: string
+  phone: string
+  createdAt: string
+  updatedAt: string
+}

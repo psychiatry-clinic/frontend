@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
+import { defineEmits, defineProps, ref } from 'vue'
 
 interface Props {
   isDrawerOpen: boolean
@@ -19,15 +20,15 @@ const handleDrawerModelValueUpdate = (val: boolean) => {
 
 const refVForm = ref<VForm>()
 const name = ref()
-const email = ref()
-const mobile = ref()
-const addressline1 = ref()
-const addressline2 = ref()
-const town = ref()
-const state = ref()
-const postCode = ref()
-const country = ref()
-const isBillingAddress = ref(false)
+const dob = ref()
+const gender = ref('Male')
+const phone = ref()
+
+const marital_status = ref()
+const children = ref()
+const residence = ref('بغداد')
+const occupation = ref()
+const education = ref()
 
 const resetForm = () => {
   refVForm.value?.reset()
@@ -46,7 +47,7 @@ const resetForm = () => {
   >
     <!-- 👉 Header -->
     <AppDrawerHeaderSection
-      title="Add a Customer"
+      title="Add a Patient"
       @cancel="$emit('update:isDrawerOpen', false)"
     />
 
@@ -74,102 +75,110 @@ const resetForm = () => {
                   v-model="name"
                   label="Name*"
                   :rules="[requiredValidator]"
-                  placeholder="John Doe"
+                  placeholder="محمد علي"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
-                  v-model="email"
-                  label="Email*"
-                  :rules="[requiredValidator, emailValidator]"
-                  placeholder="johndoe@email.com"
-                />
-              </VCol>
-
-              <VCol cols="12">
-                <AppTextField
-                  v-model="mobile"
-                  label="Mobile*"
+                  v-model="dob"
+                  label="Date of Birth*"
                   :rules="[requiredValidator]"
-                  placeholder="+(123) 456-7890"
+                  placeholder="2000"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppAutocomplete
+                  v-model="gender"
+                  label="Gender*"
+                  :items="['Male', 'Female']"
+                  :rules="[requiredValidator]"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppTextField
+                  v-model="phone"
+                  label="Phone"
+                  placeholder="07812345678"
                 />
               </VCol>
 
               <VCol>
                 <div class="text-body-1 font-weight-medium text-high-emphasis">
-                  Shipping Information
+                  Demographic Information
                 </div>
               </VCol>
 
               <VCol cols="12">
-                <AppTextField
-                  v-model="addressline1"
-                  label="Address Line 1*"
-                  :rules="[requiredValidator]"
-                  placeholder="45, Rocker Terrace"
+                <AppAutocomplete
+                  v-model="marital_status"
+                  label="Marital Status"
+                  placeholder="Select Status"
+                  :items="['Married', 'Single', 'Widow', 'Separated']"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
-                  v-model="addressline2"
-                  placeholder="Empire Heights,"
-                  :rules="[requiredValidator]"
-                  label="Address Line 2*"
+                  v-model="children"
+                  placeholder="Write a Number"
+                  label="Number of Children"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppAutocomplete
+                  v-model="residence"
+                  label="Residence"
+                  placeholder="Baghdad"
+                  :items="[
+                    'بغداد',
+                    'النجف',
+                    'بابل',
+                    'كربلاء',
+                    'الأنبار',
+                    'البصرة',
+                    'المثنى',
+                    'القادسية',
+                    'أربيل',
+                    'السليمانية',
+                    'دهوك',
+                    'ذي قار',
+                    'ديالى',
+                    'كركوك',
+                    'ميسان',
+                    'نينوى',
+                    'صلاح الدين',
+                    'واسط',
+                  ]"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
-                  v-model="town"
-                  label="Town*"
-                  :rules="[requiredValidator]"
-                  placeholder="New York"
+                  v-model="occupation"
+                  placeholder="Occupation"
+                  label="Write Occupation"
                 />
               </VCol>
 
               <VCol cols="12">
-                <AppTextField
-                  v-model="state"
-                  placeholder="Texas"
-                  :rules="[requiredValidator]"
-                  label="State/Province*"
+                <AppAutocomplete
+                  v-model="education"
+                  label="Education"
+                  placeholder="Select Education"
+                  :items="[
+                    'ابتدائية',
+                    'متوسطة',
+                    'اعدادية',
+                    'كلية',
+                    'بكالوريوس',
+                    'ماجستير',
+                    'دكتوراه',
+                  ]"
                 />
-              </VCol>
-
-              <VCol cols="12">
-                <AppTextField
-                  v-model="postCode"
-                  label="Post Code*"
-                  type="number"
-                  :rules="[requiredValidator]"
-                  placeholder="982347"
-                />
-              </VCol>
-
-              <VCol cols="12">
-                <AppSelect
-                  v-model="country"
-                  placeholder="United States"
-                  :rules="[requiredValidator]"
-                  label="Country"
-                  :items="['United States', 'United Kingdom', 'Canada']"
-                />
-              </VCol>
-
-              <VCol cols="12">
-                <div class="d-flex justify-space-between">
-                  <div class="d-flex flex-column gap-y-1">
-                    <h6 class="text-h6">
-                      Use as a billing address?
-                    </h6>
-                    <div class="text-body-2">
-                      Please check budget for more info
-                    </div>
-                  </div>
-                  <VSwitch v-model="isBillingAddress" />
-                </div>
               </VCol>
 
               <VCol cols="12">

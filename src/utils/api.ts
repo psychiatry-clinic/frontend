@@ -1,7 +1,7 @@
 import { ofetch } from 'ofetch'
 
 export const $api = ofetch.create({
-  baseURL: 'http://localhost:4000',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   async onRequest({ options }) {
     const accessToken = useCookie('accessToken').value
     if (accessToken) {
