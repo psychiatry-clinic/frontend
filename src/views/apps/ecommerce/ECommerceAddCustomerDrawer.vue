@@ -14,6 +14,7 @@ interface Emit {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emit>()
+const router = useRouter()
 
 const handleDrawerModelValueUpdate = (val: boolean) => {
   emit('update:isDrawerOpen', val)
@@ -54,6 +55,7 @@ const addPatient = async () => {
         dob: +dob.value,
         gender: gender.value,
         phone: phone.value,
+        // eslint-disable-next-line camelcase
         marital_status: marital_status.value,
         children: children.value,
         residence: residence.value,
@@ -65,8 +67,8 @@ const addPatient = async () => {
       },
     })
 
-    console.log(res)
-    emit('update:isDrawerOpen', false)
+    console.log(res.id)
+    router.replace(`/patients/${res.id}`)
   }
   catch (error) {
     console.error(error)

@@ -98,7 +98,7 @@ const totalPatients = computed(() => data.value.total)
 
       <VDivider />
       <VDataTableServer
-        v-if="patientsData !== null"
+        v-if="patients !== null"
         v-model:items-per-page="itemsPerPage"
         v-model:page="page"
         :items="patients"
