@@ -108,6 +108,24 @@ const updateOptions = (options: any) => {
   orderBy.value = options.sortBy[0]?.order
 }
 
+const storedUserData: Patient | undefined = useCookie('userData').value as Patient | undefined
+
+const link = `/patients/${storedUserData?.id}`
+
+// Fetch customers Data
+const { data } = await useApi<any>(createUrl(link,
+  {
+    query: {
+      q: searchQuery,
+      itemsPerPage,
+      page,
+      sortBy,
+      orderBy,
+    },
+  }))
+
+console.log(data.value)
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
 
@@ -123,16 +141,14 @@ const calculateAge = (dob: string) => {
 
 // const patients = computed((): Patient[] => patientsArray.value.patients)
 const patients = computed((): Patient[] => {
-  return patientsArray.value.patients.map(patient => ({
+  return data.value.patients.map((patient: Patient) => ({
     ...patient,
     createdAt: formatDate(patient.createdAt), // Format createdAt date
     age: calculateAge(patient.dob.toString()), // Calculate age
   }))
 })
 
-console.log(patientsArray.value.total)
-
-const totalPatients = computed(() => patientsArray.value.total)
+const totalPatients = computed(() => data.value.total)
 </script>
 
 <template>
