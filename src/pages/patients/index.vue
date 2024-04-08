@@ -4,85 +4,7 @@ console.log(response)
 
 <script setup lang="ts">
 import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
-import type { Patient } from '@db/apps/ecommerce/types'
-
-const patientsArray = ref({
-  total: 88,
-  patients: [
-    {
-      id: 21,
-      name: 'احمد علي',
-      dob: 2001,
-      gender: 'Male',
-      phone: '+112345672',
-      createdAt: '2024-04-06T18:10:03.584Z',
-      updatedAt: '2024-04-06T18:10:03.584Z',
-    },
-    {
-      id: 22,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 23,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 24,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 25,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 26,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 27,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-    {
-      id: 28,
-      name: 'Patient 2',
-      dob: 2000,
-      gender: 'Female',
-      phone: '+112345671',
-      createdAt: '2024-04-06T18:10:03.583Z',
-      updatedAt: '2024-04-06T18:10:03.583Z',
-    },
-  ],
-})
+import type { Patient, User } from '@/utils/types'
 
 const searchQuery = ref('')
 const isAddPatientDrawerOpen = ref(false)
@@ -108,7 +30,7 @@ const updateOptions = (options: any) => {
   orderBy.value = options.sortBy[0]?.order
 }
 
-const storedUserData: Patient | undefined = useCookie('userData').value as Patient | undefined
+const storedUserData: User | undefined = useCookie('userData').value as User | undefined
 
 const link = `/patients/${storedUserData?.id}`
 
@@ -123,8 +45,6 @@ const { data } = await useApi<any>(createUrl(link,
       orderBy,
     },
   }))
-
-console.log(data.value)
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
@@ -178,6 +98,7 @@ const totalPatients = computed(() => data.value.total)
 
       <VDivider />
       <VDataTableServer
+        v-if="patientsData !== null"
         v-model:items-per-page="itemsPerPage"
         v-model:page="page"
         :items="patients"

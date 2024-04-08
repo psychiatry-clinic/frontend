@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { defineEmits, defineProps, ref } from 'vue'
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 import { VForm } from 'vuetify/components/VForm'
-import { defineEmits, defineProps, ref } from 'vue'
+import type { Patient } from '@db/apps/ecommerce/types'
 
 interface Props {
   isDrawerOpen: boolean
@@ -17,6 +18,10 @@ const emit = defineEmits<Emit>()
 const handleDrawerModelValueUpdate = (val: boolean) => {
   emit('update:isDrawerOpen', val)
 }
+
+const errors = ref<Record<string, string | undefined>>({
+  message: undefined,
+})
 
 const refVForm = ref<VForm>()
 const name = ref()
@@ -34,6 +39,38 @@ const education = ref()
 const resetForm = () => {
   refVForm.value?.reset()
   emit('update:isDrawerOpen', false)
+}
+
+const storedUserData: Patient | undefined = useCookie('userData').value as Patient | undefined
+
+const link = `/patients-new/${storedUserData?.id}`
+
+const addPatient = async () => {
+  try {
+    const res = await $api(link, {
+      method: 'POST',
+      body: {
+        name: name.value,
+        dob: +dob.value,
+        gender: gender.value,
+        phone: phone.value,
+        marital_status: marital_status.value,
+        children: children.value,
+        residence: residence.value,
+        occupation: occupation.value,
+        education: education.value,
+      },
+      onResponseError({ response }) {
+        errors.value = response._data
+      },
+    })
+
+    console.log(res)
+    emit('update:isDrawerOpen', false)
+  }
+  catch (error) {
+    console.error(error)
+  }
 }
 </script>
 
@@ -117,7 +154,7 @@ const resetForm = () => {
                   v-model="marital_status"
                   label="Marital Status"
                   placeholder="Select Status"
-                  :items="['Married', 'Single', 'Widow', 'Separated']"
+                  :items="gender === 'Male' ? ['متزوج', 'اعزب', 'ارمل', 'منفصل'] : ['متزوجة', 'عزباء', 'ارملة', 'منفصلة']"
                 />
               </VCol>
 
@@ -133,7 +170,7 @@ const resetForm = () => {
                 <AppAutocomplete
                   v-model="residence"
                   label="Residence"
-                  placeholder="Baghdad"
+                  placeholder="Select Residence"
                   :items="[
                     'بغداد',
                     'النجف',
@@ -160,8 +197,8 @@ const resetForm = () => {
               <VCol cols="12">
                 <AppTextField
                   v-model="occupation"
-                  placeholder="Occupation"
-                  label="Write Occupation"
+                  placeholder="Write an Occupation"
+                  label="Occupation"
                 />
               </VCol>
 
@@ -187,6 +224,8 @@ const resetForm = () => {
                   <VBtn
                     type="submit"
                     color="primary"
+                    :disabled="!name || !dob"
+                    @click="addPatient"
                   >
                     Add
                   </VBtn>
