@@ -24,6 +24,7 @@ const dob = ref()
 const gender = ref('Male')
 const phone = ref()
 
+// eslint-disable-next-line camelcase
 const marital_status = ref()
 const children = ref()
 const residence = ref('بغداد')

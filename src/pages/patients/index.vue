@@ -108,22 +108,6 @@ const updateOptions = (options: any) => {
   orderBy.value = options.sortBy[0]?.order
 }
 
-// Fetch customers Data
-const { data: customerData } = await useApi<any>(createUrl('/apps/ecommerce/customers',
-  {
-    query: {
-      q: searchQuery,
-      itemsPerPage,
-      page,
-      sortBy,
-      orderBy,
-    },
-  }),
-)
-
-console.log(customerData.value)
-console.log(patientsArray._rawValue)
-
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
 
@@ -187,60 +171,6 @@ const totalPatients = computed(() => patientsArray.value.total)
         class="text-no-wrap"
         @update:options="updateOptions"
       >
-        <template #item.name="{ item }">
-          <div class="d-flex align-center gap-x-3">
-            <VAvatar
-              size="34"
-              :variant="!item.avatar ? 'tonal' : undefined"
-            >
-              <VImg
-                v-if="item.avatar"
-                :src="item.avatar"
-              />
-              <span v-else>{{ avatarText(item.name) }}</span>
-            </VAvatar>
-            <div class="d-flex flex-column">
-              <RouterLink
-                :to="{ name: 'apps-ecommerce-customer-details-id', params: { id: item.id } }"
-                class="text-link font-weight-medium d-inline-block"
-                style="line-height: 1.375rem;"
-              >
-                {{ item.name }}
-              </RouterLink>
-              <div class="text-body-2">
-                id{{ item.id }}
-              </div>
-            </div>
-          </div>
-        </template>
-
-        <template #item.customerId="{ item }">
-          <div class="text-body-1 text-high-emphasis">
-            #{{ item.customerId }}
-          </div>
-        </template>
-
-        <template #item.orders="{ item }">
-          {{ item.order }}
-        </template>
-
-        <template #item.country="{ item }">
-          <div class="d-flex gap-x-2">
-            <img
-              :src="item.countryFlag"
-              height="22"
-              width="22"
-            >
-            <span class="text-body-1">{{ item.country }}</span>
-          </div>
-        </template>
-
-        <template #item.totalSpent="{ item }">
-          <h6 class="text-h6">
-            ${{ item.totalSpent }}
-          </h6>
-        </template>
-
         <template #bottom>
           <TablePagination
             v-model:page="page"

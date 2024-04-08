@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { VForm } from 'vuetify/components/VForm'
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?raw'
 import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
 import { themeConfig } from '@themeConfig'
+
+// import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 
 definePage({
   meta: {
@@ -15,35 +16,39 @@ definePage({
 
 const isPasswordVisible = ref(false)
 
-const route = useRoute()
+// const route = useRoute()
 const router = useRouter()
 
 const ability = useAbility()
 
 const errors = ref<Record<string, string | undefined>>({
-  email: undefined,
-  password: undefined,
+  message: undefined,
 })
 
 const refVForm = ref<VForm>()
 
+// const creds = {
+//   email: 'admin@demo.com',
+//   password: 'admin',
+// }
+
 const credentials = ref({
-  email: 'admin@demo.com',
-  password: 'admin',
+  username: '',
+  password: '',
 })
 
 const rememberMe = ref(false)
 
 const login = async () => {
   try {
-    const res = await $api('/auth/login', {
+    const res = await $api('/login', {
       method: 'POST',
       body: {
-        email: credentials.value.email,
+        username: credentials.value.username,
         password: credentials.value.password,
       },
       onResponseError({ response }) {
-        errors.value = response._data.errors
+        errors.value.message = response._data
       },
     })
 
@@ -73,7 +78,6 @@ const onSubmit = () => {
         login()
     })
 }
-
 </script>
 
 <template>
@@ -110,26 +114,30 @@ const onSubmit = () => {
 
         <VCardText>
           <h4 class="text-h4 mb-1">
-            Welcome to <span class="text-capitalize">{{ themeConfig.app.title }}</span>! 👋🏻
+            <span class="text-capitalize">{{ themeConfig.app.title }} Clinic Application</span>
           </h4>
           <p class="mb-0">
-            Please sign-in to your account and start the adventure
+            Please sign-in to your account
           </p>
         </VCardText>
 
         <VCardText>
-          <VForm 
-          ref="refVForm"
-          @submit.prevent="onSubmit">
+          <VForm
+            ref="refVForm"
+            @submit.prevent="onSubmit"
+          >
+            <p class="align-self-center text-warning">
+              {{ errors.message }}
+            </p>
             <VRow>
-              <!-- email -->
+              <!-- username -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="credentials.email"
+                  v-model="credentials.username"
                   autofocus
-                  label="Email or Username"
-                  type="email"
-                  placeholder="johndoe@email.com"
+                  label="Username"
+                  type="text"
+                  placeholder=""
                 />
               </VCol>
 
@@ -138,7 +146,7 @@ const onSubmit = () => {
                 <AppTextField
                   v-model="credentials.password"
                   label="Password"
-                  placeholder="············"
+                  placeholder=""
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
@@ -151,12 +159,13 @@ const onSubmit = () => {
                     label="Remember me"
                   />
 
-                  <RouterLink
+                  <a
+
                     class="text-primary"
-                    :to="{ name: 'pages-authentication-forgot-password-v1' }"
+                    href="https://wa.me/+9647812135916"
                   >
                     Forgot Password?
-                  </RouterLink>
+                  </a>
                 </div>
 
                 <!-- login button -->
@@ -169,37 +178,43 @@ const onSubmit = () => {
               </VCol>
 
               <!-- create account -->
-              <VCol
+              <!--
+                <VCol
                 cols="12"
                 class="text-body-1 text-center"
-              >
+                >
                 <span class="d-inline-block">
-                  New on our platform?
+                New on our platform?
                 </span>
                 <RouterLink
-                  class="text-primary ms-1 d-inline-block text-body-1"
-                  :to="{ name: 'pages-authentication-register-v1' }"
+                class="text-primary ms-1 d-inline-block text-body-1"
+                :to="{ name: 'pages-authentication-register-v1' }"
                 >
-                  Create an account
+                Create an account
                 </RouterLink>
-              </VCol>
+                </VCol>
+              -->
 
-              <VCol
+              <!--
+                <VCol
                 cols="12"
                 class="d-flex align-center"
-              >
+                >
                 <VDivider />
                 <span class="mx-4 text-high-emphasis">or</span>
                 <VDivider />
-              </VCol>
+                </VCol>
+              -->
 
               <!-- auth providers -->
-              <VCol
+              <!--
+                <VCol
                 cols="12"
                 class="text-center"
-              >
+                >
                 <AuthProvider />
-              </VCol>
+                </VCol>
+              -->
             </VRow>
           </VForm>
         </VCardText>
