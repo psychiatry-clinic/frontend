@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { Customer } from '@db/apps/ecommerce/types'
+import type { Patient } from '@/utils/types';
 import rocketImg from '@images/eCommerce/rocket.png'
 
 const props = defineProps<Props>()
 const isUserInfoEditDialogVisible = ref(false)
-const isUpgradePlanDialogVisible = ref(false)
+
 interface Props {
-  customerData: Customer
+  customerData: Patient
 }
 
 const userData = {
@@ -27,6 +27,13 @@ const userData = {
   taxId: 'Tax-8894',
   language: 'English',
   fullName: 'Selena Kyle',
+}
+
+const calculateAge = (dob: number) => {
+  const birthYear = +dob
+  const currentYear = new Date().getFullYear()
+
+  return currentYear - +birthYear
 }
 </script>
 
@@ -51,17 +58,17 @@ const userData = {
               v-else
               class="text-5xl font-weight-medium"
             >
-              {{ avatarText(props.customerData.customer) }}
+              {{ avatarText(props.customerData.name) }}
             </span>
           </VAvatar>
 
           <!-- 👉 Customer fullName -->
           <h5 class="text-h5 mt-4">
-            {{ props.customerData.customer }}
+            {{ props.customerData.name }}
           </h5>
-          <div class="text-body-1">
+          <!-- <div class="text-body-1">
             Customer ID #{{ props.customerData.customerId }}
-          </div>
+          </div> -->
 
           <div class="d-flex justify-space-evenly gap-x-5 mt-6">
             <div class="d-flex align-center">
@@ -71,18 +78,18 @@ const userData = {
                 rounded
                 class="me-4"
               >
-                <VIcon icon="tabler-shopping-cart" />
+                <VIcon icon="tabler-file" />
               </VAvatar>
               <div class="d-flex flex-column align-start">
                 <h5 class="text-h5">
-                  {{ props.customerData.order }}
+                  {{ props.customerData.visits.length }}
                 </h5>
                 <div class="text-body-1">
-                  Order
+                  Visits
                 </div>
               </div>
             </div>
-            <div class="d-flex align-center">
+            <!-- <div class="d-flex align-center">
               <VAvatar
                 variant="tonal"
                 color="primary"
@@ -99,7 +106,7 @@ const userData = {
                   Spent
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </VCardText>
 
@@ -114,51 +121,45 @@ const userData = {
           <VList class="card-list mt-2">
             <VListItem>
               <h6 class="text-h6">
-                Username:
+                name :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.customerData.customer }}
+                  {{ props.customerData.name }}
                 </span>
               </h6>
             </VListItem>
 
             <VListItem>
               <h6 class="text-h6">
-                Billing Email:
+                Gender:
                 <span class="text-body-1 d-inline-block">
-                  {{ props.customerData.email }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <VListItem>
-              <div class="d-flex gap-x-2 align-center">
-                <h6 class="text-h6">
-                  Status:
-                </h6>
-                <VChip
-                  label
-                  color="success"
-                  size="small"
-                >
-                  {{ props.customerData.status }}
-                </VChip>
-              </div>
-            </VListItem>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Contact:
-                <span class="text-body-1 d-inline-block">
-                  {{ props.customerData.contact }}
+                  {{ props.customerData.gender }}
                 </span>
               </h6>
             </VListItem>
 
             <VListItem>
               <h6 class="text-h6">
-                Country:
+                Date of birth :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.customerData.country }}
+                  {{ props.customerData.dob }}
+                </span>
+              </h6>
+            </VListItem>
+
+            <VListItem>
+              <h6 class="text-h6">
+                Age :
+                <span class="text-body-1 d-inline-block">
+                  {{ calculateAge(props.customerData.dob) }}
+                </span>
+              </h6>
+            </VListItem>
+
+            <VListItem>
+              <h6 class="text-h6">
+                Phone :
+                <span class="text-body-1 d-inline-block">
+                  {{ props.customerData.phone }}
                 </span>
               </h6>
             </VListItem>
@@ -175,50 +176,11 @@ const userData = {
         </VCardText>
       </VCard>
     </VCol>
-    <!-- !SECTION -->
-
-    <!-- SECTION  Upgrade to Premium -->
-    <VCol cols="12">
-      <VCard
-        flat
-        class="current-plan"
-      >
-        <VCardText>
-          <div class="d-flex align-center">
-            <div>
-              <h5 class="text-h5 text-white mb-4">
-                Upgrade to premium
-              </h5>
-              <p class="mb-6 text-wrap">
-                Upgrade customer to premium membership to access pro features.
-              </p>
-            </div>
-            <div>
-              <VImg
-                :src="rocketImg"
-                height="108"
-                width="108"
-              />
-            </div>
-          </div>
-          <VBtn
-            color="#fff"
-            class="text-primary"
-            block
-            @click="isUpgradePlanDialogVisible = !isUpgradePlanDialogVisible"
-          >
-            Upgrade to Premium
-          </VBtn>
-        </VCardText>
-      </VCard>
-    </VCol>
-    <!-- !SECTION -->
   </VRow>
   <UserInfoEditDialog
     v-model:isDialogVisible="isUserInfoEditDialogVisible"
     :user-data="userData"
   />
-  <UserUpgradePlanDialog v-model:isDialogVisible="isUpgradePlanDialogVisible" />
 </template>
 
 <style lang="scss" scoped>

@@ -11,8 +11,8 @@ import type { Patient, User, Prescription, Test, Visit } from '@/utils/types'
 const route = useRoute('apps-ecommerce-customer-details-id')
 const storedUserData: User | undefined = useCookie('userData').value as User | undefined
 
-const customerData = ref<Customer>()
-const customer = ref<Customer>()
+const customerData = ref<Patient>()
+const customer = ref<Patient>()
 const userTab = ref(null)
 const patientData = ref<Patient>()
 
@@ -25,18 +25,20 @@ const tabs = [
 
 const { data } = await useApi<any>(`/patients/${storedUserData?.id}/${route.params.id}`)
 
-customer.value = {"id":100,
-"customer":"Elly Fossick",
-"customerId":478426,
-"email":"mfossick2r@hatena.ne.jp",
-"country":"China",
-"countryFlag":"/src/assets/images/icons/countries/cn.png",
-"countryCode":"jp",
-"order":181,
-"totalSpent":2838.35,
-"avatar":"/src/assets/images/avatars/avatar-15.png",
-"status":"Active",
-"contact":"+1 (234) 567 890"}
+customer.value = {id:100,
+name:"محمد علي",
+dob:2000,
+gender: "Female",
+customerId:478426,
+email:"mfossick2r@hatena.ne.jp",
+country:"China",
+countryFlag:"/src/assets/images/icons/countries/cn.png",
+countryCode:"jp",
+order:181,
+totalSpent:2838.35,
+avatar:'',
+status:"Active",
+contact:"+1 (234) 567 890",visits:[{id:1},{id:2}]}
 
 
 patientData.value = {

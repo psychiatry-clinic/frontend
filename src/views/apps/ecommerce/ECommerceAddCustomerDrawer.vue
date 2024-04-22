@@ -115,7 +115,7 @@ const addPatient = async () => {
                   v-model="name"
                   label="Name*"
                   :rules="[requiredValidator]"
-                  placeholder="محمد علي"
+                  placeholder=""
                 />
               </VCol>
 
@@ -124,7 +124,7 @@ const addPatient = async () => {
                   v-model="dob"
                   label="Date of Birth*"
                   :rules="[requiredValidator]"
-                  placeholder="2000"
+                  placeholder=""
                 />
               </VCol>
 
