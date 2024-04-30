@@ -1,33 +1,13 @@
 <script setup lang="ts">
 import { Patient } from "@/utils/types";
 
-interface UserData {
-  id: number | null;
-  fullName: string;
-  firstName: string;
-  lastName: string;
-  company: string;
-  username: string;
-  role: string;
-  country: string;
-  contact: string;
-  email: string;
-  currentPlan: string;
-  status: string;
-  avatar: string;
-  taskDone: number | null;
-  projectDone: number | null;
-  taxId: string;
-  language: string;
-}
-
 interface Props {
   userData?: Patient;
   isDialogVisible: boolean;
 }
 
 interface Emit {
-  (e: "submit", value: UserData): void;
+  (e: "submit", value: Patient): void;
   (e: "update:isDialogVisible", val: boolean): void;
 }
 

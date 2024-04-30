@@ -4,12 +4,12 @@ export interface Patient {
   dob: number;
   gender: string;
   phone: string;
-  createdAt: string;
-  updatedAt: string;
-  visits: Visit[];
-  demographics: any[]; // Assuming demographics data structure is unknown
-  prescriptions: Prescription[];
-  tests: Test[];
+  createdAt?: string;
+  updatedAt?: string;
+  visits?: Visit[];
+  demographics?: any[]; // Assuming demographics data structure is unknown
+  prescriptions?: Prescription[];
+  tests?: Test[];
 }
 
 export interface User {
