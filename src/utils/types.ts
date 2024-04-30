@@ -3,13 +3,23 @@ export interface Patient {
   name: string;
   dob: number;
   gender: string;
-  phone: string;
-  createdAt?: string;
-  updatedAt?: string;
+  phone: null | string;
+  familyHx: null | string;
+  father_dob: null | number;
+  mother_dob: null | number;
+  father_age: null | number;
+  mother_age: null | number;
+  father_work: null | string;
+  mother_work: null | string;
+  siblings: null | number;
+  order: null | number;
+  related:boolean;
   visits?: Visit[];
-  demographics?: any[]; // Assuming demographics data structure is unknown
+  demographics?: Demographics[]; // Assuming demographics data structure is unknown
   prescriptions?: Prescription[];
   tests?: Test[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface User {
@@ -74,4 +84,17 @@ export interface Test {
   visitId: number;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Demographics {
+  id:number
+  patient?: Patient; // Assuming Patient interface is defined elsewhere
+  patientId?: number;
+  marital_status?: string | null;
+  occupation?: string | null;
+  children?: string | null;
+  residence?: string | null;
+  education?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }

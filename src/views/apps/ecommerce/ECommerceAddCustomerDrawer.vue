@@ -1,55 +1,62 @@
 <script setup lang="ts">
-import { defineEmits, defineProps, ref } from 'vue'
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { VForm } from 'vuetify/components/VForm'
-import type { Patient } from '@db/apps/ecommerce/types'
+import { defineEmits, defineProps, ref } from "vue";
+import { PerfectScrollbar } from "vue3-perfect-scrollbar";
+import { VForm } from "vuetify/components/VForm";
+import type { Patient } from "@/utils/types";
 
 interface Props {
-  isDrawerOpen: boolean
+  isDrawerOpen: boolean;
 }
 
 interface Emit {
-  (e: 'update:isDrawerOpen', value: boolean): void
+  (e: "update:isDrawerOpen", value: boolean): void;
 }
 
-const props = defineProps<Props>()
-const emit = defineEmits<Emit>()
-const router = useRouter()
+const props = defineProps<Props>();
+const emit = defineEmits<Emit>();
+const router = useRouter();
 
 const handleDrawerModelValueUpdate = (val: boolean) => {
-  emit('update:isDrawerOpen', val)
-}
+  emit("update:isDrawerOpen", val);
+};
 
 const errors = ref<Record<string, string | undefined>>({
   message: undefined,
-})
+});
 
-const refVForm = ref<VForm>()
-const name = ref()
-const dob = ref()
-const gender = ref('Male')
-const phone = ref()
+const refVForm = ref<VForm>();
+const name = ref();
+const dob = ref();
+const gender = ref("Male");
+const phone = ref();
+const father_dob = ref();
+const mother_dob = ref();
+const father_age = ref();
+const mother_age = ref();
+const related = ref();
 
 // eslint-disable-next-line camelcase
-const marital_status = ref()
-const children = ref()
-const residence = ref('بغداد')
-const occupation = ref()
-const education = ref()
+const marital_status = ref();
+const children = ref();
+const residence = ref("بغداد");
+const occupation = ref();
+const education = ref();
 
 const resetForm = () => {
-  refVForm.value?.reset()
-  emit('update:isDrawerOpen', false)
-}
+  refVForm.value?.reset();
+  emit("update:isDrawerOpen", false);
+};
 
-const storedUserData: Patient | undefined = useCookie('userData').value as Patient | undefined
+const storedUserData: Patient | undefined = useCookie("userData").value as
+  | Patient
+  | undefined;
 
-const link = `/patients-new/${storedUserData?.id}`
+const link = `/patients-new/${storedUserData?.id}`;
 
 const addPatient = async () => {
   try {
     const res = await $api(link, {
-      method: 'POST',
+      method: "POST",
       body: {
         name: name.value,
         dob: +dob.value,
@@ -63,17 +70,16 @@ const addPatient = async () => {
         education: education.value,
       },
       onResponseError({ response }) {
-        errors.value = response._data
+        errors.value = response._data;
       },
-    })
+    });
 
-    console.log(res.id)
-    router.replace(`/patients/${res.id}`)
+    console.log(res.id);
+    router.replace(`/patients/${res.id}`);
+  } catch (error) {
+    console.error(error);
   }
-  catch (error) {
-    console.error(error)
-  }
-}
+};
 </script>
 
 <template>
@@ -94,20 +100,12 @@ const addPatient = async () => {
     <VDivider />
 
     <VCard flat>
-      <PerfectScrollbar
-        :options="{ wheelPropagation: false }"
-        class="h-100"
-      >
-        <VCardText style="block-size: calc(100vh - 5rem);">
-          <VForm
-            ref="refVForm"
-            @submit.prevent=""
-          >
+      <PerfectScrollbar :options="{ wheelPropagation: false }" class="h-100">
+        <VCardText style="block-size: calc(100vh - 5rem)">
+          <VForm ref="refVForm" @submit.prevent="">
             <VRow>
               <VCol>
-                <h6 class="text-h6">
-                  Basic Information
-                </h6>
+                <h6 class="text-h6">Basic Information</h6>
               </VCol>
 
               <VCol cols="12">
@@ -156,7 +154,11 @@ const addPatient = async () => {
                   v-model="marital_status"
                   label="Marital Status"
                   placeholder="Select Status"
-                  :items="gender === 'Male' ? ['متزوج', 'اعزب', 'ارمل', 'منفصل'] : ['متزوجة', 'عزباء', 'ارملة', 'منفصلة']"
+                  :items="
+                    gender === 'Male'
+                      ? ['متزوج', 'اعزب', 'ارمل', 'منفصل']
+                      : ['متزوجة', 'عزباء', 'ارملة', 'منفصلة']
+                  "
                 />
               </VCol>
 
@@ -231,11 +233,7 @@ const addPatient = async () => {
                   >
                     Add
                   </VBtn>
-                  <VBtn
-                    color="error"
-                    variant="tonal"
-                    @click="resetForm"
-                  >
+                  <VBtn color="error" variant="tonal" @click="resetForm">
                     Discard
                   </VBtn>
                 </div>

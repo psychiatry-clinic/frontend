@@ -1,75 +1,81 @@
 <script setup lang="ts">
-import type { Order } from '@db/apps/ecommerce/types'
+import formatDate from "@/utils/formatDateGB";
+import { Visit } from "@/utils/types";
 
-const searchQuery = ref('')
+interface Props {
+  visits?: Visit[];
+}
+
+const { visits } = defineProps<Props>();
 
 // Data table options
-const itemsPerPage = ref(10)
-const page = ref(1)
-const sortBy = ref()
-const orderBy = ref()
+const itemsPerPage = ref(10);
+const page = ref(1);
+const sortBy = ref();
+const orderBy = ref();
 
 const updateOptions = (options: any) => {
-  sortBy.value = options.sortBy[0]?.key
-  orderBy.value = options.sortBy[0]?.order
-}
+  sortBy.value = options.sortBy[0]?.key;
+  orderBy.value = options.sortBy[0]?.order;
+};
 
 const headers = [
-  { title: 'Order', key: 'order' },
-  { title: 'Date', key: 'date' },
-  { title: 'Status', key: 'status' },
-  { title: 'Spent', key: 'spent' },
-  { title: 'Actions', key: 'actions', sortable: false },
-]
+  { title: "visit number", key: "number" },
+  { title: "Date", key: "createdAt" },
+  { title: "Actions", key: "actions", sortable: false },
+];
 
-const resolveStatus = (status: string) => {
-  if (status === 'Delivered')
-    return { color: 'success' }
-  if (status === 'Out for Delivery')
-    return { color: 'primary' }
-  if (status === 'Ready to Pickup')
-    return { color: 'info' }
-  if (status === 'Dispatched')
-    return { color: 'warning' }
-}
+const formattedVisits = computed(() => {
+  if (!visits) return [];
+  return visits.map((visit, i) => ({
+    ...visit,
+    createdAt: formatDate(visit.createdAt),
+    number: i + 1,
+  }));
+});
 
-const { data: ordersData, execute: fetchOrders } = await useApi<any>(createUrl('/apps/ecommerce/orders',
-  {
-    query: {
-      q: searchQuery,
-      page,
-      itemsPerPage,
-      sortBy,
-      orderBy,
-    },
-  },
-))
+// const resolveStatus = (status: string) => {
+//   if (status === "Delivered") return { color: "success" };
+//   if (status === "Out for Delivery") return { color: "primary" };
+//   if (status === "Ready to Pickup") return { color: "info" };
+//   if (status === "Dispatched") return { color: "warning" };
+// };
 
-const orders = computed((): Order[] => ordersData.value?.orders || [])
-const totalOrder = computed(() => ordersData.value?.total || 0)
+// const { data: ordersData, execute: fetchOrders } = await useApi<any>(
+//   createUrl("/apps/ecommerce/orders", {
+//     query: {
+//       q: searchQuery,
+//       page,
+//       itemsPerPage,
+//       sortBy,
+//       orderBy,
+//     },
+//   })
+// );
 
-const deleteOrder = async (id: number) => {
-  await $api(`/apps/ecommerce/orders/${id}`, {
-    method: 'DELETE',
-  })
-  fetchOrders()
-}
+// const visits = computed((): Visit[] => visits.value?.orders || []);
+const totalVisits = computed(() => visits?.length || 0);
+
+// const deleteOrder = async (id: number) => {
+//   await $api(`/apps/ecommerce/orders/${id}`, {
+//     method: "DELETE",
+//   });
+//   fetchOrders();
+// };
 </script>
 
 <template>
   <VCard>
     <VCardText>
       <div class="d-flex justify-space-between flex-wrap align-center gap-4">
-        <h5 class="text-h5">
-          Orders placed
-        </h5>
-        <div>
+        <h5 class="text-h5">Visits ({{ visits?.length }})</h5>
+        <!-- <div>
           <AppTextField
             v-model="searchQuery"
             placeholder="Search Order"
-            style=" max-inline-size: 200px; min-inline-size: 200px;"
+            style="max-inline-size: 200px; min-inline-size: 200px"
           />
-        </div>
+        </div> -->
       </div>
     </VCardText>
 
@@ -78,15 +84,20 @@ const deleteOrder = async (id: number) => {
       v-model:items-per-page="itemsPerPage"
       v-model:page="page"
       :headers="headers"
-      :items="orders"
+      :items="formattedVisits"
       item-value="id"
-      :items-length="totalOrder"
+      :items-length="totalVisits"
       class="text-no-wrap"
       @update:options="updateOptions"
     >
       <!-- Order ID -->
       <template #item.order="{ item }">
-        <RouterLink :to="{ name: 'apps-ecommerce-order-details-id', params: { id: item.order } }">
+        <RouterLink
+          :to="{
+            name: 'apps-ecommerce-order-details-id',
+            params: { id: item.order },
+          }"
+        >
           #{{ item.order }}
         </RouterLink>
       </template>
@@ -97,20 +108,14 @@ const deleteOrder = async (id: number) => {
       </template>
 
       <!-- Status -->
-      <template #item.status="{ item }">
-        <VChip
-          label
-          :color="resolveStatus(item.status)?.color"
-          size="small"
-        >
+      <!-- <template #item.status="{ item }">
+        <VChip label :color="resolveStatus(item.status)?.color" size="small">
           {{ item.status }}
         </VChip>
-      </template>
+      </template> -->
 
       <!-- Spent -->
-      <template #item.spent="{ item }">
-        ${{ item.spent }}
-      </template>
+      <template #item.spent="{ item }"> ${{ item.spent }} </template>
 
       <!-- Actions -->
       <template #item.actions="{ item }">
@@ -120,14 +125,14 @@ const deleteOrder = async (id: number) => {
             <VList>
               <VListItem
                 value="view"
-                :to="{ name: 'apps-ecommerce-order-details-id', params: { id: item.order } }"
+                :to="{
+                  name: 'apps-ecommerce-order-details-id',
+                  params: { id: item.order },
+                }"
               >
                 View
               </VListItem>
-              <VListItem
-                value="delete"
-                @click="deleteOrder(item.id)"
-              >
+              <VListItem value="delete" @click="deleteOrder(item.id)">
                 Delete
               </VListItem>
             </VList>
@@ -140,7 +145,7 @@ const deleteOrder = async (id: number) => {
         <TablePagination
           v-model:page="page"
           :items-per-page="itemsPerPage"
-          :total-items="totalOrder"
+          :total-items="totalVisits"
         />
       </template>
     </VDataTableServer>

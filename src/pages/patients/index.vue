@@ -1,42 +1,44 @@
-const response = await $api('/patients/1')
-
-console.log(response)
+const response = await $api('/patients/1') console.log(response)
 
 <script setup lang="ts">
-import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
-import type { Patient, User } from '@/utils/types'
+import formatDate from "@/utils/formatDateGB";
+import calculateAge from "@/utils/calculateAge";
+import type { Patient, User } from "@/utils/types";
+import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 
-const searchQuery = ref('')
-const isAddPatientDrawerOpen = ref(false)
+const searchQuery = ref("");
+const isAddPatientDrawerOpen = ref(false);
 
 // Data table options
-const itemsPerPage = ref(10)
-const page = ref(1)
-const sortBy = ref()
-const orderBy = ref()
+const itemsPerPage = ref(10);
+const page = ref(1);
+const sortBy = ref();
+const orderBy = ref();
 
 // Data table Headers
 const headers = [
-  { title: 'Patient', key: 'name' },
-  { title: 'Gender', key: 'gender' },
-  { title: 'Date of Birth', key: 'dob' },
-  { title: 'Age', key: 'age' },
-  { title: 'First Visit', key: 'createdAt' },
-]
+  { title: "Patient", key: "name" },
+  { title: "Gender", key: "gender" },
+  { title: "Date of Birth", key: "dob" },
+  { title: "Age", key: "age" },
+  { title: "First Visit", key: "createdAt" },
+];
 
 // Update data table options
 const updateOptions = (options: any) => {
-  sortBy.value = options.sortBy[0]?.key
-  orderBy.value = options.sortBy[0]?.order
-}
+  sortBy.value = options.sortBy[0]?.key;
+  orderBy.value = options.sortBy[0]?.order;
+};
 
-const storedUserData: User | undefined = useCookie('userData').value as User | undefined
+const storedUserData: User | undefined = useCookie("userData").value as
+  | User
+  | undefined;
 
-const link = `/patients/${storedUserData?.id}`
+const link = `/patients/${storedUserData?.id}`;
 
 // Fetch customers Data
-const { data } = await useApi<any>(createUrl(link,
-  {
+const { data } = await useApi<any>(
+  createUrl(link, {
     query: {
       q: searchQuery,
       itemsPerPage,
@@ -44,31 +46,19 @@ const { data } = await useApi<any>(createUrl(link,
       sortBy,
       orderBy,
     },
-  }))
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString)
-
-  return date.toLocaleDateString('en-GB') // Adjust locale according to desired date format
-}
-
-const calculateAge = (dob: string) => {
-  const birthYear = +dob
-  const currentYear = new Date().getFullYear()
-
-  return currentYear - +birthYear
-}
+  })
+);
 
 // const patients = computed((): Patient[] => patientsArray.value.patients)
 const patients = computed((): Patient[] => {
   return data.value.patients.map((patient: Patient) => ({
     ...patient,
-    createdAt: formatDate(patient.createdAt), // Format createdAt date
+    createdAt: formatDate(patient.createdAt as string), // Format createdAt date
     age: calculateAge(patient.dob.toString()), // Calculate age
-  }))
-})
+  }));
+});
 
-const totalPatients = computed(() => data.value.total)
+const totalPatients = computed(() => data.value.total);
 </script>
 
 <template>
@@ -78,14 +68,11 @@ const totalPatients = computed(() => data.value.total)
         <div class="d-flex justify-space-between flex-wrap gap-y-4">
           <AppTextField
             v-model="searchQuery"
-            style="max-inline-size: 280px; min-inline-size: 280px;"
+            style="max-inline-size: 280px; min-inline-size: 280px"
             placeholder="Search Name"
           />
           <div class="d-flex flex-row gap-4 align-center flex-wrap">
-            <AppSelect
-              v-model="itemsPerPage"
-              :items="[5, 10, 20, 50, 100]"
-            />
+            <AppSelect v-model="itemsPerPage" :items="[5, 10, 20, 50, 100]" />
             <VBtn
               prepend-icon="tabler-plus"
               @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen"
@@ -118,7 +105,9 @@ const totalPatients = computed(() => data.value.total)
       </VDataTableServer>
     </VCard>
 
-    <ECommerceAddCustomerDrawer v-model:is-drawer-open="isAddPatientDrawerOpen" />
+    <ECommerceAddCustomerDrawer
+      v-model:is-drawer-open="isAddPatientDrawerOpen"
+    />
   </div>
 </template>
 

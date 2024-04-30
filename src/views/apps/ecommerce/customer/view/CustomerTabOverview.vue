@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import CustomerOrderTable from './CustomerOrderTable.vue'
+import { Patient, Visit } from "@/utils/types";
+import CustomerOrderTable from "./CustomerOrderTable.vue";
+
+interface Props {
+  visits?: Visit[];
+}
+
+const { visits } = defineProps<Props>();
 </script>
 
 <template>
   <VRow>
-    <VCol
+    <!-- <VCol
       cols="12"
       md="6"
     >
@@ -118,10 +125,10 @@ import CustomerOrderTable from './CustomerOrderTable.vue'
           </div>
         </VCardText>
       </VCard>
-    </VCol>
+    </VCol> -->
 
     <VCol>
-      <CustomerOrderTable />
+      <CustomerOrderTable :visits="visits" />
     </VCol>
   </VRow>
 </template>

@@ -11,23 +11,15 @@ interface Emit {
   (e: "update:isDialogVisible", val: boolean): void;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  userData: () => ({
-    id: 3,
-    name: "Patient 3",
-    dob: 2001,
-    gender: "Female",
-    phone: "+112345672",
-  }),
-});
+const props = defineProps<Props>();
 
 const emit = defineEmits<Emit>();
 
-const userData = ref<Patient>(structuredClone(toRaw(props.userData)));
+const userData = ref<Patient>(props.userData as Patient);
 const isUseAsBillingAddress = ref(false);
 
 watch(props, () => {
-  userData.value = structuredClone(toRaw(props.userData));
+  userData.value = props.userData as Patient;
 });
 
 const onFormSubmit = () => {
@@ -36,7 +28,7 @@ const onFormSubmit = () => {
 };
 
 const onFormReset = () => {
-  userData.value = structuredClone(toRaw(props.userData));
+  userData.value = props.userData as Patient;
 
   emit("update:isDialogVisible", false);
 };
