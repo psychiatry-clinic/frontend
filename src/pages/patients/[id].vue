@@ -2,8 +2,8 @@
 import CustomerBioPanel from "@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue";
 import CustomerTabAddressAndBilling from "@/views/apps/ecommerce/customer/view/CustomerTabAddressAndBilling.vue";
 import CustomerTabNotification from "@/views/apps/ecommerce/customer/view/CustomerTabNotification.vue";
-import CustomerTabOverview from "@/views/apps/ecommerce/customer/view/CustomerTabOverview.vue";
-import CustomerTabSecurity from "@/views/apps/ecommerce/customer/view/CustomerTabSecurity.vue";
+import CustomerTabVisits from "@/views/apps/ecommerce/customer/view/CustomerTabVisits.vue";
+import CustomerTabTests from "@/views/apps/ecommerce/customer/view/CustomerTabTests.vue";
 import type { Patient, User, Prescription, Test, Visit } from "@/utils/types";
 import { RouteParams } from "vue-router";
 
@@ -20,7 +20,7 @@ const userTab = ref(null);
 
 const tabs = [
   { title: "Visits", icon: "tabler-file" },
-  { title: "Tests", icon: "tabler-test" },
+  { title: "Tests", icon: "tabler-flask" },
   { title: "Address & Billing", icon: "tabler-map-pin" },
   { title: "Notifications", icon: "tabler-bell" },
 ];
@@ -32,7 +32,7 @@ const { data } = await useApi<any>(
 patientData.value = {
   id: 3,
   name: "علي عباس محمد",
-  dob: 2012,
+  dob: 2020,
   gender: "male",
   avatar:
     "https://img.freepik.com/free-photo/smiling-little-boy-face-portrait-close-up_53876-153276.jpg?w=826&t=st=1714544741~exp=1714545341~hmac=18e74a8c3f5c8020dc407937b81c0c4adeb05eeb872cf59a6055d71cd3202576",
@@ -79,11 +79,11 @@ patientData.value = {
       perception: null,
       cognitive_state: null,
       differential_diagnosis: null,
-      management: null,
+      management: "Ritalin 1mg 1x1",
       prescriptionId: null,
       notes: null,
       insight: null,
-      createdAt: "2024-04-06T18:07:55.942Z",
+      createdAt: "2024-01-06T18:07:55.942Z",
       updatedAt: "2024-04-06T18:07:55.942Z",
     },
     {
@@ -229,10 +229,10 @@ patientData.value = patientData.value;
           :touch="false"
         >
           <VWindowItem>
-            <CustomerTabOverview :visits="patientData.visits" />
+            <CustomerTabVisits :visits="patientData.visits" />
           </VWindowItem>
           <VWindowItem>
-            <CustomerTabSecurity />
+            <CustomerTabTests />
           </VWindowItem>
           <VWindowItem>
             <CustomerTabAddressAndBilling />

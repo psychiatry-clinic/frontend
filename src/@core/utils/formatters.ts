@@ -22,11 +22,11 @@ export const kFormatter = (num: number) => {
  * @param {string} value date to format
  * @param {Intl.DateTimeFormatOptions} formatting Intl object to format with
  */
-export const formatDate = (value: string, formatting: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', year: 'numeric' }) => {
+export const formatDate = (value: string, formatting: Intl.DateTimeFormatOptions = { month: 'numeric', day: 'numeric', year: 'numeric' }) => {
   if (!value)
     return value
 
-  return new Intl.DateTimeFormat('en-US', formatting).format(new Date(value))
+  return new Intl.DateTimeFormat('en-GB', formatting).format(new Date(value))
 }
 
 /**
