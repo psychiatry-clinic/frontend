@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import formatDate from "@/utils/formatDateGB";
+import { formatDate } from "@/utils/formatting";
 import { Visit } from "@/utils/types";
 
 interface Props {

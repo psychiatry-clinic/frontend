@@ -19,7 +19,7 @@ declare global {
   const avatarText: typeof import('./src/@core/utils/formatters')['avatarText']
   const baghdadRegions: typeof import('./src/utils/lists')['baghdadRegions']
   const betweenValidator: typeof import('./src/@core/utils/validators')['betweenValidator']
-  const calculateAge: typeof import('./src/utils/calculateAge')['default']
+  const calculateAge: typeof import('./src/utils/formatting')['calculateAge']
   const cities: typeof import('./src/utils/lists')['cities']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
@@ -55,9 +55,11 @@ declare global {
   const effectScope: typeof import('vue')['effectScope']
   const emailValidator: typeof import('./src/@core/utils/validators')['emailValidator']
   const extendRef: typeof import('@vueuse/core')['extendRef']
-  const formatDate: typeof import('./src/@core/utils/formatters')['formatDate']
+  const formatDate: typeof import('./src/utils/formatting')['formatDate']
   const formatDateGB: typeof import('./src/utils/formatDateGB')['default']
   const formatDateToMonthShort: typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']
+  const formatSiblingOrder: typeof import('./src/utils/formatting')['formatSiblingOrder']
+  const formatting: typeof import('./src/utils/formatting')['default']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -377,7 +379,6 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
-    readonly $api: UnwrapRef<typeof import('./src/utils/api')['$api']>
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
@@ -390,6 +391,7 @@ declare module 'vue' {
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/calculateAge')['default']>
+    readonly calculateAge: UnwrapRef<typeof import('./src/utils/formatting')['calculateAge']>
     readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
@@ -426,8 +428,10 @@ declare module 'vue' {
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
+    readonly formatDate: UnwrapRef<typeof import('./src/utils/formatting')['formatDate']>
     readonly formatDateGB: UnwrapRef<typeof import('./src/utils/formatDateGB')['default']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']>
+    readonly formatSiblingOrder: UnwrapRef<typeof import('./src/utils/formatting')['formatSiblingOrder']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -446,7 +450,6 @@ declare module 'vue' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers')['isToday']>
-    readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters')['kFormatter']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['lengthValidator']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>
@@ -732,7 +735,6 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface GlobalComponents {}
   interface ComponentCustomProperties {
-    readonly $api: UnwrapRef<typeof import('./src/utils/api')['$api']>
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
@@ -745,6 +747,7 @@ declare module '@vue/runtime-core' {
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/calculateAge')['default']>
+    readonly calculateAge: UnwrapRef<typeof import('./src/utils/formatting')['calculateAge']>
     readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
@@ -781,8 +784,10 @@ declare module '@vue/runtime-core' {
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
+    readonly formatDate: UnwrapRef<typeof import('./src/utils/formatting')['formatDate']>
     readonly formatDateGB: UnwrapRef<typeof import('./src/utils/formatDateGB')['default']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']>
+    readonly formatSiblingOrder: UnwrapRef<typeof import('./src/utils/formatting')['formatSiblingOrder']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -801,7 +806,6 @@ declare module '@vue/runtime-core' {
     readonly isReadonly: UnwrapRef<typeof import('vue')['isReadonly']>
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers')['isToday']>
-    readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters')['kFormatter']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['lengthValidator']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>

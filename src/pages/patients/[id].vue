@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 import CustomerBioPanel from "@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue";
 import CustomerTabAddressAndBilling from "@/views/apps/ecommerce/customer/view/CustomerTabAddressAndBilling.vue";
 import CustomerTabNotification from "@/views/apps/ecommerce/customer/view/CustomerTabNotification.vue";
 import CustomerTabOverview from "@/views/apps/ecommerce/customer/view/CustomerTabOverview.vue";
 import CustomerTabSecurity from "@/views/apps/ecommerce/customer/view/CustomerTabSecurity.vue";
-import type { Customer } from "@db/apps/ecommerce/types";
 import type { Patient, User, Prescription, Test, Visit } from "@/utils/types";
 import { RouteParams } from "vue-router";
 
@@ -34,7 +32,7 @@ const { data } = await useApi<any>(
 patientData.value = {
   id: 3,
   name: "علي عباس محمد",
-  dob: 2001,
+  dob: 2012,
   gender: "male",
   avatar:
     "https://img.freepik.com/free-photo/smiling-little-boy-face-portrait-close-up_53876-153276.jpg?w=826&t=st=1714544741~exp=1714545341~hmac=18e74a8c3f5c8020dc407937b81c0c4adeb05eeb872cf59a6055d71cd3202576",
@@ -182,8 +180,6 @@ patientData.value = {
 
 // if (data.value)
 patientData.value = patientData.value;
-
-const isAddCustomerDrawerOpen = ref(false);
 </script>
 
 <template>
@@ -252,6 +248,5 @@ const isAddCustomerDrawerOpen = ref(false);
         patient with ID {{ routeParams.id }} not found!
       </VAlert>
     </div>
-    <!-- <ECommerceAddCustomerDrawer v-model:is-drawer-open="isAddCustomerDrawerOpen" /> -->
   </div>
 </template>
