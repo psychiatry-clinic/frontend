@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { calculateAge, formatSiblingOrder } from "@/utils/formatting";
+import { calculateAge, formatSiblingOrder } from "@/utils/myFormat";
 import type { Patient } from "@/utils/types";
 
 const props = defineProps<Props>();

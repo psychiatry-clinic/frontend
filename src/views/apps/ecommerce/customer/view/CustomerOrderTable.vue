@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { formatDate } from "@/utils/formatting";
 import { Visit } from "@/utils/types";
 
 interface Props {
@@ -20,9 +19,10 @@ const updateOptions = (options: any) => {
 };
 
 const headers = [
-  { title: "visit number", key: "number" },
-  { title: "Date", key: "createdAt" },
-  { title: "Actions", key: "actions", sortable: false },
+  { title: "visit number", key: "number", sortable: "false" },
+  { title: "Chief Complaint", key: "chief_complaint", sortable: "false" },
+  { title: "Date", key: "createdAt", sortable: "false" },
+  { title: "Actions", key: "actions", sortable: "false" },
 ];
 
 const formattedVisits = computed(() => {
@@ -90,7 +90,8 @@ const totalVisits = computed(() => visits?.length || 0);
       class="text-no-wrap"
       @update:options="updateOptions"
     >
-      <!-- Order ID -->
+      <!-- Adjust Later -->
+      <!-- Visit ID -->
       <template #item.order="{ item }">
         <RouterLink
           :to="{
@@ -115,13 +116,24 @@ const totalVisits = computed(() => visits?.length || 0);
       </template> -->
 
       <!-- Spent -->
-      <template #item.spent="{ item }"> ${{ item.spent }} </template>
+      <!-- <template #item.spent="{ item }"> ${{ item.spent }} </template> -->
 
       <!-- Actions -->
       <template #item.actions="{ item }">
-        <IconBtn>
-          <VIcon icon="tabler-dots-vertical" />
-          <VMenu activator="parent">
+        <IconBtn
+          :to="{
+            name: 'apps-ecommerce-order-details-id',
+            params: { id: item.order },
+          }"
+        >
+          <VIcon
+            icon="tabler-file-arrow-right"
+            :to="{
+              name: 'apps-ecommerce-order-details-id',
+              params: { id: item.order },
+            }"
+          />
+          <!-- <VMenu activator="parent">
             <VList>
               <VListItem
                 value="view"
@@ -136,7 +148,7 @@ const totalVisits = computed(() => visits?.length || 0);
                 Delete
               </VListItem>
             </VList>
-          </VMenu>
+          </VMenu> -->
         </IconBtn>
       </template>
 

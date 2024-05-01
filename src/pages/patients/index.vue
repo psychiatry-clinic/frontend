@@ -1,7 +1,7 @@
 const response = await $api('/patients/1') console.log(response)
 
 <script setup lang="ts">
-import { formatDate, calculateAge } from "@/utils/formatting";
+import { calculateAge } from "@/utils/myFormat";
 import type { Patient, User } from "@/utils/types";
 import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 
