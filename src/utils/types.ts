@@ -3,6 +3,9 @@ export interface Patient {
   name: string;
   dob: number;
   gender: string;
+  avatar: string;
+  father_edu: string;
+  mother_edu: string;
   phone: null | string;
   familyHx: null | string;
   father_dob: null | number;
@@ -14,6 +17,7 @@ export interface Patient {
   siblings: null | number;
   order: null | number;
   related:boolean;
+  notes: null | string;
   visits?: Visit[];
   demographics?: Demographics[]; // Assuming demographics data structure is unknown
   prescriptions?: Prescription[];

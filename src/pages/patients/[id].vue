@@ -7,8 +7,12 @@ import CustomerTabOverview from "@/views/apps/ecommerce/customer/view/CustomerTa
 import CustomerTabSecurity from "@/views/apps/ecommerce/customer/view/CustomerTabSecurity.vue";
 import type { Customer } from "@db/apps/ecommerce/types";
 import type { Patient, User, Prescription, Test, Visit } from "@/utils/types";
+import { RouteParams } from "vue-router";
 
 const route = useRoute();
+
+const routeParams = route.params as RouteParams;
+
 const storedUserData: User | undefined = useCookie("userData").value as
   | User
   | undefined;
@@ -24,7 +28,7 @@ const tabs = [
 ];
 
 const { data } = await useApi<any>(
-  `/patients/${storedUserData?.id}/${route.params.id}`
+  `/patients/${storedUserData?.id}/${routeParams.id}`
 );
 
 patientData.value = {
@@ -32,17 +36,22 @@ patientData.value = {
   name: "علي عباس محمد",
   dob: 2001,
   gender: "male",
+  avatar:
+    "https://img.freepik.com/free-photo/smiling-little-boy-face-portrait-close-up_53876-153276.jpg?w=826&t=st=1714544741~exp=1714545341~hmac=18e74a8c3f5c8020dc407937b81c0c4adeb05eeb872cf59a6055d71cd3202576",
   phone: "+9647812134488",
   familyHx: "negative",
   father_dob: 1990,
   mother_dob: 1999,
   father_age: 25,
   mother_age: 24,
+  father_edu: "primary",
+  mother_edu: "primary",
   siblings: 3,
   order: 1,
   father_work: "worker",
   mother_work: "house wife",
   related: true,
+  notes: "",
   createdAt: "2024-04-06T18:07:55.875Z",
   updatedAt: "2024-04-06T18:07:55.875Z",
   visits: [
@@ -184,10 +193,14 @@ const isAddCustomerDrawerOpen = ref(false);
       class="d-flex justify-space-between align-center flex-wrap gap-y-4 mb-6"
     >
       <div>
-        <h4 class="text-h4 mb-1">Patient ID #{{ route.params.id }}</h4>
+        <h4 class="text-h4 mb-1">Patient ID #{{ routeParams.id }}</h4>
         <div class="text-body-1">
           First visit:
-          {{ new Date(patientData?.createdAt).toLocaleDateString("en-GB") }}
+          {{
+            new Date(patientData?.createdAt as string).toLocaleDateString(
+              "en-GB"
+            )
+          }}
         </div>
       </div>
       <!-- <div class="d-flex gap-4">
@@ -236,7 +249,7 @@ const isAddCustomerDrawerOpen = ref(false);
     </VRow>
     <div v-else>
       <VAlert type="error" variant="tonal">
-        patient with ID {{ route.params.id }} not found!
+        patient with ID {{ routeParams.id }} not found!
       </VAlert>
     </div>
     <!-- <ECommerceAddCustomerDrawer v-model:is-drawer-open="isAddCustomerDrawerOpen" /> -->

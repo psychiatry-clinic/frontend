@@ -34,7 +34,7 @@ const formatSiblingOrder = (order: number | string): string => {
           <VAvatar
             rounded
             :size="120"
-            :color="!props.patientData.customer ? 'primary' : undefined"
+            :color="!props.patientData.name ? 'primary' : undefined"
             :variant="!props.patientData.avatar ? 'tonal' : undefined"
           >
             <VImg
@@ -54,8 +54,8 @@ const formatSiblingOrder = (order: number | string): string => {
             Customer ID #{{ props.patientData.customerId }}
           </div> -->
 
-          <div class="d-flex justify-space-evenly gap-x-5 mt-6">
-            <!-- <div class="d-flex align-center">
+          <!-- <div class="d-flex justify-space-evenly gap-x-5 mt-6"> -->
+          <!-- <div class="d-flex align-center">
               <VAvatar variant="tonal" color="primary" rounded class="me-4">
                 <VIcon icon="tabler-file" />
               </VAvatar>
@@ -66,7 +66,7 @@ const formatSiblingOrder = (order: number | string): string => {
                 <div class="text-body-1">Visits</div>
               </div>
             </div> -->
-            <!-- <div class="d-flex align-center">
+          <!-- <div class="d-flex align-center">
               <VAvatar
                 variant="tonal"
                 color="primary"
@@ -84,7 +84,7 @@ const formatSiblingOrder = (order: number | string): string => {
                 </div>
               </div>
             </div> -->
-          </div>
+          <!-- </div> -->
         </VCardText>
 
         <!-- 👉 Customer Details -->
@@ -94,7 +94,7 @@ const formatSiblingOrder = (order: number | string): string => {
           <VList class="card-list mt-2">
             <VListItem>
               <h6 class="text-h6">
-                name :
+                Name :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.name }}
                 </span>
@@ -112,7 +112,7 @@ const formatSiblingOrder = (order: number | string): string => {
 
             <VListItem>
               <h6 class="text-h6">
-                Date of birth :
+                Birth Date :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.dob }}
                 </span>
@@ -139,56 +139,69 @@ const formatSiblingOrder = (order: number | string): string => {
               </h6>
             </VListItem>
 
+            <div v-if="props.patientData.demographics">
+              <VListItem>
+                <h6 class="text-h6">
+                  Marital Status :
+                  <span class="text-body-1 d-inline-block">
+                    {{ props.patientData.demographics[0]?.marital_status }}
+                  </span>
+                </h6>
+              </VListItem>
+
+              <VListItem>
+                <h6 class="text-h6">
+                  Children :
+                  <span class="text-body-1 d-inline-block">
+                    {{ props.patientData.demographics[0]?.children }}
+                  </span>
+                </h6>
+              </VListItem>
+
+              <VListItem>
+                <h6 class="text-h6">
+                  Residence :
+                  <span class="text-body-1 d-inline-block">
+                    {{ props.patientData.demographics[0]?.residence }}
+                  </span>
+                </h6>
+              </VListItem>
+
+              <VListItem>
+                <h6 class="text-h6">
+                  Education :
+                  <span class="text-body-1 d-inline-block">
+                    {{ props.patientData.demographics[0]?.education }}
+                  </span>
+                </h6>
+              </VListItem>
+
+              <VListItem>
+                <h6 class="text-h6">
+                  Work :
+                  <span class="text-body-1 d-inline-block">
+                    {{ props.patientData.demographics[0]?.occupation }}
+                  </span>
+                </h6>
+              </VListItem>
+            </div>
+
+            <br />
+
             <VListItem>
               <h6 class="text-h6">
-                Marital Status :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.demographics[0]?.marital_status }}
+                Parents are
+                <span :class="props.patientData.related ? 'text-warning' : ''">
+                  {{ props.patientData.related ? "Related" : "Not Related" }}
                 </span>
               </h6>
             </VListItem>
 
-            <VListItem>
-              <h6 class="text-h6">
-                Children :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.demographics[0]?.children }}
-                </span>
-              </h6>
-            </VListItem>
+            <p class="d-block mt-4 mb-2 text-primary">Father</p>
 
             <VListItem>
               <h6 class="text-h6">
-                Residence :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.demographics[0]?.residence }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Education :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.demographics[0]?.education }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Occupation :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.demographics[0]?.occupation }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <p class="d-block mt-4 mb-2 text-primary">Family</p>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Father Date of Birth :
+                Birth Date :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.father_dob }}
                 </span>
@@ -197,7 +210,16 @@ const formatSiblingOrder = (order: number | string): string => {
 
             <VListItem>
               <h6 class="text-h6">
-                Father Age Now :
+                Age at Birth :
+                <span class="text-body-1 d-inline-block">
+                  {{ props.patientData.father_age }}
+                </span>
+              </h6>
+            </VListItem>
+
+            <VListItem>
+              <h6 class="text-h6">
+                Age Now :
                 <span class="text-body-1 d-inline-block">
                   {{
                     calculateAge(
@@ -212,16 +234,27 @@ const formatSiblingOrder = (order: number | string): string => {
 
             <VListItem>
               <h6 class="text-h6">
-                Father Age at Birth :
+                Education :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.father_age }}
+                  {{ props.patientData.father_edu }}
                 </span>
               </h6>
             </VListItem>
 
             <VListItem>
               <h6 class="text-h6">
-                Mother Date of Birth :
+                Work :
+                <span class="text-body-1 d-inline-block">
+                  {{ props.patientData.father_work }}
+                </span>
+              </h6>
+            </VListItem>
+
+            <p class="d-block mt-4 mb-2 text-primary">Mother</p>
+
+            <VListItem>
+              <h6 class="text-h6">
+                Birth Date :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.mother_dob }}
                 </span>
@@ -230,7 +263,16 @@ const formatSiblingOrder = (order: number | string): string => {
 
             <VListItem>
               <h6 class="text-h6">
-                Mother Age Now :
+                Age at Birth :
+                <span class="text-body-1 d-inline-block">
+                  {{ props.patientData.mother_age }}
+                </span>
+              </h6>
+            </VListItem>
+
+            <VListItem>
+              <h6 class="text-h6">
+                Age Now :
                 <span class="text-body-1 d-inline-block">
                   {{
                     calculateAge(
@@ -245,39 +287,23 @@ const formatSiblingOrder = (order: number | string): string => {
 
             <VListItem>
               <h6 class="text-h6">
-                Mother Age at Birth :
+                Education :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.mother_age }}
+                  {{ props.patientData.mother_edu }}
                 </span>
               </h6>
             </VListItem>
 
             <VListItem>
               <h6 class="text-h6">
-                Parents Related :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.related ? "Yes" : "No" }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Father Occupation :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.father_work }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <VListItem>
-              <h6 class="text-h6">
-                Mother Occupation :
+                Work :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.mother_work }}
                 </span>
               </h6>
             </VListItem>
+
+            <br />
 
             <VListItem>
               <h6 class="text-h6">
@@ -292,10 +318,12 @@ const formatSiblingOrder = (order: number | string): string => {
               <h6 class="text-h6">
                 Order in Siblings :
                 <span class="text-body-1 d-inline-block">
-                  {{ formatSiblingOrder(props.patientData.order) }}
+                  {{ formatSiblingOrder(props.patientData.order as number) }}
                 </span>
               </h6>
             </VListItem>
+
+            <br />
 
             <VListItem>
               <h6 class="text-h6">

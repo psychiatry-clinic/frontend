@@ -1,8 +1,8 @@
 const response = await $api('/patients/1') console.log(response)
 
 <script setup lang="ts">
-import formatDate from "@/utils/formatDateGB";
 import calculateAge from "@/utils/calculateAge";
+import formatDate from "@/utils/formatDateGB";
 import type { Patient, User } from "@/utils/types";
 import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 
@@ -21,6 +21,7 @@ const headers = [
   { title: "Gender", key: "gender" },
   { title: "Date of Birth", key: "dob" },
   { title: "Age", key: "age" },
+  { title: "Visits", key: "visits.length" },
   { title: "First Visit", key: "createdAt" },
 ];
 

@@ -53,6 +53,72 @@ export const integerValidator = (value: unknown) => {
   return /^-?\d+$/.test(String(value)) || 'This field must be an integer'
 }
 
+// Date of Birth Validator
+export const dateOfBirthValidator = (value: unknown) => {
+  if (isEmpty(value))
+    return true;
+
+  const stringValue = String(value);
+  
+  // Check if the value is a 4-digit number
+  if (/^\d{4}$/.test(stringValue)) {
+    const year = parseInt(stringValue, 10);
+    
+    // Check if the year is within the specified range
+    if (year >= 1950 && year <= 2050) {
+      return true;
+    } else {
+      return 'Date of birth must be between 1950 and 2050';
+    }
+  } else {
+    return 'Date of birth must be a 4-digit number';
+  }
+};
+
+// Age Validator
+export const ageValidator = (value: unknown) => {
+  if (isEmpty(value))
+    return true;
+
+  const stringValue = String(value);
+
+  // Check if the value is a string consisting of 1 or 2 digits
+  if (/^\d{1,2}$/.test(stringValue)) {
+    const age = parseInt(stringValue, 10);
+    
+    // Check if the age is between 0 and 90
+    if (age >= 0 && age <= 90) {
+      return true;
+    } else {
+      return 'Age must be between 0 and 90';
+    }
+  } else {
+    return 'Age must consist of 1 or 2 digits';
+  }
+};
+
+// Phone Number Validator
+export const phoneNumberValidator = (value: unknown) => {
+  if (isEmpty(value))
+    return true;
+
+  const stringValue = String(value);
+
+  // Check if the value is a string consisting of 11 digits
+  if (/^\d{11}$/.test(stringValue)) {
+    // Check if the phone number starts with 078, 079, 077, or 075
+    if (/^07[5789]/.test(stringValue)) {
+      return true;
+    } else {
+      return 'Phone number must start with 078, 079, 077, or 075';
+    }
+  } else {
+    return 'Phone number must consist of 11 digits';
+  }
+};
+
+
+
 // 👉 Regex Validator
 export const regexValidator = (value: unknown, regex: RegExp | string): string | boolean => {
   if (isEmpty(value))
