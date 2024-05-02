@@ -98,6 +98,7 @@ export interface Demographics {
   occupation?: string | null;
   children?: string | null;
   residence?: string | null;
+  neighborhood?:string | null;
   education?: string | null;
   createdAt: Date;
   updatedAt: Date;

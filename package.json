@@ -14,6 +14,7 @@
     "postinstall": "npm run build:icons && npm run msw:init"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.17.0",
     "@casl/ability": "6.7.0",
     "@casl/vue": "2.2.2",
     "@floating-ui/dom": "1.6.1",

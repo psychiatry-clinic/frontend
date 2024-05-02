@@ -33,10 +33,10 @@ patientData.value = {
   id: 3,
   name: "علي عباس محمد",
   dob: 2020,
-  gender: "male",
+  gender: "Male",
   avatar:
     "https://img.freepik.com/free-photo/smiling-little-boy-face-portrait-close-up_53876-153276.jpg?w=826&t=st=1714544741~exp=1714545341~hmac=18e74a8c3f5c8020dc407937b81c0c4adeb05eeb872cf59a6055d71cd3202576",
-  phone: "+9647812134488",
+  phone: "07812134488",
   familyHx: "negative",
   father_dob: 1990,
   mother_dob: 1999,

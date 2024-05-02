@@ -2,10 +2,39 @@
 import AppTextarea from "@/@core/components/app-form-elements/AppTextarea.vue";
 import { baghdadRegions, cities } from "@/utils/lists";
 import type { Patient } from "@/utils/types";
+import { BlobServiceClient } from "@azure/storage-blob";
 import type { CustomInputContent } from "@core/types";
 import { defineEmits, defineProps, ref } from "vue";
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import { VForm } from "vuetify/components/VForm";
+
+const blobSasUrl = "https://dakakean.blob.core.windows.net/psychiatry?sp=racwl&st=2024-05-02T06:46:34Z&se=2024-05-10T14:46:34Z&spr=https&sv=2022-11-02&sr=c&sig=oTStvDHsKPQiKZ4%2Bniqpd7Dt9w514Y52T6kIQlC5490%3D";
+const blobServiceClient = new BlobServiceClient(blobSasUrl);
+const containerName = "psychiatry";
+const containerClient = blobServiceClient.getContainerClient(containerName);
+
+const uploadFiles = async () => {
+  const fileInput = document.getElementById("picture") as HTMLInputElement
+    try {
+        console.log("Uploading files...");
+        const promises = [];
+        if (fileInput && fileInput.files) {      
+          for (const file of fileInput.files) {
+            const blockBlobClient = containerClient.getBlockBlobClient(file.name);
+            promises.push(blockBlobClient.uploadBrowserData(file));
+          }
+          await Promise.all(promises);
+          console.log((await promises[0])._response.request.url);
+          avatar.value = (await promises[0])._response.request.url
+          
+          console.log("Done.");
+          // listFiles();
+        }
+      }
+        catch (error) {
+            console.log(error);
+    }
+}
 
 interface Props {
   isDrawerOpen: boolean;
@@ -41,6 +70,7 @@ const radioContent: CustomInputContent[] = [
 const selectedRadio = ref("child");
 
 const refVForm = ref<VForm>();
+const avatar = ref();
 const name = ref();
 const dob = ref();
 const gender = ref("Male");
@@ -152,8 +182,44 @@ const addPatient = async () => {
               </VCol>
 
               <VCol cols="12">
+                <h6 class="text-h6 text-primary">Image</h6>
+              </VCol>
+              
+              <VCol cols="12">
+                <VAvatar
+                circle
+                :size="100"
+                :color="avatar ? 'undefined' : 'secondary'"
+                :variant="!avatar ?  'tonal'  : undefined "
+                >
+                <VImg
+                v-if="avatar"
+                :src="avatar"
+                style="object-fit:cover"
+                />
+                <span v-else class="text-5xl font-weight-medium">
+                  {{ avatarText(name) }}
+                </span>
+              </VAvatar>
+            </VCol>
+              <VCol cols="12">
+                <label for="picture"
+                  >Take a picture using back facing camera:</label
+                >
+                <input
+                  type="file"
+                  id="picture"
+                  name="picture"
+                  accept="image/*"
+                  capture="environment"
+                  @change="uploadFiles"
+                />
+              </VCol>
+
+              <VCol cols="12">
                 <h6 class="text-h6 text-primary">Basic Information</h6>
               </VCol>
+
 
               <VCol cols="12">
                 <AppTextField
@@ -174,9 +240,6 @@ const addPatient = async () => {
                 />
               </VCol>
 
-              <template #label>
-                <div>Your favorite <strong>search engine</strong></div>
-              </template>
               <VCol cols="12">
                 <VRadioGroup v-model="gender" inline>
                   <template #label>
@@ -286,13 +349,13 @@ const addPatient = async () => {
               </VCol>
 
               <!-- related -->
-              <VCol>
+              <VCol v-if="selectedRadio === 'child'">
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
                   Parents Relationship
                 </div>
-              </VCol>
+              </VCol v-if="selectedRadio === 'child'">
               <VCol cols="12">
                 <VRadioGroup v-model="related" inline>
                   <VRadio label="Related" value="true" />
@@ -302,14 +365,14 @@ const addPatient = async () => {
               <!-- related -->
 
               <!-- Siblings -->
-              <VCol>
+              <VCol v-if="selectedRadio === 'child'">
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
                   Siblings
                 </div>
               </VCol>
-              <VCol cols="12">
+              <VCol cols="12" v-if="selectedRadio === 'child'">
                 <VRadioGroup v-model="siblings" inline>
                   <VRadio label="0" value="0" />
                   <VRadio label="1" value="1" />

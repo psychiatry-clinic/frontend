@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Patient } from "@/utils/types";
+import { Patient, Demographics } from "@/utils/types";
 
 interface Props {
   userData?: Patient;
@@ -16,16 +16,10 @@ const props = defineProps<Props>();
 const emit = defineEmits<Emit>();
 
 const userData = ref<Patient>(props.userData as Patient);
-const isUseAsBillingAddress = ref(false);
 
 watch(props, () => {
   userData.value = props.userData as Patient;
 });
-
-const onFormSubmit = () => {
-  emit("update:isDialogVisible", false);
-  emit("submit", userData.value);
-};
 
 const onFormReset = () => {
   userData.value = props.userData as Patient;
@@ -33,8 +27,77 @@ const onFormReset = () => {
   emit("update:isDialogVisible", false);
 };
 
+const selectedRadio = ref();
+const age = +calculateAge(userData.value.dob);
+selectedRadio.value = age > 18 ? "adult" : "child";
+
 const dialogModelValueUpdate = (val: boolean) => {
   emit("update:isDialogVisible", val);
+};
+
+const name = ref(userData.value.name);
+const dob = ref(userData.value.dob);
+const gender = ref(userData.value.gender);
+const phone = ref(userData.value.phone);
+const father_dob = ref(userData.value.father_dob);
+const father_edu = ref(userData.value.father_edu);
+const father_age = ref(userData.value.father_age);
+const father_work = ref(userData.value.father_work);
+const mother_dob = ref(userData.value.mother_dob);
+const mother_age = ref(userData.value.mother_age);
+const mother_edu = ref(userData.value.mother_edu);
+const mother_work = ref(userData.value.mother_work);
+const related = ref(userData.value.related);
+const siblings = ref();
+const order = ref(userData.value.order);
+const familyHx = ref(userData.value.familyHx);
+const notes = ref(userData.value.notes);
+
+siblings.value = userData.value.siblings ? +userData.value.siblings : 1000;
+
+const marital_status = ref();
+const children = ref();
+const residence = ref();
+const neighborhood = ref();
+const occupation = ref();
+const education = ref();
+// eslint-disable-next-line camelcase
+if (userData.value.demographics) {
+  marital_status.value = userData.value.demographics[0].marital_status;
+  children.value = userData.value.demographics[0].children;
+  residence.value = userData.value.demographics[0].residence;
+  neighborhood.value = userData.value.demographics[0].neighborhood;
+  occupation.value = userData.value.demographics[0].occupation;
+  education.value = userData.value.demographics[0].education;
+}
+
+const onFormSubmit = () => {
+  console.log("name:", name.value);
+  console.log("dob:", dob.value);
+  console.log("gender:", gender.value);
+  console.log("phone:", phone.value);
+  console.log("father_dob:", father_dob.value);
+  console.log("father_edu:", father_edu.value);
+  console.log("father_age:", father_age.value);
+  console.log("father_work:", father_work.value);
+  console.log("mother_dob:", mother_dob.value);
+  console.log("mother_age:", mother_age.value);
+  console.log("mother_edu:", mother_edu.value);
+  console.log("mother_work:", mother_work.value);
+  console.log("related:", related.value);
+  console.log("siblings:", siblings.value);
+  console.log("order:", order.value);
+  console.log("familyHx:", familyHx.value);
+  console.log("notes:", notes.value);
+  console.log("marital_status:", marital_status.value);
+  console.log("children:", children.value);
+  console.log("residence:", residence.value);
+  console.log("neighborhood:", neighborhood.value);
+  console.log("occupation:", occupation.value);
+  console.log("education:", education.value);
+
+  // emit("update:isDialogVisible", false);
+  // emit("submit", userData.value);
 };
 </script>
 
@@ -58,43 +121,293 @@ const dialogModelValueUpdate = (val: boolean) => {
         <!-- 👉 Form -->
         <VForm class="mt-6" @submit.prevent="onFormSubmit">
           <VRow>
-            <!-- 👉 First Name -->
+            <!-- 👉 Name -->
             <VCol cols="12" md="6">
-              <AppTextField
-                v-model="userData.name"
-                label="First Name"
-                placeholder="John"
-              />
+              <AppTextField v-model="name" label="First Name" placeholder="" />
             </VCol>
 
-            <!-- 👉 Last Name -->
+            <!-- 👉 Gender -->
             <VCol cols="12" md="6">
-              <AppTextField
-                v-model="userData.gender"
-                label="Gender*"
-                :items="['Male', 'Female']"
-                :rules="[requiredValidator]"
-              />
+              <VRadioGroup v-model="gender" inline>
+                <template #label>
+                  <span
+                    style="
+                      line-height: 15px;
+                      color: rgba(
+                        var(--v-theme-on-surface),
+                        var(--v-high-emphasis-opacity)
+                      );
+                    "
+                    class="v-label mb-1 text-body-2 text-black"
+                    >Gender</span
+                  >
+                </template>
+                <VRadio label="Male" value="Male" />
+                <VRadio label="Female" value="Female" />
+              </VRadioGroup>
             </VCol>
 
-            <!-- 👉 Username -->
+            <!-- 👉 Date of birth -->
             <VCol cols="12" md="6">
               <AppTextField
-                v-model="userData.dob"
+                v-model="dob"
                 label="Date of Birth"
-                :rules="[requiredValidator]"
+                :rules="[dateOfBirthValidator]"
                 placeholder=""
+                maxlength="4"
               />
             </VCol>
 
-            <!-- 👉 Billing Email -->
+            <!-- 👉 Phone -->
             <VCol cols="12" md="6">
               <AppTextField
-                v-model="userData.phone"
+                v-model="phone"
                 label="Phone"
                 placeholder=""
+                :rules="[phoneNumberValidator]"
+                maxlength="11"
               />
             </VCol>
+
+            <VCol>
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Demographic Information
+              </div>
+            </VCol>
+
+            <VCol cols="12" v-if="selectedRadio === 'adult'">
+              <AppAutocomplete
+                v-model="marital_status"
+                label="Marital Status"
+                placeholder="Select Status"
+                :items="
+                  gender === 'Male'
+                    ? ['متزوج', 'اعزب', 'ارمل', 'منفصل']
+                    : ['متزوجة', 'عزباء', 'ارملة', 'منفصلة']
+                "
+              />
+            </VCol>
+
+            <VCol cols="12" v-if="selectedRadio === 'adult'">
+              <AppTextField
+                v-model="children"
+                placeholder="Write a Number"
+                label="Children"
+              />
+            </VCol>
+
+            <VCol cols="12">
+              <AppAutocomplete
+                v-model="residence"
+                label="Residence"
+                placeholder="Select Residence"
+                :items="cities"
+              />
+            </VCol>
+
+            <VCol cols="12" v-if="residence === 'بغداد'">
+              <AppAutocomplete
+                v-model="neighborhood"
+                label="Neighborhood"
+                placeholder="Select"
+                :items="baghdadRegions"
+              />
+            </VCol>
+
+            <VCol cols="12" v-if="selectedRadio === 'adult'">
+              <AppTextField
+                v-model="occupation"
+                placeholder="Write an Occupation"
+                label="Occupation"
+              />
+            </VCol>
+
+            <!-- child education -->
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField v-model="education" label="Education" />
+            </VCol>
+
+            <!-- adult education -->
+            <VCol cols="12" v-if="selectedRadio === 'adult'">
+              <AppAutocomplete
+                v-model="education"
+                label="Education"
+                placeholder="Select Education"
+                :items="[
+                  'ابتدائية',
+                  'متوسطة',
+                  'اعدادية',
+                  'كلية',
+                  'بكالوريوس',
+                  'ماجستير',
+                  'دكتوراه',
+                ]"
+              />
+            </VCol>
+
+            <!-- related -->
+            <VCol v-if="selectedRadio === 'child'">
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Parents Relationship
+              </div>
+            </VCol>
+
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <VRadioGroup v-model="related" inline>
+                <VRadio label="Related" value="true" />
+                <VRadio label="Not Related" value="false" />
+              </VRadioGroup>
+            </VCol>
+            <!-- related -->
+
+            <!-- Siblings -->
+            <VCol v-if="selectedRadio === 'child'">
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Siblings
+              </div>
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <VRadioGroup v-model="siblings" inline>
+                <VRadio label="0" value="0" />
+                <VRadio label="1" value="1" />
+                <VRadio label="2" value="2" />
+                <VRadio label="3" value="3" />
+                <VRadio label="4" value="4" />
+                <VRadio label="5" value="5" />
+                <VRadio label="6" value="6" />
+                <VRadio label="7" value="7" />
+                <VRadio label="8" value="8" />
+              </VRadioGroup>
+            </VCol>
+            <!-- Siblings -->
+
+            <!-- Order -->
+            <VCol v-if="siblings && siblings > 1">
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Order in Siblings
+              </div>
+            </VCol>
+            <VCol cols="12">
+              <VRadioGroup v-model="order" inline>
+                <VRadio label="1st" value="1" v-if="siblings && siblings > 1" />
+                <VRadio label="2nd" value="2" v-if="siblings && siblings > 1" />
+                <VRadio label="3rd" value="3" v-if="siblings && siblings > 2" />
+                <VRadio label="4th" value="4" v-if="siblings && siblings > 3" />
+                <VRadio label="5th" value="5" v-if="siblings && siblings > 4" />
+                <VRadio label="6th" value="6" v-if="siblings && siblings > 5" />
+                <VRadio label="7th" value="7" v-if="siblings && siblings > 6" />
+                <VRadio label="8th" value="8" v-if="siblings && siblings > 7" />
+              </VRadioGroup>
+            </VCol>
+            <!-- Order -->
+
+            <!-- Father -->
+            <VCol v-if="selectedRadio === 'child'">
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Father Information
+              </div>
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="father_dob"
+                label="Date of Birth"
+                :rules="[dateOfBirthValidator]"
+                placeholder=""
+                maxlength="4"
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="father_age"
+                label="Age at Birth"
+                placeholder=""
+                :rules="[ageValidator]"
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="father_edu"
+                label="Education"
+                placeholder=""
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField v-model="father_work" label="Work" placeholder="" />
+            </VCol>
+            <!-- Father -->
+
+            <!-- Mother -->
+            <VCol v-if="selectedRadio === 'child'">
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Mother Information
+              </div>
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="mother_dob"
+                label="Date of Birth"
+                :rules="[dateOfBirthValidator]"
+                placeholder=""
+                maxlength="4"
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="mother_age"
+                label="Age at Birth"
+                placeholder=""
+                :rules="[ageValidator]"
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField
+                v-model="mother_edu"
+                label="Education"
+                placeholder=""
+              />
+            </VCol>
+            <VCol cols="12" v-if="selectedRadio === 'child'">
+              <AppTextField v-model="mother_work" label="Work" placeholder="" />
+            </VCol>
+            <!-- Mother -->
+
+            <!-- Family History -->
+            <VCol>
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Family History
+              </div>
+            </VCol>
+            <VCol cols="12">
+              <AppTextarea v-model="familyHx" />
+            </VCol>
+            <!-- Family History -->
+
+            <!-- Notes -->
+            <VCol>
+              <div
+                class="text-body-1 text-primary font-weight-medium text-high-emphasis"
+              >
+                Notes
+              </div>
+            </VCol>
+            <VCol cols="12">
+              <AppTextarea v-model="notes" />
+            </VCol>
+            <!-- Notes -->
 
             <!-- 👉 Submit and Cancel -->
             <VCol cols="12" class="d-flex flex-wrap justify-center gap-4">

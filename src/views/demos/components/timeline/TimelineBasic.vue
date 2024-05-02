@@ -12,7 +12,7 @@ const { visits } = defineProps<Props>();
 <template>
   <VCard title="Visits Timeline">
     <VCardText>
-      <VBtn variant="outlined mb-5"> New Visit </VBtn>
+      <VBtn variant="outlined" class="mb-5"> New Visit </VBtn>
       <VTimeline
         side="end"
         align="start"
@@ -31,7 +31,7 @@ const { visits } = defineProps<Props>();
             class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
           >
             <span class="app-timeline-title">
-              {{ getVisitNumber(visits, index) }}
+              {{ getVisitNumber(visits, index) }} visit
             </span>
             <span class="app-timeline-meta"
               >{{

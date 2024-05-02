@@ -1,7 +1,6 @@
 const response = await $api('/patients/1') console.log(response)
 
 <script setup lang="ts">
-import { calculateAge } from "@/utils/myFormat";
 import type { Patient, User } from "@/utils/types";
 import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 
@@ -36,8 +35,7 @@ const storedUserData: User | undefined = useCookie("userData").value as
 
 const link = `/patients/${storedUserData?.id}`;
 
-// Fetch customers Data
-const { data } = await useApi<any>(
+let { data } = await useApi<any>(
   createUrl(link, {
     query: {
       q: searchQuery,
@@ -49,7 +47,6 @@ const { data } = await useApi<any>(
   })
 );
 
-// const patients = computed((): Patient[] => patientsArray.value.patients)
 const patients = computed((): Patient[] => {
   return data.value.patients.map((patient: Patient) => ({
     ...patient,
@@ -57,7 +54,6 @@ const patients = computed((): Patient[] => {
     age: calculateAge(patient.dob.toString()), // Calculate age
   }));
 });
-
 const totalPatients = computed(() => data.value.total);
 </script>
 
