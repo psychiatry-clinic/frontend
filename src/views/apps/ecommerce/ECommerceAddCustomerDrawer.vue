@@ -24,10 +24,7 @@ const uploadFiles = async () => {
             promises.push(blockBlobClient.uploadBrowserData(file));
           }
           await Promise.all(promises);
-          console.log((await promises[0])._response.request.url);
-          avatar.value = (await promises[0])._response.request.url
-          
-          console.log("Done.");
+          avatar.value = (await promises[0])._response.request.url          
           // listFiles();
         }
       }
@@ -108,7 +105,7 @@ const storedUserData: Patient | undefined = useCookie("userData").value as
 
 const link = `/patients-new/${storedUserData?.id}`;
 
-const addPatient = async () => {
+const addPatient = async () => {  
   try {
     const res = await $api(link, {
       method: "POST",
@@ -117,6 +114,7 @@ const addPatient = async () => {
         dob: +dob.value,
         gender: gender.value,
         phone: phone.value,
+        avatar:avatar.value,
         father_dob: +father_dob.value,
         father_age: +father_age.value,
         father_work: father_work.value,

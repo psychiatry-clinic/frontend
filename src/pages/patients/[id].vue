@@ -179,7 +179,7 @@ patientData.value = {
 };
 
 // if (data.value)
-patientData.value = patientData.value;
+patientData.value = data.value;
 </script>
 
 <template>
