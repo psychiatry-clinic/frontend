@@ -2,6 +2,9 @@
 import { Visit } from "@/utils/types";
 import { formatDistanceToNow } from "date-fns";
 
+const router = useRouter();
+const route = useRoute("patients-visits-new");
+
 interface Props {
   visits?: Visit[];
 }
@@ -12,7 +15,13 @@ const { visits } = defineProps<Props>();
 <template>
   <VCard title="Visits Timeline">
     <VCardText>
-      <VBtn variant="outlined" class="mb-5"> New Visit </VBtn>
+      <VBtn
+        variant="outlined"
+        class="mb-5"
+        @click="router.push(`/patients/visits/new`)"
+      >
+        New Visit
+      </VBtn>
       <VTimeline
         side="end"
         align="start"

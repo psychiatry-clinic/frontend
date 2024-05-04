@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { VForm } from 'vuetify/components/VForm'
-import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?raw'
-import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
+import { VForm } from "vuetify/components/VForm";
+import authV1BottomShape from "@images/svg/auth-v1-bottom-shape.svg?raw";
+import authV1TopShape from "@images/svg/auth-v1-top-shape.svg?raw";
+import { VNodeRenderer } from "@layouts/components/VNodeRenderer";
+import { themeConfig } from "@themeConfig";
 
 // import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 
 definePage({
   meta: {
-    layout: 'blank',
+    layout: "blank",
     unauthenticatedOnly: true,
   },
-})
+});
 
-const isPasswordVisible = ref(false)
+const isPasswordVisible = ref(false);
 
 // const route = useRoute()
-const router = useRouter()
+const router = useRouter();
 
-const ability = useAbility()
+const ability = useAbility();
 
 const errors = ref<Record<string, string | undefined>>({
   message: undefined,
-})
+});
 
-const refVForm = ref<VForm>()
+const refVForm = ref<VForm>();
 
 // const creds = {
 //   email: 'admin@demo.com',
@@ -33,51 +33,48 @@ const refVForm = ref<VForm>()
 // }
 
 const credentials = ref({
-  username: '',
-  password: '',
-})
+  username: "",
+  password: "",
+});
 
-const rememberMe = ref(false)
+const rememberMe = ref(false);
 
 const login = async () => {
   try {
-    const res = await $api('/login', {
-      method: 'POST',
+    const res = await $api("/login", {
+      method: "POST",
       body: {
         username: credentials.value.username,
         password: credentials.value.password,
       },
       onResponseError({ response }) {
-        errors.value.message = response._data
+        errors.value.message = response._data;
       },
-    })
+    });
 
-    const { accessToken, userData, userAbilityRules } = res
+    const { accessToken, userData, userAbilityRules } = res;
 
-    useCookie('userAbilityRules').value = userAbilityRules
-    ability.update(userAbilityRules)
+    useCookie("userAbilityRules").value = userAbilityRules;
+    ability.update(userAbilityRules);
 
-    useCookie('userData').value = userData
-    useCookie('accessToken').value = accessToken
+    useCookie("userData").value = userData;
+    useCookie("accessToken").value = accessToken;
 
     // Redirect to `to` query if exist or redirect to index route
     // ❗ nextTick is required to wait for DOM updates and later redirect
     await nextTick(() => {
-      router.replace('/patients')
-    })
+      router.push("/patients");
+    });
+  } catch (err) {
+    console.error(err);
   }
-  catch (err) {
-    console.error(err)
-  }
-}
+};
 
 const onSubmit = () => {
-  refVForm.value?.validate()
-    .then(({ valid: isValid }) => {
-      if (isValid)
-        login()
-    })
-}
+  refVForm.value?.validate().then(({ valid: isValid }) => {
+    if (isValid) login();
+  });
+};
 </script>
 
 <template>
@@ -114,18 +111,15 @@ const onSubmit = () => {
 
         <VCardText>
           <h4 class="text-h4 mb-1">
-            <span class="text-capitalize">{{ themeConfig.app.title }} Clinic Application</span>
+            <span class="text-capitalize"
+              >{{ themeConfig.app.title }} Clinic Application</span
+            >
           </h4>
-          <p class="mb-0">
-            Please sign-in to your account
-          </p>
+          <p class="mb-0">Please sign-in to your account</p>
         </VCardText>
 
         <VCardText>
-          <VForm
-            ref="refVForm"
-            @submit.prevent="onSubmit"
-          >
+          <VForm ref="refVForm" @submit.prevent="onSubmit">
             <p class="align-self-center text-warning">
               {{ errors.message }}
             </p>
@@ -148,33 +142,25 @@ const onSubmit = () => {
                   label="Password"
                   placeholder=""
                   :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
+                  :append-inner-icon="
+                    isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
+                  "
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
 
                 <!-- remember me checkbox -->
-                <div class="d-flex align-center justify-space-between flex-wrap my-6">
-                  <VCheckbox
-                    v-model="rememberMe"
-                    label="Remember me"
-                  />
+                <div
+                  class="d-flex align-center justify-space-between flex-wrap my-6"
+                >
+                  <VCheckbox v-model="rememberMe" label="Remember me" />
 
-                  <a
-
-                    class="text-primary"
-                    href="https://wa.me/+9647812135916"
-                  >
+                  <a class="text-primary" href="https://wa.me/+9647812135916">
                     Forgot Password?
                   </a>
                 </div>
 
                 <!-- login button -->
-                <VBtn
-                  block
-                  type="submit"
-                >
-                  Login
-                </VBtn>
+                <VBtn block type="submit"> Login </VBtn>
               </VCol>
 
               <!-- create account -->

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppTextarea from "@/@core/components/app-form-elements/AppTextarea.vue";
 import { baghdadRegions, cities } from "@/utils/lists";
-import type { Patient } from "@/utils/types";
+import type { User } from "@/utils/types";
 import { BlobServiceClient } from "@azure/storage-blob";
 import type { CustomInputContent } from "@core/types";
 import { defineEmits, defineProps, ref } from "vue";
@@ -99,17 +99,19 @@ const resetForm = () => {
   emit("update:isDrawerOpen", false);
 };
 
-const storedUserData: Patient | undefined = useCookie("userData").value as
-  | Patient
+const storedUserData: User | undefined = useCookie("userData").value as
+  | User
   | undefined;
 
 const link = `/patients-new/${storedUserData?.id}`;
 
 const addPatient = async () => {  
+  if (!storedUserData) return
   try {
     const res = await $api(link, {
       method: "POST",
       body: {
+        doctor: storedUserData.id,
         name: name.value,
         dob: +dob.value,
         gender: gender.value,
@@ -142,7 +144,7 @@ const addPatient = async () => {
     });
 
     console.log(res.id);
-    router.replace(`/patients/${res.id}`);
+    router.push(`/patients/${res.id}`);
   } catch (error) {
     console.error(error);
   }

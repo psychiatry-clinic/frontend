@@ -10,16 +10,20 @@ declare global {
   const CreateUrl: typeof import('./src/@core/composable/CreateUrl')['CreateUrl']
   const EffectScope: typeof import('vue')['EffectScope']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
+  const accommodationSuggestions: typeof import('./src/utils/suggestions')['accommodationSuggestions']
   const ageValidator: typeof import('./src/@core/utils/validators')['ageValidator']
   const alphaDashValidator: typeof import('./src/@core/utils/validators')['alphaDashValidator']
   const alphaValidator: typeof import('./src/@core/utils/validators')['alphaValidator']
   const api: typeof import('./src/utils/api')['api']
+  const associatedSymptomsSuggestions: typeof import('./src/utils/suggestions')['associatedSymptomsSuggestions']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const avatarText: typeof import('./src/@core/utils/formatters')['avatarText']
   const baghdadRegions: typeof import('./src/utils/lists')['baghdadRegions']
   const betweenValidator: typeof import('./src/@core/utils/validators')['betweenValidator']
   const calculateAge: typeof import('./src/utils/myFormat')['calculateAge']
+  const chief_complains: typeof import('./src/utils/suggestions')['chief_complains']
+  const circumstancesSuggestions: typeof import('./src/utils/suggestions')['circumstancesSuggestions']
   const cities: typeof import('./src/utils/lists')['cities']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
@@ -29,6 +33,7 @@ declare global {
   const confirmedValidator: typeof import('./src/@core/utils/validators')['confirmedValidator']
   const controlledComputed: typeof import('@vueuse/core')['controlledComputed']
   const controlledRef: typeof import('@vueuse/core')['controlledRef']
+  const courseSuggestions: typeof import('./src/utils/suggestions')['courseSuggestions']
   const createApp: typeof import('vue')['createApp']
   const createEventHook: typeof import('@vueuse/core')['createEventHook']
   const createGenericProjection: typeof import('@vueuse/math')['createGenericProjection']
@@ -51,15 +56,20 @@ declare global {
   const defineLoader: typeof import('vue-router/auto')['defineLoader']
   const definePage: typeof import('unplugin-vue-router/runtime')['_definePage']
   const defineStore: typeof import('pinia')['defineStore']
+  const differentialDiagnosis: typeof import('./src/utils/suggestions')['differentialDiagnosis']
+  const durations: typeof import('./src/utils/suggestions')['durations']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
   const effectScope: typeof import('vue')['effectScope']
   const emailValidator: typeof import('./src/@core/utils/validators')['emailValidator']
   const extendRef: typeof import('@vueuse/core')['extendRef']
+  const familyHistorySuggestions: typeof import('./src/utils/suggestions')['familyHistorySuggestions']
+  const financeSuggestions: typeof import('./src/utils/suggestions')['financeSuggestions']
   const formatDate: typeof import('./src/@core/utils/formatters')['formatDate']
   const formatDateGB: typeof import('./src/utils/formatDateGB')['default']
   const formatDateToMonthShort: typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']
   const formatSiblingOrder: typeof import('./src/utils/myFormat')['formatSiblingOrder']
   const formatting: typeof import('./src/utils/formatting')['default']
+  const functioningSuggestions: typeof import('./src/utils/suggestions')['functioningSuggestions']
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
@@ -115,6 +125,9 @@ declare global {
   const onUpdated: typeof import('vue')['onUpdated']
   const paginationMeta: typeof import('./src/utils/paginationMeta')['paginationMeta']
   const passwordValidator: typeof import('./src/@core/utils/validators')['passwordValidator']
+  const pastMedicalHistorySuggestions: typeof import('./src/utils/suggestions')['pastMedicalHistorySuggestions']
+  const pastPsychiatricHistorySuggestions: typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']
+  const pastSurgicalHistorySuggestions: typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
   const phoneNumberValidator: typeof import('./src/@core/utils/validators')['phoneNumberValidator']
   const prefixWithPlus: typeof import('./src/@core/utils/formatters')['prefixWithPlus']
@@ -136,17 +149,21 @@ declare global {
   const regexValidator: typeof import('./src/@core/utils/validators')['regexValidator']
   const registerPlugins: typeof import('./src/@core/utils/plugins')['registerPlugins']
   const registerPlugins_: typeof import('./src/@core/utils/plugins')['registerPlugins_']
+  const relationshipsSuggestions: typeof import('./src/utils/suggestions')['relationshipsSuggestions']
   const requiredValidator: typeof import('./src/@core/utils/validators')['requiredValidator']
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
   const resolveUnref: typeof import('@vueuse/core')['resolveUnref']
   const resolveVuetifyTheme: typeof import('./src/@core/utils/vuetify')['resolveVuetifyTheme']
+  const riskAssessmentSuggestions: typeof import('./src/utils/suggestions')['riskAssessmentSuggestions']
   const setActivePinia: typeof import('pinia')['setActivePinia']
   const setMapStoreSuffix: typeof import('pinia')['setMapStoreSuffix']
   const shallowReactive: typeof import('vue')['shallowReactive']
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
+  const sourceOfInfo: typeof import('./src/utils/suggestions')['sourceOfInfo']
   const storeToRefs: typeof import('pinia')['storeToRefs']
+  const substancesSuggestions: typeof import('./src/utils/suggestions')['substancesSuggestions']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
   const templateRef: typeof import('@vueuse/core')['templateRef']
@@ -157,6 +174,7 @@ declare global {
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
+  const treatmentsSuggestions: typeof import('./src/utils/suggestions')['treatmentsSuggestions']
   const triggerRef: typeof import('vue')['triggerRef']
   const tryOnBeforeMount: typeof import('@vueuse/core')['tryOnBeforeMount']
   const tryOnBeforeUnmount: typeof import('@vueuse/core')['tryOnBeforeUnmount']
@@ -352,6 +370,7 @@ declare global {
   const useWindowScroll: typeof import('@vueuse/core')['useWindowScroll']
   const useWindowSize: typeof import('@vueuse/core')['useWindowSize']
   const usecreateUrl: typeof import('./src/@core/composable/usecreateUrl')['usecreateUrl']
+  const vegetativeSymptomsSuggestions: typeof import('./src/utils/suggestions')['vegetativeSymptomsSuggestions']
   const watch: typeof import('vue')['watch']
   const watchArray: typeof import('@vueuse/core')['watchArray']
   const watchAtMost: typeof import('@vueuse/core')['watchAtMost']
@@ -384,15 +403,19 @@ declare module 'vue' {
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
+    readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
     readonly ageValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['ageValidator']>
     readonly alphaDashValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaDashValidator']>
     readonly alphaValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaValidator']>
+    readonly associatedSymptomsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['associatedSymptomsSuggestions']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly avatarText: UnwrapRef<typeof import('./src/@core/utils/formatters')['avatarText']>
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
+    readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
     readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
@@ -402,6 +425,7 @@ declare module 'vue' {
     readonly confirmedValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['confirmedValidator']>
     readonly controlledComputed: UnwrapRef<typeof import('@vueuse/core')['controlledComputed']>
     readonly controlledRef: UnwrapRef<typeof import('@vueuse/core')['controlledRef']>
+    readonly courseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['courseSuggestions']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createEventHook: UnwrapRef<typeof import('@vueuse/core')['createEventHook']>
     readonly createGenericProjection: UnwrapRef<typeof import('@vueuse/math')['createGenericProjection']>
@@ -424,13 +448,18 @@ declare module 'vue' {
     readonly defineLoader: UnwrapRef<typeof import('vue-router/auto')['defineLoader']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly differentialDiagnosis: UnwrapRef<typeof import('./src/utils/suggestions')['differentialDiagnosis']>
+    readonly durations: UnwrapRef<typeof import('./src/utils/suggestions')['durations']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly familyHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['familyHistorySuggestions']>
+    readonly financeSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['financeSuggestions']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']>
     readonly formatSiblingOrder: UnwrapRef<typeof import('./src/utils/myFormat')['formatSiblingOrder']>
+    readonly functioningSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['functioningSuggestions']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -485,6 +514,9 @@ declare module 'vue' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly paginationMeta: UnwrapRef<typeof import('./src/utils/paginationMeta')['paginationMeta']>
     readonly passwordValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['passwordValidator']>
+    readonly pastMedicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastMedicalHistorySuggestions']>
+    readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
+    readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
@@ -505,17 +537,21 @@ declare module 'vue' {
     readonly refWithControl: UnwrapRef<typeof import('@vueuse/core')['refWithControl']>
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
+    readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
     readonly resolveVuetifyTheme: UnwrapRef<typeof import('./src/@core/utils/vuetify')['resolveVuetifyTheme']>
+    readonly riskAssessmentSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['riskAssessmentSuggestions']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
+    readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -526,6 +562,7 @@ declare module 'vue' {
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
+    readonly treatmentsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['treatmentsSuggestions']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly tryOnBeforeMount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeMount']>
     readonly tryOnBeforeUnmount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeUnmount']>
@@ -715,6 +752,7 @@ declare module 'vue' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
+    readonly vegetativeSymptomsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['vegetativeSymptomsSuggestions']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>
@@ -740,15 +778,19 @@ declare module '@vue/runtime-core' {
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
+    readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
     readonly ageValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['ageValidator']>
     readonly alphaDashValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaDashValidator']>
     readonly alphaValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaValidator']>
+    readonly associatedSymptomsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['associatedSymptomsSuggestions']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly avatarText: UnwrapRef<typeof import('./src/@core/utils/formatters')['avatarText']>
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
+    readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
     readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
@@ -758,6 +800,7 @@ declare module '@vue/runtime-core' {
     readonly confirmedValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['confirmedValidator']>
     readonly controlledComputed: UnwrapRef<typeof import('@vueuse/core')['controlledComputed']>
     readonly controlledRef: UnwrapRef<typeof import('@vueuse/core')['controlledRef']>
+    readonly courseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['courseSuggestions']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
     readonly createEventHook: UnwrapRef<typeof import('@vueuse/core')['createEventHook']>
     readonly createGenericProjection: UnwrapRef<typeof import('@vueuse/math')['createGenericProjection']>
@@ -780,13 +823,18 @@ declare module '@vue/runtime-core' {
     readonly defineLoader: UnwrapRef<typeof import('vue-router/auto')['defineLoader']>
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
+    readonly differentialDiagnosis: UnwrapRef<typeof import('./src/utils/suggestions')['differentialDiagnosis']>
+    readonly durations: UnwrapRef<typeof import('./src/utils/suggestions')['durations']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
     readonly extendRef: UnwrapRef<typeof import('@vueuse/core')['extendRef']>
+    readonly familyHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['familyHistorySuggestions']>
+    readonly financeSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['financeSuggestions']>
     readonly formatDate: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDate']>
     readonly formatDateToMonthShort: UnwrapRef<typeof import('./src/@core/utils/formatters')['formatDateToMonthShort']>
     readonly formatSiblingOrder: UnwrapRef<typeof import('./src/utils/myFormat')['formatSiblingOrder']>
+    readonly functioningSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['functioningSuggestions']>
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
@@ -841,6 +889,9 @@ declare module '@vue/runtime-core' {
     readonly onUpdated: UnwrapRef<typeof import('vue')['onUpdated']>
     readonly paginationMeta: UnwrapRef<typeof import('./src/utils/paginationMeta')['paginationMeta']>
     readonly passwordValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['passwordValidator']>
+    readonly pastMedicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastMedicalHistorySuggestions']>
+    readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
+    readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
@@ -861,17 +912,21 @@ declare module '@vue/runtime-core' {
     readonly refWithControl: UnwrapRef<typeof import('@vueuse/core')['refWithControl']>
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
+    readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
     readonly resolveUnref: UnwrapRef<typeof import('@vueuse/core')['resolveUnref']>
     readonly resolveVuetifyTheme: UnwrapRef<typeof import('./src/@core/utils/vuetify')['resolveVuetifyTheme']>
+    readonly riskAssessmentSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['riskAssessmentSuggestions']>
     readonly setActivePinia: UnwrapRef<typeof import('pinia')['setActivePinia']>
     readonly setMapStoreSuffix: UnwrapRef<typeof import('pinia')['setMapStoreSuffix']>
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
+    readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
+    readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -882,6 +937,7 @@ declare module '@vue/runtime-core' {
     readonly toRef: UnwrapRef<typeof import('vue')['toRef']>
     readonly toRefs: UnwrapRef<typeof import('vue')['toRefs']>
     readonly toValue: UnwrapRef<typeof import('vue')['toValue']>
+    readonly treatmentsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['treatmentsSuggestions']>
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly tryOnBeforeMount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeMount']>
     readonly tryOnBeforeUnmount: UnwrapRef<typeof import('@vueuse/core')['tryOnBeforeUnmount']>
@@ -1071,6 +1127,7 @@ declare module '@vue/runtime-core' {
     readonly useWindowFocus: UnwrapRef<typeof import('@vueuse/core')['useWindowFocus']>
     readonly useWindowScroll: UnwrapRef<typeof import('@vueuse/core')['useWindowScroll']>
     readonly useWindowSize: UnwrapRef<typeof import('@vueuse/core')['useWindowSize']>
+    readonly vegetativeSymptomsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['vegetativeSymptomsSuggestions']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchArray: UnwrapRef<typeof import('@vueuse/core')['watchArray']>
     readonly watchAtMost: UnwrapRef<typeof import('@vueuse/core')['watchAtMost']>

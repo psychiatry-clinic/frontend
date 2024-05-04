@@ -12,6 +12,11 @@ const { visits } = defineProps<Props>();
 
 <template>
   <VRow>
+    <VCol>
+      <TimelineBasic :visits="visits" />
+    </VCol>
+  </VRow>
+  <VRow>
     <!-- <VCol
       cols="12"
       md="6"
@@ -133,10 +138,5 @@ const { visits } = defineProps<Props>();
     </VCol> -->
 
     <!-- Timeline -->
-  </VRow>
-  <VRow>
-    <VCol>
-      <TimelineBasic :visits="visits" />
-    </VCol>
   </VRow>
 </template>

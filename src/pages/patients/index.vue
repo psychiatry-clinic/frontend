@@ -4,6 +4,8 @@ const response = await $api('/patients/1') console.log(response)
 import type { Patient, User } from "@/utils/types";
 import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
 
+const router = useRouter();
+
 const searchQuery = ref("");
 const isAddPatientDrawerOpen = ref(false);
 
@@ -21,6 +23,7 @@ const headers = [
   { title: "Age", key: "age" },
   { title: "Visits", key: "visits.length" },
   { title: "First Visit", key: "createdAt" },
+  { title: "ACTIONS", key: "actions" },
 ];
 
 // Update data table options
@@ -50,7 +53,7 @@ let { data } = await useApi<any>(
 const patients = computed((): Patient[] => {
   return data.value.patients.map((patient: Patient) => ({
     ...patient,
-    createdAt: formatDate(patient.createdAt as string), // Format createdAt date
+    createdAt: formatDate(patient.createdAt), // Format createdAt date
     age: calculateAge(patient.dob.toString()), // Calculate age
   }));
 });
@@ -70,6 +73,7 @@ const totalPatients = computed(() => data.value.total);
           <div class="d-flex flex-row gap-4 align-center flex-wrap">
             <AppSelect v-model="itemsPerPage" :items="[5, 10, 20, 50, 100]" />
             <VBtn
+              v-if="storedUserData?.role === 'DOCTOR'"
               prepend-icon="tabler-plus"
               @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen"
             >
@@ -97,6 +101,14 @@ const totalPatients = computed(() => data.value.total);
             :items-per-page="itemsPerPage"
             :total-items="totalPatients"
           />
+        </template>
+
+        <template #item.actions="{ item }">
+          <div class="d-flex gap-1">
+            <IconBtn @click="router.push(`/patients/${item.id}`)">
+              <VIcon icon="tabler-edit" />
+            </IconBtn>
+          </div>
         </template>
       </VDataTableServer>
     </VCard>

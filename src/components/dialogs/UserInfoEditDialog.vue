@@ -72,30 +72,6 @@ if (userData.value.demographics) {
 }
 
 const onFormSubmit = () => {
-  console.log("name:", name.value);
-  console.log("dob:", dob.value);
-  console.log("gender:", gender.value);
-  console.log("phone:", phone.value);
-  console.log("father_dob:", father_dob.value);
-  console.log("father_edu:", father_edu.value);
-  console.log("father_age:", father_age.value);
-  console.log("father_work:", father_work.value);
-  console.log("mother_dob:", mother_dob.value);
-  console.log("mother_age:", mother_age.value);
-  console.log("mother_edu:", mother_edu.value);
-  console.log("mother_work:", mother_work.value);
-  console.log("related:", related.value);
-  console.log("siblings:", siblings.value);
-  console.log("order:", order.value);
-  console.log("familyHx:", familyHx.value);
-  console.log("notes:", notes.value);
-  console.log("marital_status:", marital_status.value);
-  console.log("children:", children.value);
-  console.log("residence:", residence.value);
-  console.log("neighborhood:", neighborhood.value);
-  console.log("occupation:", occupation.value);
-  console.log("education:", education.value);
-
   // emit("update:isDialogVisible", false);
   // emit("submit", userData.value);
 };
