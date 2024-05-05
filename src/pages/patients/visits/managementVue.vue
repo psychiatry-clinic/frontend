@@ -49,7 +49,7 @@ function addManagement() {
 
 function enableSecondField(index: number) {
   const currentManagement = model.value.managements[index];
-  return !!currentManagement.name;
+  return currentManagement.name !== "";
 }
 
 function saveNameUppercase(index: number) {
@@ -66,7 +66,7 @@ function removeEmptyNames() {
     firstManagement,
     ...model.value.managements.slice(1).filter((management, index) => {
       // Check if it's a newly added management (no result property)
-      const isNewManagement = !("result" in management);
+      const isNewManagement = !("dose" in management);
       // Remove empty managements that are not newly added
       return isNewManagement || management.name.trim() !== "";
     }),
@@ -94,13 +94,14 @@ function removeEmptyNames() {
         </VCol>
         <VCol cols="4">
           <AppTextField
+            v-if="enableSecondField(index)"
             :placeholder="management.form ? '' : 'Type Form'"
             v-model="management.form"
           />
         </VCol>
         <VCol cols="4">
           <AppTextField
-            v-if="enableSecondField(index)"
+            v-if="management.form && enableSecondField(index)"
             :placeholder="management.dose ? '' : 'Type Dose'"
             v-model="management.dose"
           />

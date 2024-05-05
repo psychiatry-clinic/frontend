@@ -11,6 +11,9 @@ import personalHx from "./personalHx.vue";
 import presentIllness from "./presentIllness.vue";
 import socialHx from "./socialHx.vue";
 import managementVue from "./managementVue.vue";
+import testsVue from "./testsVue.vue";
+import therapyVue from "./therapyVue.vue";
+import notesVue from "./notesVue.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -129,7 +132,7 @@ const numberedStepsChild = [
     subtitle: "",
   },
   {
-    title: "Session",
+    title: "Therapy",
     subtitle: "",
   },
 ];
@@ -137,7 +140,7 @@ const numberedStepsChild = [
 const numberedSteps = child.value ? numberedStepsChild : numberedStepsAdult;
 console.log(child.value);
 
-const currentStep = ref(11);
+const currentStep = ref(14);
 
 const patient = ref();
 const doctor = ref();
@@ -168,8 +171,41 @@ const differential_diagnosis = ref();
 const management = ref();
 
 const tests = ref();
-const session = ref();
+const therapy = ref();
 const notes = ref();
+
+const logging = () => {
+  // console.log("chief_complaint");
+  // console.log(chief_complaint.value);
+  // console.log("present_illness");
+  // console.log(present_illness.value);
+  // console.log("family_hx");
+  // console.log(family_hx.value);
+  // console.log("past_hx");
+  // console.log(past_hx.value);
+  // console.log("social_hx");
+  // console.log(social_hx.value);
+  // console.log("personal_hx");
+  // console.log(personal_hx.value);
+  // console.log("occupation_hx");
+  // console.log(occupation_hx.value);
+  // console.log("forensic_hx");
+  // console.log(forensic_hx.value);
+  // console.log("examination");
+  // console.log(examination.value);
+  // console.log("differential_diagnosis");
+  // console.log(differential_diagnosis.value);
+  console.log("ix");
+  console.log(ix.value);
+  console.log("management");
+  console.log(management.value);
+  console.log("tests");
+  console.log(tests.value);
+  console.log("therapy");
+  console.log(therapy.value);
+  // console.log("notes");
+  // console.log(notes.value);
+};
 </script>
 
 <template>
@@ -208,6 +244,9 @@ const notes = ref();
               <ddx v-model="differential_diagnosis" />
               <ixVue v-model="ix" />
               <managementVue v-model="management" />
+              <testsVue v-model="tests" />
+              <therapyVue v-model="therapy" />
+              <notesVue v-model="notes" />
             </VWindow>
 
             <div
@@ -226,7 +265,7 @@ const notes = ref();
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
                 color="success"
-                @click=""
+                @click="logging"
               >
                 submit
               </VBtn>
