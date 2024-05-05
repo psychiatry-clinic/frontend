@@ -1,22 +1,28 @@
 <script lang="ts" setup>
-import chiefComplaint from "./chiefComplaint.vue";
-import ddx from "./ddx.vue";
-import examinationVue from "./examination.vue";
-import FamilyHx from "./familyHx.vue";
-import forensicHx from "./forensicHx.vue";
-import ixVue from "./ixVue.vue";
-import occupationHx from "./occupationHx.vue";
-import pastHx from "./pastHx.vue";
-import personalHx from "./personalHx.vue";
-import presentIllness from "./presentIllness.vue";
-import socialHx from "./socialHx.vue";
-import managementVue from "./managementVue.vue";
-import testsVue from "./testsVue.vue";
-import therapyVue from "./therapyVue.vue";
-import notesVue from "./notesVue.vue";
+import { User } from "@/utils/types";
+import chiefComplaint from "../chiefComplaint.vue";
+import ddx from "../ddx.vue";
+import examinationVue from "../examination.vue";
+import FamilyHx from "../familyHx.vue";
+import forensicHx from "../forensicHx.vue";
+import ixVue from "../ixVue.vue";
+import occupationHx from "../occupationHx.vue";
+import pastHx from "../pastHx.vue";
+import personalHx from "../personalHx.vue";
+import presentIllness from "../presentIllness.vue";
+import socialHx from "../socialHx.vue";
+import managementVue from "../managementVue.vue";
+import testsVue from "../testsVue.vue";
+import therapyVue from "../therapyVue.vue";
+import notesVue from "../notesVue.vue";
+
+const storedUserData: User | undefined = useCookie("userData").value as
+  | User
+  | undefined;
 
 const router = useRouter();
-const route = useRoute();
+const route = useRoute("patients-visits-new-id");
+
 const child = ref(false);
 
 const numberedStepsAdult = [
@@ -140,10 +146,11 @@ const numberedStepsChild = [
 const numberedSteps = child.value ? numberedStepsChild : numberedStepsAdult;
 console.log(child.value);
 
-const currentStep = ref(14);
+const currentStep = ref(0);
 
-const patient = ref();
-const doctor = ref();
+const patient = ref(route.params.id);
+const doctor = ref(storedUserData?.id);
+
 const prescription = ref();
 const clinic = ref();
 const duration = ref();
@@ -152,9 +159,11 @@ const chief_complaint = ref();
 const present_illness = ref();
 const family_hx = ref();
 
-const past_hx = ref();
-const past_psychiatric_hx = ref();
-const past_medical_hx = ref();
+const past_hx = ref<{
+  past_psychiatric: string;
+  past_medical: string;
+  past_surgical: string;
+}>();
 
 const social_hx = ref();
 const personal_hx = ref();
@@ -167,15 +176,15 @@ const substance = ref();
 
 const examination = ref();
 const localIx = ref({ investigations: [{ name: "", result: "" }] });
+const management = ref({ managements: [{ name: "", form: "", dose: "" }] });
+const tests = ref({ tests: [{ name: "", result: "" }] });
 
 const differential_diagnosis = ref();
-const management = ref();
 
-const tests = ref();
 const therapy = ref();
 const notes = ref();
 
-const logging = () => {
+const submit = () => {
   // console.log("chief_complaint");
   // console.log(chief_complaint.value);
   // console.log("present_illness");
@@ -196,14 +205,14 @@ const logging = () => {
   // console.log(examination.value);
   // console.log("differential_diagnosis");
   // console.log(differential_diagnosis.value);
-  console.log("ix");
-  console.log(localIx.value);
-  console.log("management");
-  console.log(management.value);
-  console.log("tests");
-  console.log(tests.value);
-  console.log("therapy");
-  console.log(therapy.value);
+  // console.log("ix");
+  // console.log(localIx.value);
+  // console.log("management");
+  // console.log(management.value);
+  // console.log("tests");
+  // console.log(tests.value);
+  // console.log("therapy");
+  // console.log(therapy.value);
   // console.log("notes");
   // console.log(notes.value);
 };
@@ -266,7 +275,7 @@ const logging = () => {
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
                 color="success"
-                @click="logging"
+                @click="submit"
               >
                 submit
               </VBtn>

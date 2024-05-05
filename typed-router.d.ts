@@ -160,7 +160,7 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-forensic-hx': RouteRecordInfo<'patients-visits-forensic-hx', '/patients/visits/forensicHx', Record<never, never>, Record<never, never>>,
     'patients-visits-ix-vue': RouteRecordInfo<'patients-visits-ix-vue', '/patients/visits/ixVue', Record<never, never>, Record<never, never>>,
     'patients-visits-management-vue': RouteRecordInfo<'patients-visits-management-vue', '/patients/visits/managementVue', Record<never, never>, Record<never, never>>,
-    'patients-visits-new': RouteRecordInfo<'patients-visits-new', '/patients/visits/new', Record<never, never>, Record<never, never>>,
+    'patients-visits-new-id': RouteRecordInfo<'patients-visits-new-id', '/patients/visits/new/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'patients-visits-notes-vue': RouteRecordInfo<'patients-visits-notes-vue', '/patients/visits/notesVue', Record<never, never>, Record<never, never>>,
     'patients-visits-occupation-hx': RouteRecordInfo<'patients-visits-occupation-hx', '/patients/visits/occupationHx', Record<never, never>, Record<never, never>>,
     'patients-visits-past-hx': RouteRecordInfo<'patients-visits-past-hx', '/patients/visits/pastHx', Record<never, never>, Record<never, never>>,

@@ -8,9 +8,11 @@ interface Model {
   tests: test[];
 }
 
-const model = ref<Model>({ tests: [] });
+const model = defineModel<Model>();
 
-model.value.tests[0] = { name: "", result: "" };
+if (model.value) {
+  model.value.tests[0] = { name: "", result: "" };
+}
 
 const tests = ref(model.value?.tests);
 
@@ -33,6 +35,7 @@ onBeforeUnmount(() => {
 });
 
 function addTest() {
+  if (!model.value) return;
   if (
     model.value.tests[model.value.tests.length - 1].name === "" ||
     model.value.tests[model.value.tests.length - 1].result === ""
@@ -44,15 +47,18 @@ function addTest() {
 }
 
 function enableSecondField(index: number) {
+  if (!model.value) return;
   const currentTest = model.value.tests[index];
   return !!currentTest.name;
 }
 
 function saveNameUppercase(index: number) {
+  if (!model.value) return;
   model.value.tests[index].name = model.value.tests[index].name.toUpperCase();
 }
 
 function removeEmptyNames() {
+  if (!model.value) return;
   // Keep the first test unchanged
   const firstTest = model.value.tests[0];
 
@@ -78,7 +84,7 @@ function removeEmptyNames() {
       </VCol>
     </VRow>
 
-    <template v-for="(test, index) in model.tests" :key="index">
+    <template v-for="(test, index) in model?.tests" :key="index">
       <VRow>
         <VCol cols="6">
           <AppTextField

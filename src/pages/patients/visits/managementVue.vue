@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from "vue";
-
 interface Management {
   name: string;
   form?: string;
@@ -11,11 +9,13 @@ interface Model {
   managements: Management[];
 }
 
-const model = ref<Model>({ managements: [] });
+const model = defineModel<Model>();
+
+if (model.value) {
+  model.value.managements[0] = { name: "", form: "", dose: "" };
+}
 
 const managements = ref(model.value?.managements);
-
-model.value.managements[0] = { name: "", form: "", dose: "" };
 
 let removeTimer: NodeJS.Timeout | null = null;
 
@@ -36,6 +36,9 @@ onBeforeUnmount(() => {
 });
 
 function addManagement() {
+  if (!model.value) {
+    return;
+  }
   if (
     model.value.managements[model.value.managements.length - 1].name === "" ||
     model.value.managements[model.value.managements.length - 1].form === "" ||
@@ -48,19 +51,21 @@ function addManagement() {
 }
 
 function enableSecondField(index: number) {
-  const currentManagement = model.value.managements[index];
-  return currentManagement.name !== "";
+  const currentManagement = model.value?.managements[index];
+  return currentManagement?.name !== "";
 }
 
 function saveNameUppercase(index: number) {
+  if (!model.value) return;
   model.value.managements[index].name =
     model.value.managements[index].name.toUpperCase();
 }
 
 function removeEmptyNames() {
+  if (!model.value) return;
   // Keep the first management unchanged
   const firstManagement = model.value.managements[0];
-
+  if (!model.value) return;
   // Filter out empty managements except for the first one and newly added ones
   model.value.managements = [
     firstManagement,
@@ -83,7 +88,7 @@ function removeEmptyNames() {
       </VCol>
     </VRow>
 
-    <template v-for="(management, index) in model.managements" :key="index">
+    <template v-for="(management, index) in model?.managements" :key="index">
       <VRow>
         <VCol cols="4">
           <AppTextField

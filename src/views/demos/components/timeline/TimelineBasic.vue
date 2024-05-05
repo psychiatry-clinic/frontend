@@ -3,13 +3,14 @@ import { Visit } from "@/utils/types";
 import { formatDistanceToNow } from "date-fns";
 
 const router = useRouter();
-const route = useRoute("patients-visits-new");
+const route = useRoute();
 
 interface Props {
   visits?: Visit[];
+  patientId: number;
 }
 
-const { visits } = defineProps<Props>();
+const { visits, patientId } = defineProps<Props>();
 </script>
 
 <template>
@@ -18,7 +19,7 @@ const { visits } = defineProps<Props>();
       <VBtn
         variant="outlined"
         class="mb-5"
-        @click="router.push(`/patients/visits/new`)"
+        @click="router.push(`/patients/visits/new/${patientId}`)"
       >
         New Visit
       </VBtn>

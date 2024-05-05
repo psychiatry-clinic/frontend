@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { Visit } from "@/utils/types";
-import CustomerOrderTable from "./CustomerOrderTable.vue";
-import TimeLineBasic from "@/views/demos/components/timeline/TimelineBasic.vue";
 
 interface Props {
   visits?: Visit[];
+  patientId: number;
 }
 
-const { visits } = defineProps<Props>();
+const { visits, patientId } = defineProps<Props>();
 </script>
 
 <template>
   <VRow>
     <VCol>
-      <TimelineBasic :visits="visits" />
+      <TimelineBasic :visits="visits" :patientId="patientId" />
     </VCol>
   </VRow>
   <VRow>

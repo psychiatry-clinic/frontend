@@ -4,7 +4,6 @@ import { baghdadRegions, cities } from "@/utils/lists";
 import type { User } from "@/utils/types";
 import { BlobServiceClient } from "@azure/storage-blob";
 import type { CustomInputContent } from "@core/types";
-import { defineEmits, defineProps, ref } from "vue";
 import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 import { VForm } from "vuetify/components/VForm";
 

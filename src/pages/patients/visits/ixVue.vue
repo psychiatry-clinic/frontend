@@ -37,9 +37,7 @@ onBeforeUnmount(() => {
 });
 
 function addInvestigation() {
-  if (!model.value) {
-    return;
-  }
+  if (!model.value) return;
   if (
     (model.value && // Add null check
       model.value.investigations[model.value.investigations.length - 1].name ===
@@ -59,30 +57,27 @@ function enableSecondField(index: number) {
 }
 
 function saveNameUppercase(index: number) {
-  if (model.value) {
-    // Add null check
-    model.value.investigations[index].name =
-      model.value.investigations[index].name.toUpperCase();
-  }
+  if (!model.value) return;
+  model.value.investigations[index].name =
+    model.value.investigations[index].name.toUpperCase();
 }
 
 function removeEmptyNames() {
-  if (model.value) {
-    // Add null check
-    // Keep the first investigation unchanged
-    const firstInvestigation = model.value.investigations[0];
+  if (!model.value) return;
+  // Add null check
+  // Keep the first investigation unchanged
+  const firstInvestigation = model.value.investigations[0];
 
-    // Filter out empty investigations except for the first one and newly added ones
-    model.value.investigations = [
-      firstInvestigation,
-      ...model.value.investigations.slice(1).filter((investigation, index) => {
-        // Check if it's a newly added investigation (no result property)
-        const isNewInvestigation = !("result" in investigation);
-        // Remove empty investigations that are not newly added
-        return isNewInvestigation || investigation.name.trim() !== "";
-      }),
-    ];
-  }
+  // Filter out empty investigations except for the first one and newly added ones
+  model.value.investigations = [
+    firstInvestigation,
+    ...model.value.investigations.slice(1).filter((investigation, index) => {
+      // Check if it's a newly added investigation (no result property)
+      const isNewInvestigation = !("result" in investigation);
+      // Remove empty investigations that are not newly added
+      return isNewInvestigation || investigation.name.trim() !== "";
+    }),
+  ];
 }
 </script>
 

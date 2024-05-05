@@ -27,11 +27,6 @@ const errors = ref<Record<string, string | undefined>>({
 
 const refVForm = ref<VForm>();
 
-// const creds = {
-//   email: 'admin@demo.com',
-//   password: 'admin',
-// }
-
 const credentials = ref({
   username: "",
   password: "",
