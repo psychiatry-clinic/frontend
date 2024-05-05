@@ -91,6 +91,7 @@ declare global {
   const isRef: typeof import('vue')['isRef']
   const isToday: typeof import('./src/@core/utils/helpers')['isToday']
   const kFormatter: typeof import('./src/@core/utils/formatters')['kFormatter']
+  const lab_tests: typeof import('./src/utils/suggestions')['lab_tests']
   const lengthValidator: typeof import('./src/@core/utils/validators')['lengthValidator']
   const logicAnd: typeof import('@vueuse/math')['logicAnd']
   const logicNot: typeof import('@vueuse/math')['logicNot']
@@ -480,6 +481,7 @@ declare module 'vue' {
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers')['isToday']>
     readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters')['kFormatter']>
+    readonly lab_tests: UnwrapRef<typeof import('./src/utils/suggestions')['lab_tests']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['lengthValidator']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>
@@ -855,6 +857,7 @@ declare module '@vue/runtime-core' {
     readonly isRef: UnwrapRef<typeof import('vue')['isRef']>
     readonly isToday: UnwrapRef<typeof import('./src/@core/utils/helpers')['isToday']>
     readonly kFormatter: UnwrapRef<typeof import('./src/@core/utils/formatters')['kFormatter']>
+    readonly lab_tests: UnwrapRef<typeof import('./src/utils/suggestions')['lab_tests']>
     readonly lengthValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['lengthValidator']>
     readonly logicAnd: UnwrapRef<typeof import('@vueuse/math')['logicAnd']>
     readonly logicNot: UnwrapRef<typeof import('@vueuse/math')['logicNot']>

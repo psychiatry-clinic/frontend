@@ -322,3 +322,18 @@ export const differentialDiagnosis = [
   "Dependent Personality Disorder",
   "Obsessive-Compulsive Personality Disorder",
 ];
+
+export const lab_tests = [
+  "Complete Blood Count (CBC)",
+  "Basic Metabolic Panel (BMP)",
+  "Comprehensive Metabolic Panel (CMP)",
+  "Lipid Profile",
+  "Thyroid Function Tests",
+  "Urinalysis",
+  "Blood Glucose",
+  "Liver Function Tests (LFTs)",
+  "Coagulation Profile",
+  "Serum Electrolytes",
+  "C-reactive Protein (CRP)",
+  "Hemoglobin A1c (HbA1c)",
+];

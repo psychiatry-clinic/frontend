@@ -13,7 +13,6 @@ function update() {
   model.value = {
     differential: differential.value,
   };
-  console.log(model.value);
 }
 
 const appendTo = (target: string | undefined, text: string) => {

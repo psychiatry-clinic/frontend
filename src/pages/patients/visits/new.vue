@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import chiefComplaint from "./chiefComplaint.vue";
+import ddx from "./ddx.vue";
+import examinationVue from "./examination.vue";
 import FamilyHx from "./familyHx.vue";
+import forensicHx from "./forensicHx.vue";
+import ixVue from "./ixVue.vue";
+import occupationHx from "./occupationHx.vue";
 import pastHx from "./pastHx.vue";
+import personalHx from "./personalHx.vue";
 import presentIllness from "./presentIllness.vue";
 import socialHx from "./socialHx.vue";
-import personalHx from "./personalHx.vue";
-import occupationHx from "./occupationHx.vue";
-import forensicHx from "./forensicHx.vue";
-import examinationVue from "./examination.vue";
-import ddx from "./ddx.vue";
+import managementVue from "./managementVue.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -135,7 +137,7 @@ const numberedStepsChild = [
 const numberedSteps = child.value ? numberedStepsChild : numberedStepsAdult;
 console.log(child.value);
 
-const currentStep = ref(9);
+const currentStep = ref(11);
 
 const patient = ref();
 const doctor = ref();
@@ -161,9 +163,10 @@ const drug_hx = ref();
 const substance = ref();
 
 const examination = ref();
-
+const ix = ref();
 const differential_diagnosis = ref();
 const management = ref();
+
 const tests = ref();
 const session = ref();
 const notes = ref();
@@ -203,6 +206,8 @@ const notes = ref();
               <forensicHx v-model="forensic_hx" />
               <examinationVue v-model="examination" />
               <ddx v-model="differential_diagnosis" />
+              <ixVue v-model="ix" />
+              <managementVue v-model="management" />
             </VWindow>
 
             <div

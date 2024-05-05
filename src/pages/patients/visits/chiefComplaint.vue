@@ -141,9 +141,3 @@ const appendTo = (target: string | undefined, text: string) => {
     </VRow>
   </VWindowItem>
 </template>
-
-<style scoped>
-VRow {
-  margin-bottom: 100px;
-}
-</style>
