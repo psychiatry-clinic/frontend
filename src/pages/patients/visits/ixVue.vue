@@ -10,19 +10,37 @@ interface Model {
 
 const model = ref<Model>({ investigations: [] });
 
+model.value.investigations[0] = { name: "", result: "" };
+
 const investigations = ref(model.value?.investigations);
 
+let removeTimer: NodeJS.Timeout | null = null;
+
 // Attach event listener when component is mounted
-document.addEventListener("blur", removeEmptyNames, true);
+document.addEventListener(
+  "blur",
+  () => {
+    if (removeTimer) clearTimeout(removeTimer);
+    removeTimer = setTimeout(removeEmptyNames, 1000);
+  },
+  true
+);
 
 // Clean up event listener when component is unmounted
 onBeforeUnmount(() => {
   document.removeEventListener("blur", removeEmptyNames, true);
+  if (removeTimer) clearTimeout(removeTimer);
 });
 
-addInvestigation();
-
 function addInvestigation() {
+  if (
+    model.value.investigations[model.value.investigations.length - 1].name ===
+      "" ||
+    model.value.investigations[model.value.investigations.length - 1].result ===
+      ""
+  ) {
+    return;
+  }
   const newInvestigation: Investigation = { name: "", result: "" };
   model.value.investigations.push(newInvestigation);
 }
@@ -38,9 +56,19 @@ function saveNameUppercase(index: number) {
 }
 
 function removeEmptyNames() {
-  model.value.investigations = model.value.investigations.filter(
-    (investigation) => investigation.name.trim() !== ""
-  );
+  // Keep the first investigation unchanged
+  const firstInvestigation = model.value.investigations[0];
+
+  // Filter out empty investigations except for the first one and newly added ones
+  model.value.investigations = [
+    firstInvestigation,
+    ...model.value.investigations.slice(1).filter((investigation, index) => {
+      // Check if it's a newly added investigation (no result property)
+      const isNewInvestigation = !("result" in investigation);
+      // Remove empty investigations that are not newly added
+      return isNewInvestigation || investigation.name.trim() !== "";
+    }),
+  ];
 }
 </script>
 

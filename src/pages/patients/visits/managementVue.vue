@@ -15,17 +15,34 @@ const model = ref<Model>({ managements: [] });
 
 const managements = ref(model.value?.managements);
 
+model.value.managements[0] = { name: "", form: "", dose: "" };
+
+let removeTimer: NodeJS.Timeout | null = null;
+
 // Attach event listener when component is mounted
-document.addEventListener("blur", removeEmptyNames, true);
+document.addEventListener(
+  "blur",
+  () => {
+    if (removeTimer) clearTimeout(removeTimer);
+    removeTimer = setTimeout(removeEmptyNames, 1000);
+  },
+  true
+);
 
 // Clean up event listener when component is unmounted
 onBeforeUnmount(() => {
   document.removeEventListener("blur", removeEmptyNames, true);
+  if (removeTimer) clearTimeout(removeTimer);
 });
 
-addManagement();
-
 function addManagement() {
+  if (
+    model.value.managements[model.value.managements.length - 1].name === "" ||
+    model.value.managements[model.value.managements.length - 1].form === "" ||
+    model.value.managements[model.value.managements.length - 1].dose === ""
+  ) {
+    return;
+  }
   const newManagement: Management = { name: "", form: "", dose: "" };
   model.value.managements.push(newManagement);
 }
@@ -41,9 +58,19 @@ function saveNameUppercase(index: number) {
 }
 
 function removeEmptyNames() {
-  model.value.managements = model.value.managements.filter(
-    (management) => management.name.trim() !== ""
-  );
+  // Keep the first management unchanged
+  const firstManagement = model.value.managements[0];
+
+  // Filter out empty managements except for the first one and newly added ones
+  model.value.managements = [
+    firstManagement,
+    ...model.value.managements.slice(1).filter((management, index) => {
+      // Check if it's a newly added management (no result property)
+      const isNewManagement = !("result" in management);
+      // Remove empty managements that are not newly added
+      return isNewManagement || management.name.trim() !== "";
+    }),
+  ];
 }
 </script>
 
