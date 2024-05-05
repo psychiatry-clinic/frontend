@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Visit } from "@/utils/types";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, differenceInHours } from "date-fns";
 
 const router = useRouter();
 const route = useRoute();
@@ -11,12 +11,27 @@ interface Props {
 }
 
 const { visits, patientId } = defineProps<Props>();
+
+let isNewVisit = false;
+
+watchEffect(() => {
+  if (visits?.slice().reverse()[0]) {
+    const difference = differenceInHours(
+      new Date(),
+      visits?.slice().reverse()[0].createdAt
+    );
+    isNewVisit = difference >= 8;
+  } else {
+    isNewVisit = true;
+  }
+});
 </script>
 
 <template>
   <VCard title="Visits Timeline">
     <VCardText>
       <VBtn
+        v-if="isNewVisit"
         variant="outlined"
         class="mb-5"
         @click="router.push(`/patients/visits/new/${patientId}`)"
@@ -57,7 +72,8 @@ const { visits, patientId } = defineProps<Props>();
             class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
           >
             <div class="app-timeline-text mt-1">
-              Chief Complaint: {{ visit.chief_complaint }}
+              Chief Complaint: {{ visit.chief_complaint?.complaint }} for
+              {{ visit.chief_complaint?.duration }}
             </div>
             <span class="app-timeline-meta">
               {{ formatDate(visit.createdAt) }}
@@ -67,7 +83,7 @@ const { visits, patientId } = defineProps<Props>();
             Management: {{ visit.management }}
           </div>
           <VBtn variant="tonal" class="d-inline-flex align-center mt-4">
-            Open Visit
+            {{ isNewVisit ? "Open Visit" : "Edit Visit" }}
           </VBtn>
         </VTimelineItem>
         <!-- !SECTION -->

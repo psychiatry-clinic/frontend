@@ -15,7 +15,6 @@ const containerClient = blobServiceClient.getContainerClient(containerName);
 const uploadFiles = async () => {
   const fileInput = document.getElementById("picture") as HTMLInputElement
     try {
-        console.log("Uploading files...");
         const promises = [];
         if (fileInput && fileInput.files) {      
           for (const file of fileInput.files) {

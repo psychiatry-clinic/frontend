@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { chief_complains, sourceOfInfo, durations } from "@/utils/suggestions";
+import { chief_complains, durations, sourceOfInfo } from "@/utils/suggestions";
 
 interface Model {
   complaint: string | undefined;
@@ -10,23 +10,21 @@ interface Model {
 
 const model = defineModel<Model>();
 
-// const complaint = ref(model.value?.complaint);
 const complaint = ref(model.value?.complaint);
 const duration = ref(model.value?.duration);
 const source = ref(model.value?.source);
 const referral = ref(model.value?.referral);
 
-function update() {
+const update = () => {
   model.value = {
     complaint: complaint.value as string,
     duration: duration.value as string,
     source: source.value as string,
     referral: referral.value as string,
   };
-}
+};
 
 const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
   return target === "" || target === undefined ? text : `${target}, ${text}`;
 };
 </script>
@@ -57,7 +55,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in chief_complains"
             size="x-small"
-            @click="complaint = appendTo(complaint, suggestion)"
+            @click="
+              () => {
+                complaint = appendTo(complaint, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -82,7 +85,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in durations"
             size="x-small"
-            @click="duration = appendTo(duration, suggestion)"
+            @click="
+              () => {
+                duration = appendTo(duration, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -107,7 +115,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in sourceOfInfo"
             size="x-small"
-            @click="source = appendTo(source, suggestion)"
+            @click="
+              () => {
+                source = appendTo(source, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -132,7 +145,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="referral = appendTo(referral, suggestion)"
+            @click="
+              () => {
+                referral = appendTo(referral, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>

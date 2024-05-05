@@ -6,15 +6,15 @@ import examinationVue from "../examination.vue";
 import FamilyHx from "../familyHx.vue";
 import forensicHx from "../forensicHx.vue";
 import ixVue from "../ixVue.vue";
+import managementVue from "../managementVue.vue";
+import notesVue from "../notesVue.vue";
 import occupationHx from "../occupationHx.vue";
 import pastHx from "../pastHx.vue";
 import personalHx from "../personalHx.vue";
 import presentIllness from "../presentIllness.vue";
 import socialHx from "../socialHx.vue";
-import managementVue from "../managementVue.vue";
 import testsVue from "../testsVue.vue";
 import therapyVue from "../therapyVue.vue";
-import notesVue from "../notesVue.vue";
 
 const storedUserData: User | undefined = useCookie("userData").value as
   | User
@@ -72,14 +72,6 @@ const numberedStepsAdult = [
   },
   {
     title: "Management",
-    subtitle: "",
-  },
-  {
-    title: "Psychometric Tests",
-    subtitle: "",
-  },
-  {
-    title: "Therapy",
     subtitle: "",
   },
   {
@@ -143,7 +135,27 @@ const numberedStepsChild = [
   },
 ];
 
-const numberedSteps = child.value ? numberedStepsChild : numberedStepsAdult;
+const numberedStepsPsychologist = [
+  {
+    title: "Psychometric Tests",
+    subtitle: "",
+  },
+  {
+    title: "Therapy",
+    subtitle: "",
+  },
+];
+
+const errors = ref<Record<string, string | undefined>>({
+  message: undefined,
+});
+
+const numberedSteps =
+  storedUserData?.role === "PSYCHOLOGIST"
+    ? numberedStepsPsychologist
+    : child.value
+    ? numberedStepsChild
+    : numberedStepsAdult;
 console.log(child.value);
 
 const currentStep = ref(0);
@@ -170,19 +182,57 @@ const personal_hx = ref();
 const occupation_hx = ref();
 const forensic_hx = ref();
 
-const suicide = ref();
-const drug_hx = ref();
-const substance = ref();
-
 const examination = ref();
-const localIx = ref({ investigations: [{ name: "", result: "" }] });
+const ix = ref({ investigations: [{ name: "", result: "" }] });
 const management = ref({ managements: [{ name: "", form: "", dose: "" }] });
+
 const tests = ref({ tests: [{ name: "", result: "" }] });
 
 const differential_diagnosis = ref();
 
 const therapy = ref();
 const notes = ref();
+
+const link = `/visits-new/${storedUserData?.id}/${route.params.id}`;
+
+const addVisit = async () => {
+  if (!storedUserData) return;
+
+  try {
+    const res = await $api(link, {
+      method: "POST",
+      body: {
+        chief_complaint: chief_complaint.value,
+        present_illness: present_illness.value,
+        examination: examination.value,
+        differential_diagnosis: differential_diagnosis.value?.differential,
+        ix:
+          ix.value.investigations[0].name === ""
+            ? null
+            : ix.value.investigations,
+        management:
+          management.value?.managements[0].name === ""
+            ? null
+            : management.value?.managements,
+        therapy: therapy.value?.therapyNotes,
+        notes: notes.value?.notes ? notes.value.notes : null,
+        social_hx: social_hx.value,
+        family_hx: family_hx.value,
+        personal_hx: personal_hx.value,
+        forensic_hx: forensic_hx.value,
+        occupation_hx: occupation_hx.value,
+        past_hx: past_hx.value,
+      },
+      onResponseError({ response }) {
+        errors.value = response._data;
+      },
+    });
+    console.log(res);
+    router.push(`/patients/${route.params.id}`);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const submit = () => {
   // console.log("chief_complaint");
@@ -206,7 +256,7 @@ const submit = () => {
   // console.log("differential_diagnosis");
   // console.log(differential_diagnosis.value);
   // console.log("ix");
-  // console.log(localIx.value);
+  // console.log(ix.value);
   // console.log("management");
   // console.log(management.value);
   // console.log("tests");
@@ -252,10 +302,8 @@ const submit = () => {
               <forensicHx v-model="forensic_hx" />
               <examinationVue v-model="examination" />
               <ddx v-model="differential_diagnosis" />
-              <ixVue v-model="localIx" />
+              <ixVue v-model="ix" />
               <managementVue v-model="management" />
-              <testsVue v-model="tests" />
-              <therapyVue v-model="therapy" />
               <notesVue v-model="notes" />
             </VWindow>
 
@@ -275,7 +323,7 @@ const submit = () => {
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
                 color="success"
-                @click="submit"
+                @click="addVisit"
               >
                 submit
               </VBtn>

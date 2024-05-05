@@ -52,7 +52,6 @@ const appendTo = (target: string | undefined, text: string) => {
           auto-grow
           rows="2"
           @keyup="update"
-          :rules="[requiredValidator]"
         />
       </VCol>
       <VCol cols="6" md="6">
@@ -61,7 +60,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in pastPsychiatricHistorySuggestions"
             size="x-small"
-            @click="past_psychiatric = appendTo(past_psychiatric, suggestion)"
+            @click="
+              () => {
+                past_psychiatric = appendTo(past_psychiatric, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -87,7 +91,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in pastMedicalHistorySuggestions"
             size="x-small"
-            @click="past_medical = appendTo(past_medical, suggestion)"
+            @click="
+              () => {
+                past_medical = appendTo(past_medical, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -113,7 +122,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in pastSurgicalHistorySuggestions"
             size="x-small"
-            @click="past_surgical = appendTo(past_surgical, suggestion)"
+            @click="
+              () => {
+                past_surgical = appendTo(past_surgical, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -139,7 +153,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="past_substance = appendTo(past_substance, suggestion)"
+            @click="
+              () => {
+                past_substance = appendTo(past_substance, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineModel, ref, onBeforeUnmount } from "vue";
-
 interface Investigation {
   name: string;
   result?: string; // Include result property

@@ -13,6 +13,8 @@ function update() {
   model.value = {
     differential: differential.value,
   };
+  console.log(differential);
+  console.log(model.value);
 }
 
 const appendTo = (target: string | undefined, text: string) => {
@@ -25,7 +27,7 @@ const appendTo = (target: string | undefined, text: string) => {
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Family History</h6>
+        <h6 class="text-h6 font-weight-medium">Differential Diagnosis</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
@@ -38,7 +40,7 @@ const appendTo = (target: string | undefined, text: string) => {
           label="Differential Diagnosis"
           auto-grow
           rows="2"
-          @keyup="update"
+          @focusout="update"
         />
       </VCol>
       <VCol>
@@ -47,7 +49,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in differentialDiagnosis"
             size="x-small"
-            @click="differential = appendTo(differential, suggestion)"
+            @click="
+              () => {
+                differential = appendTo(differential, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>

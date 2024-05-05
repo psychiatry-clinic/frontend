@@ -63,7 +63,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in accommodationSuggestions"
             size="x-small"
-            @click="accommodation = appendTo(accommodation, suggestion)"
+            @click="
+              () => {
+                accommodation = appendTo(accommodation, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -89,7 +94,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in financeSuggestions"
             size="x-small"
-            @click="finances = appendTo(finances, suggestion)"
+            @click="
+              () => {
+                finances = appendTo(finances, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>

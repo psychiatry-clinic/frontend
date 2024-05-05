@@ -78,7 +78,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in familyHistorySuggestions"
             size="x-small"
-            @click="different = appendTo(different, suggestion)"
+            @click="
+              () => {
+                different = appendTo(different, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -102,7 +107,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in familyHistorySuggestions"
             size="x-small"
-            @click="medical = appendTo(medical, suggestion)"
+            @click="
+              () => {
+                medical = appendTo(medical, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -126,7 +136,12 @@ const appendTo = (target: string | undefined, text: string) => {
             class="me-2 mb-2"
             v-for="suggestion in familyHistorySuggestions"
             size="x-small"
-            @click="other = appendTo(other, suggestion)"
+            @click="
+              () => {
+                other = appendTo(other, suggestion);
+                update();
+              }
+            "
           >
             {{ suggestion }}
           </VChip>

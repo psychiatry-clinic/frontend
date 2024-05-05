@@ -16,7 +16,7 @@ export interface Patient {
   mother_work: null | string;
   siblings: null | number;
   order: null | number;
-  related:boolean;
+  related: boolean;
   notes: null | string;
   visits?: Visit[];
   demographics?: Demographics[]; // Assuming demographics data structure is unknown
@@ -27,10 +27,10 @@ export interface Patient {
 }
 
 export interface User {
-  id: number
-  username: string
-  password: string
-  role: string
+  id: number;
+  username: string;
+  password: string;
+  role: string;
 }
 export interface Prescription {
   id: number;
@@ -55,14 +55,14 @@ export interface Test {
 }
 
 export interface Demographics {
-  id:number
+  id: number;
   patient?: Patient; // Assuming Patient interface is defined elsewhere
   patientId?: number;
   marital_status?: string | null;
   occupation?: string | null;
   children?: string | null;
   residence?: string | null;
-  neighborhood?:string | null;
+  neighborhood?: string | null;
   education?: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -76,7 +76,7 @@ export interface Visit {
   doctorId?: number;
   clinic: Clinic;
   duration?: number;
-  chief_complaint?: string;
+  chief_complaint?: Chief_complaint;
   present_illness?: string;
   suicide?: string;
   past_psychiatric_hx?: string;
@@ -126,7 +126,6 @@ enum Clinic {
   AutismCenter = "AutismCenter",
 }
 
-
 export interface Session {
   id: number;
   notes: string;
@@ -146,4 +145,11 @@ interface Psychologist {
   sessions: Session[];
   createdAt: Date;
   updatedAt: Date;
+}
+
+interface Chief_complaint {
+  complaint: string;
+  duration: string;
+  referral: string;
+  source: string;
 }
