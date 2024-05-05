@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { defineModel, ref, onBeforeUnmount } from "vue";
+
 interface Investigation {
   name: string;
   result?: string; // Include result property
@@ -8,9 +10,11 @@ interface Model {
   investigations: Investigation[];
 }
 
-const model = ref<Model>({ investigations: [] });
+const model = defineModel<Model>();
 
-model.value.investigations[0] = { name: "", result: "" };
+if (model.value) {
+  model.value.investigations[0] = { name: "", result: "" };
+}
 
 const investigations = ref(model.value?.investigations);
 
@@ -33,9 +37,13 @@ onBeforeUnmount(() => {
 });
 
 function addInvestigation() {
+  if (!model.value) {
+    return;
+  }
   if (
-    model.value.investigations[model.value.investigations.length - 1].name ===
-      "" ||
+    (model.value && // Add null check
+      model.value.investigations[model.value.investigations.length - 1].name ===
+        "") ||
     model.value.investigations[model.value.investigations.length - 1].result ===
       ""
   ) {
@@ -46,29 +54,35 @@ function addInvestigation() {
 }
 
 function enableSecondField(index: number) {
-  const currentInvestigation = model.value.investigations[index];
-  return !!currentInvestigation.name;
+  const currentInvestigation = model.value?.investigations[index]; // Add null check
+  return !!currentInvestigation?.name; // Add null check
 }
 
 function saveNameUppercase(index: number) {
-  model.value.investigations[index].name =
-    model.value.investigations[index].name.toUpperCase();
+  if (model.value) {
+    // Add null check
+    model.value.investigations[index].name =
+      model.value.investigations[index].name.toUpperCase();
+  }
 }
 
 function removeEmptyNames() {
-  // Keep the first investigation unchanged
-  const firstInvestigation = model.value.investigations[0];
+  if (model.value) {
+    // Add null check
+    // Keep the first investigation unchanged
+    const firstInvestigation = model.value.investigations[0];
 
-  // Filter out empty investigations except for the first one and newly added ones
-  model.value.investigations = [
-    firstInvestigation,
-    ...model.value.investigations.slice(1).filter((investigation, index) => {
-      // Check if it's a newly added investigation (no result property)
-      const isNewInvestigation = !("result" in investigation);
-      // Remove empty investigations that are not newly added
-      return isNewInvestigation || investigation.name.trim() !== "";
-    }),
-  ];
+    // Filter out empty investigations except for the first one and newly added ones
+    model.value.investigations = [
+      firstInvestigation,
+      ...model.value.investigations.slice(1).filter((investigation, index) => {
+        // Check if it's a newly added investigation (no result property)
+        const isNewInvestigation = !("result" in investigation);
+        // Remove empty investigations that are not newly added
+        return isNewInvestigation || investigation.name.trim() !== "";
+      }),
+    ];
+  }
 }
 </script>
 
@@ -82,7 +96,7 @@ function removeEmptyNames() {
     </VRow>
 
     <template
-      v-for="(investigation, index) in model.investigations"
+      v-for="(investigation, index) in model?.investigations"
       :key="index"
     >
       <VRow>

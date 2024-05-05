@@ -166,7 +166,8 @@ const drug_hx = ref();
 const substance = ref();
 
 const examination = ref();
-const ix = ref();
+const localIx = ref({ investigations: [{ name: "", result: "" }] });
+
 const differential_diagnosis = ref();
 const management = ref();
 
@@ -196,7 +197,7 @@ const logging = () => {
   // console.log("differential_diagnosis");
   // console.log(differential_diagnosis.value);
   console.log("ix");
-  console.log(ix.value);
+  console.log(localIx.value);
   console.log("management");
   console.log(management.value);
   console.log("tests");
@@ -242,7 +243,7 @@ const logging = () => {
               <forensicHx v-model="forensic_hx" />
               <examinationVue v-model="examination" />
               <ddx v-model="differential_diagnosis" />
-              <ixVue v-model="ix" />
+              <ixVue v-model="localIx" />
               <managementVue v-model="management" />
               <testsVue v-model="tests" />
               <therapyVue v-model="therapy" />
