@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { Visit } from "@/utils/types";
-import { formatDistanceToNow, differenceInHours } from "date-fns";
+import { Patient } from "@/utils/types";
+import { differenceInHours, formatDistanceToNow } from "date-fns";
 
 const router = useRouter();
 const route = useRoute();
 
 interface Props {
-  visits?: Visit[];
-  patientId: number;
+  patientData: Patient;
 }
 
-const { visits, patientId } = defineProps<Props>();
+const { patientData } = defineProps<Props>();
 
 let isNewVisit = false;
 
 watchEffect(() => {
-  if (visits?.slice().reverse()[0]) {
+  if (patientData.visits?.slice().reverse()[0]) {
     const difference = differenceInHours(
       new Date(),
-      visits?.slice().reverse()[0].createdAt
+      patientData.visits?.slice().reverse()[0].createdAt
     );
     isNewVisit = difference >= 8;
   } else {
@@ -34,7 +33,13 @@ watchEffect(() => {
         v-if="isNewVisit"
         variant="outlined"
         class="mb-5"
-        @click="router.push(`/patients/visits/new/${patientId}`)"
+        @click="
+          router.push({
+            name: 'patients-visits-new-id',
+            params: { id: patientData.id },
+            query: { dob: patientData.dob },
+          })
+        "
       >
         New Visit
       </VBtn>
@@ -47,7 +52,7 @@ watchEffect(() => {
       >
         <!-- SECTION Timeline Item: Flight -->
         <VTimelineItem
-          v-for="(visit, index) in visits?.slice().reverse()"
+          v-for="(visit, index) in patientData.visits?.slice().reverse()"
           dot-color="primary"
           size="x-small"
         >
@@ -56,7 +61,7 @@ watchEffect(() => {
             class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
           >
             <span class="app-timeline-title">
-              {{ getVisitNumber(visits, index) }} visit
+              {{ getVisitNumber(patientData.visits, index) }} visit
             </span>
             <span class="app-timeline-meta"
               >{{

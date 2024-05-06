@@ -227,10 +227,7 @@ patientData.value = data.value;
           :touch="false"
         >
           <VWindowItem>
-            <CustomerTabVisits
-              :visits="patientData.visits"
-              :patientId="patientData.id"
-            />
+            <CustomerTabVisits :patientData="patientData" />
           </VWindowItem>
           <VWindowItem>
             <CustomerTabTests />

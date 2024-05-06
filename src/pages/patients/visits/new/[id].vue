@@ -102,16 +102,13 @@ const numberedStepsChild = [
     subtitle: "",
   },
   {
-    title: "Personal History",
+    title: "Examination",
     subtitle: "",
   },
   {
-    title: "Drug & Substance",
-    subtitle: "",
-  },
-  {
-    title: "Mental State Examination",
-    subtitle: "",
+    title: "Consultations",
+    subtitle:
+      "Neurology , medicine, ENT, Speech, Hearing, Ophthalmology, Report",
   },
   {
     title: "Differential Diagnosis",
@@ -122,15 +119,7 @@ const numberedStepsChild = [
     subtitle: "",
   },
   {
-    title: "Tests",
-    subtitle: "",
-  },
-  {
     title: "Notes",
-    subtitle: "",
-  },
-  {
-    title: "Therapy",
     subtitle: "",
   },
 ];
@@ -150,12 +139,17 @@ const errors = ref<Record<string, string | undefined>>({
   message: undefined,
 });
 
+if (route.query.dob) {
+  child.value = +calculateAge(+route.query.dob) < 14;
+}
+
 const numberedSteps =
   storedUserData?.role === "PSYCHOLOGIST"
     ? numberedStepsPsychologist
     : child.value
     ? numberedStepsChild
     : numberedStepsAdult;
+
 console.log(child.value);
 
 const currentStep = ref(0);
@@ -171,11 +165,7 @@ const chief_complaint = ref();
 const present_illness = ref();
 const family_hx = ref();
 
-const past_hx = ref<{
-  past_psychiatric: string;
-  past_medical: string;
-  past_surgical: string;
-}>();
+const past_hx = ref();
 
 const social_hx = ref();
 const personal_hx = ref();
@@ -291,21 +281,38 @@ const submit = () => {
       <VCol cols="12" md="8">
         <VCardText>
           <VForm>
-            <VWindow v-model="currentStep" class="disable-tab-transition">
-              <chiefComplaint v-model="chief_complaint" />
-              <presentIllness v-model="present_illness" />
-              <FamilyHx v-model="family_hx" />
-              <pastHx v-model="past_hx" />
-              <socialHx v-model="social_hx" />
-              <personalHx v-model="personal_hx" />
-              <occupationHx v-model="occupation_hx" />
-              <forensicHx v-model="forensic_hx" />
-              <examinationVue v-model="examination" />
-              <ddx v-model="differential_diagnosis" />
-              <ixVue v-model="ix" />
-              <managementVue v-model="management" />
-              <notesVue v-model="notes" />
-            </VWindow>
+            <div v-if="numberedSteps === numberedStepsAdult">
+              <VWindow v-model="currentStep" class="disable-tab-transition">
+                <chiefComplaint v-model="chief_complaint" />
+                <presentIllness v-model="present_illness" />
+                <FamilyHx v-model="family_hx" />
+                <pastHx v-model="past_hx" />
+                <socialHx v-model="social_hx" />
+                <personalHx v-model="personal_hx" />
+                <occupationHx v-model="occupation_hx" />
+                <forensicHx v-model="forensic_hx" />
+                <examinationVue v-model="examination" />
+                <ddx v-model="differential_diagnosis" />
+                <ixVue v-model="ix" />
+                <managementVue v-model="management" />
+                <notesVue v-model="notes" />
+              </VWindow>
+            </div>
+
+            <div v-else-if="numberedSteps === numberedStepsChild">
+              <VWindow v-model="currentStep" class="disable-tab-transition">
+                <chiefComplaint v-model="chief_complaint" />
+                <presentIllness v-model="present_illness" />
+                <FamilyHx v-model="family_hx" />
+                <pastHx v-model="past_hx" />
+                <socialHx v-model="social_hx" />
+                <examinationVue v-model="examination" />
+                <ddx v-model="differential_diagnosis" />
+                <ixVue v-model="ix" />
+                <managementVue v-model="management" />
+                <notesVue v-model="notes" />
+              </VWindow>
+            </div>
 
             <div
               class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"

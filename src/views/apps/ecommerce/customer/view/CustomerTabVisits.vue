@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import { Visit } from "@/utils/types";
+import { Patient } from "@/utils/types";
 
 interface Props {
-  visits?: Visit[];
-  patientId: number;
+  patientData: Patient;
 }
 
-const { visits, patientId } = defineProps<Props>();
+const { patientData } = defineProps<Props>();
 </script>
 
 <template>
   <VRow>
     <VCol>
-      <TimelineBasic :visits="visits" :patientId="patientId" />
+      <TimelineBasic :patientData="patientData" />
     </VCol>
   </VRow>
   <VRow>
