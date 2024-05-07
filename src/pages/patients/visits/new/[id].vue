@@ -15,6 +15,7 @@ import presentIllness from "../presentIllness.vue";
 import socialHx from "../socialHx.vue";
 import testsVue from "../testsVue.vue";
 import therapyVue from "../therapyVue.vue";
+import presentIllnessChild from "../presentIllnessChild.vue";
 
 const storedUserData: User | undefined = useCookie("userData").value as
   | User
@@ -152,7 +153,7 @@ const numberedSteps =
 
 console.log(child.value);
 
-const currentStep = ref(0);
+const currentStep = ref(1);
 
 const patient = ref(route.params.id);
 const doctor = ref(storedUserData?.id);
@@ -302,7 +303,7 @@ const submit = () => {
             <div v-else-if="numberedSteps === numberedStepsChild">
               <VWindow v-model="currentStep" class="disable-tab-transition">
                 <chiefComplaint v-model="chief_complaint" />
-                <presentIllness v-model="present_illness" />
+                <presentIllnessChild v-model="present_illness" />
                 <FamilyHx v-model="family_hx" />
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />
@@ -313,6 +314,8 @@ const submit = () => {
                 <notesVue v-model="notes" />
               </VWindow>
             </div>
+
+            <div v-else-if="numberedSteps === numberedStepsPsychologist"></div>
 
             <div
               class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"

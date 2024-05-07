@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import CustomerBioPanel from "@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue";
-import CustomerTabAddressAndBilling from "@/views/apps/ecommerce/customer/view/CustomerTabAddressAndBilling.vue";
-import CustomerTabNotification from "@/views/apps/ecommerce/customer/view/CustomerTabNotification.vue";
+import CustomerTabTherapy from "@/views/apps/ecommerce/customer/view/CustomerTabTherapy.vue";
 import CustomerTabVisits from "@/views/apps/ecommerce/customer/view/CustomerTabVisits.vue";
 import CustomerTabTests from "@/views/apps/ecommerce/customer/view/CustomerTabTests.vue";
 import type { Patient, User, Prescription, Test, Visit } from "@/utils/types";
@@ -21,8 +20,7 @@ const userTab = ref(null);
 const tabs = [
   { title: "Visits", icon: "tabler-file" },
   { title: "Tests", icon: "tabler-flask" },
-  { title: "Address & Billing", icon: "tabler-map-pin" },
-  { title: "Notifications", icon: "tabler-bell" },
+  { title: "Therapy", icon: "tabler-user" },
 ];
 
 const { data } = await useApi<any>(
@@ -230,13 +228,10 @@ patientData.value = data.value;
             <CustomerTabVisits :patientData="patientData" />
           </VWindowItem>
           <VWindowItem>
-            <CustomerTabTests />
+            <CustomerTabTests :patientData="patientData" />
           </VWindowItem>
           <VWindowItem>
-            <CustomerTabAddressAndBilling />
-          </VWindowItem>
-          <VWindowItem>
-            <CustomerTabNotification />
+            <CustomerTabTherapy />
           </VWindowItem>
         </VWindow>
       </VCol>

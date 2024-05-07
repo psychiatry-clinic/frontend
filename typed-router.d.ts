@@ -166,6 +166,7 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-past-hx': RouteRecordInfo<'patients-visits-past-hx', '/patients/visits/pastHx', Record<never, never>, Record<never, never>>,
     'patients-visits-personal-hx': RouteRecordInfo<'patients-visits-personal-hx', '/patients/visits/personalHx', Record<never, never>, Record<never, never>>,
     'patients-visits-present-illness': RouteRecordInfo<'patients-visits-present-illness', '/patients/visits/presentIllness', Record<never, never>, Record<never, never>>,
+    'patients-visits-present-illness-child': RouteRecordInfo<'patients-visits-present-illness-child', '/patients/visits/presentIllnessChild', Record<never, never>, Record<never, never>>,
     'patients-visits-social-hx': RouteRecordInfo<'patients-visits-social-hx', '/patients/visits/socialHx', Record<never, never>, Record<never, never>>,
     'patients-visits-tests-vue': RouteRecordInfo<'patients-visits-tests-vue', '/patients/visits/testsVue', Record<never, never>, Record<never, never>>,
     'patients-visits-therapy-vue': RouteRecordInfo<'patients-visits-therapy-vue', '/patients/visits/therapyVue', Record<never, never>, Record<never, never>>,

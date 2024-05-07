@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { Patient } from "@/utils/types";
+import { Patient, User } from "@/utils/types";
 import { differenceInHours, formatDistanceToNow } from "date-fns";
+
+const storedUserData: User | undefined = useCookie("userData").value as
+  | User
+  | undefined;
 
 const router = useRouter();
 const route = useRoute();
@@ -30,7 +34,7 @@ watchEffect(() => {
   <VCard title="Visits Timeline">
     <VCardText>
       <VBtn
-        v-if="isNewVisit"
+        v-if="isNewVisit && storedUserData?.role === 'DOCTOR'"
         variant="outlined"
         class="mb-5"
         @click="
