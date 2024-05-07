@@ -5,20 +5,26 @@ interface Props {
   patientData: Patient;
 }
 
-interface Model {
-  therapyNotes: string | undefined;
-}
+// interface Model {
+//   therapyNotes: string | undefined;
+// }
 
-const { patientData } = defineProps<Props>();
+// const { patientData } = defineProps<Props>();
 
-const model = defineModel<Model>();
+// const model = defineModel<Model>();
 
-const therapyNotes = ref(model.value?.therapyNotes);
+// const therapyNotes = ref(model.value?.therapyNotes);
 
-function update() {
-  model.value = {
-    therapyNotes: therapyNotes.value,
-  };
+// function update() {
+//   model.value = {
+//     therapyNotes: therapyNotes.value,
+//   };
+// }
+
+const therapy = ref();
+
+function update(e: any) {
+  therapy.value = e.target.value;
 }
 </script>
 
@@ -28,7 +34,7 @@ function update() {
       <VCard class="mb-6" title="Therapy Notes">
         <VCardText>
           <AppTextarea
-            v-model="therapyNotes"
+            v-model="therapy"
             label=""
             auto-grow
             rows="3"

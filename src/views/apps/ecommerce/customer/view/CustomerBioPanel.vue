@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { calculateAge, formatSiblingOrder } from "@/utils/myFormat";
-import type { Patient } from "@/utils/types";
+  import { calculateAge, formatSiblingOrder } from '@/utils/myFormat'
+  import type { Patient } from '@/utils/types'
 
-const props = defineProps<Props>();
-const isUserInfoEditDialogVisible = ref(false);
+  const props = defineProps<Props>()
+  const isUserInfoEditDialogVisible = ref(false)
 
-interface Props {
-  patientData: Patient;
-}
+  interface Props {
+    patientData: Patient
+  }
 
-const editPatientData = () => {
-  console.log("change data");
+  const editPatientData = () => {
+    console.log('change data')
 
-  //later
-};
+    //later
+  }
 </script>
 
 <template>
@@ -160,7 +160,7 @@ const editPatientData = () => {
                   <span
                     :class="props.patientData.related ? 'text-primary' : ''"
                   >
-                    {{ props.patientData.related ? "Related" : "Not Related" }}
+                    {{ props.patientData.related ? 'Related' : 'Not Related' }}
                   </span>
                   Parents
                 </h6>
@@ -194,8 +194,8 @@ const editPatientData = () => {
                     {{
                       calculateAge(
                         props.patientData.father_dob
-                          ? props.patientData.father_dob
-                          : 1
+                          ? props.patientData.father_dob.toString()
+                          : '1'
                       )
                     }}
                   </span>
@@ -248,8 +248,8 @@ const editPatientData = () => {
                     {{
                       calculateAge(
                         props.patientData.mother_dob
-                          ? props.patientData.mother_dob
-                          : 1
+                          ? props.patientData.mother_dob.toString()
+                          : '1'
                       )
                     }}
                   </span>
@@ -342,16 +342,16 @@ const editPatientData = () => {
 </template>
 
 <style lang="scss" scoped>
-.card-list {
-  --v-card-list-gap: 0.5rem;
-}
+  .card-list {
+    --v-card-list-gap: 0.5rem;
+  }
 
-.current-plan {
-  background: linear-gradient(
-    45deg,
-    rgb(var(--v-theme-primary)) 0%,
-    #9e95f5 100%
-  );
-  color: #fff;
-}
+  .current-plan {
+    background: linear-gradient(
+      45deg,
+      rgb(var(--v-theme-primary)) 0%,
+      #9e95f5 100%
+    );
+    color: #fff;
+  }
 </style>

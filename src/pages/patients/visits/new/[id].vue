@@ -1,262 +1,262 @@
 <script lang="ts" setup>
-import { User } from "@/utils/types";
-import chiefComplaint from "../chiefComplaint.vue";
-import ddx from "../ddx.vue";
-import examinationVue from "../examination.vue";
-import FamilyHx from "../familyHx.vue";
-import forensicHx from "../forensicHx.vue";
-import ixVue from "../ixVue.vue";
-import managementVue from "../managementVue.vue";
-import notesVue from "../notesVue.vue";
-import occupationHx from "../occupationHx.vue";
-import pastHx from "../pastHx.vue";
-import personalHx from "../personalHx.vue";
-import presentIllness from "../presentIllness.vue";
-import socialHx from "../socialHx.vue";
-import testsVue from "../testsVue.vue";
-import therapyVue from "../therapyVue.vue";
-import presentIllnessChild from "../presentIllnessChild.vue";
+  import { User } from '@/utils/types'
+  import chiefComplaint from '../chiefComplaint.vue'
+  import ddx from '../ddx.vue'
+  import examinationVue from '../examination.vue'
+  import FamilyHx from '../familyHx.vue'
+  import forensicHx from '../forensicHx.vue'
+  import ixVue from '../ixVue.vue'
+  import managementVue from '../managementVue.vue'
+  import notesVue from '../notesVue.vue'
+  import occupationHx from '../occupationHx.vue'
+  import pastHx from '../pastHx.vue'
+  import personalHx from '../personalHx.vue'
+  import presentIllness from '../presentIllness.vue'
+  import socialHx from '../socialHx.vue'
+  import testsVue from '../testsVue.vue'
+  import therapyVue from '../therapyVue.vue'
+  import presentIllnessChild from '../presentIllnessChild.vue'
 
-const storedUserData: User | undefined = useCookie("userData").value as
-  | User
-  | undefined;
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
 
-const router = useRouter();
-const route = useRoute("patients-visits-new-id");
+  const router = useRouter()
+  const route = useRoute('patients-visits-new-id')
 
-const child = ref(false);
+  const child = ref(false)
 
-const numberedStepsAdult = [
-  {
-    title: "Chief Complaint",
-    subtitle: "",
-  },
-  {
-    title: "Present Illness",
-    subtitle: "",
-  },
-  {
-    title: "Family History",
-    subtitle: "",
-  },
-  {
-    title: "Past History",
-    subtitle: "",
-  },
-  {
-    title: "Social History",
-    subtitle: "",
-  },
-  {
-    title: "Personal History",
-    subtitle: "",
-  },
-  {
-    title: "Occupational History",
-    subtitle: "",
-  },
-  {
-    title: "Forensic History",
-    subtitle: "",
-  },
-  {
-    title: "Examination",
-    subtitle: "",
-  },
-  {
-    title: "Differential Diagnosis",
-    subtitle: "",
-  },
-  {
-    title: "Investigation",
-    subtitle: "",
-  },
-  {
-    title: "Management",
-    subtitle: "",
-  },
-  {
-    title: "Notes",
-    subtitle: "",
-  },
-];
+  const numberedStepsAdult = [
+    {
+      title: 'Chief Complaint',
+      subtitle: '',
+    },
+    {
+      title: 'Present Illness',
+      subtitle: '',
+    },
+    {
+      title: 'Family History',
+      subtitle: '',
+    },
+    {
+      title: 'Past History',
+      subtitle: '',
+    },
+    {
+      title: 'Social History',
+      subtitle: '',
+    },
+    {
+      title: 'Personal History',
+      subtitle: '',
+    },
+    {
+      title: 'Occupational History',
+      subtitle: '',
+    },
+    {
+      title: 'Forensic History',
+      subtitle: '',
+    },
+    {
+      title: 'Examination',
+      subtitle: '',
+    },
+    {
+      title: 'Differential Diagnosis',
+      subtitle: '',
+    },
+    {
+      title: 'Investigation',
+      subtitle: '',
+    },
+    {
+      title: 'Management',
+      subtitle: '',
+    },
+    {
+      title: 'Notes',
+      subtitle: '',
+    },
+  ]
 
-const numberedStepsChild = [
-  {
-    title: "Chief Complaint",
-    subtitle: "",
-  },
-  {
-    title: "Present Illness",
-    subtitle: "",
-  },
-  {
-    title: "Family History",
-    subtitle: "",
-  },
-  {
-    title: "Past History",
-    subtitle: "",
-  },
-  {
-    title: "Social History",
-    subtitle: "",
-  },
-  {
-    title: "Examination",
-    subtitle: "",
-  },
-  {
-    title: "Consultations",
-    subtitle:
-      "Neurology , medicine, ENT, Speech, Hearing, Ophthalmology, Report",
-  },
-  {
-    title: "Differential Diagnosis",
-    subtitle: "",
-  },
-  {
-    title: "Management",
-    subtitle: "",
-  },
-  {
-    title: "Notes",
-    subtitle: "",
-  },
-];
+  const numberedStepsChild = [
+    {
+      title: 'Chief Complaint',
+      subtitle: '',
+    },
+    {
+      title: 'Present Illness',
+      subtitle: '',
+    },
+    {
+      title: 'Family History',
+      subtitle: '',
+    },
+    {
+      title: 'Past History',
+      subtitle: '',
+    },
+    {
+      title: 'Social History',
+      subtitle: '',
+    },
+    {
+      title: 'Examination',
+      subtitle: '',
+    },
+    {
+      title: 'Consultations',
+      subtitle:
+        'Neurology , medicine, ENT, Speech, Hearing, Ophthalmology, Report',
+    },
+    {
+      title: 'Differential Diagnosis',
+      subtitle: '',
+    },
+    {
+      title: 'Management',
+      subtitle: '',
+    },
+    {
+      title: 'Notes',
+      subtitle: '',
+    },
+  ]
 
-const numberedStepsPsychologist = [
-  {
-    title: "Psychometric Tests",
-    subtitle: "",
-  },
-  {
-    title: "Therapy",
-    subtitle: "",
-  },
-];
+  const numberedStepsPsychologist = [
+    {
+      title: 'Psychometric Tests',
+      subtitle: '',
+    },
+    {
+      title: 'Therapy',
+      subtitle: '',
+    },
+  ]
 
-const errors = ref<Record<string, string | undefined>>({
-  message: undefined,
-});
+  const errors = ref<Record<string, string | undefined>>({
+    message: undefined,
+  })
 
-if (route.query.dob) {
-  child.value = +calculateAge(+route.query.dob) < 14;
-}
-
-const numberedSteps =
-  storedUserData?.role === "PSYCHOLOGIST"
-    ? numberedStepsPsychologist
-    : child.value
-    ? numberedStepsChild
-    : numberedStepsAdult;
-
-console.log(child.value);
-
-const currentStep = ref(1);
-
-const patient = ref(route.params.id);
-const doctor = ref(storedUserData?.id);
-
-const prescription = ref();
-const clinic = ref();
-const duration = ref();
-
-const chief_complaint = ref();
-const present_illness = ref();
-const family_hx = ref();
-
-const past_hx = ref();
-
-const social_hx = ref();
-const personal_hx = ref();
-const occupation_hx = ref();
-const forensic_hx = ref();
-
-const examination = ref();
-const ix = ref({ investigations: [{ name: "", result: "" }] });
-const management = ref({ managements: [{ name: "", form: "", dose: "" }] });
-
-const tests = ref({ tests: [{ name: "", result: "" }] });
-
-const differential_diagnosis = ref();
-
-const therapy = ref();
-const notes = ref();
-
-const link = `/visits-new/${storedUserData?.id}/${route.params.id}`;
-
-const addVisit = async () => {
-  if (!storedUserData) return;
-
-  try {
-    const res = await $api(link, {
-      method: "POST",
-      body: {
-        chief_complaint: chief_complaint.value,
-        present_illness: present_illness.value,
-        examination: examination.value,
-        differential_diagnosis: differential_diagnosis.value?.differential,
-        ix:
-          ix.value.investigations[0].name === ""
-            ? null
-            : ix.value.investigations,
-        management:
-          management.value?.managements[0].name === ""
-            ? null
-            : management.value?.managements,
-        therapy: therapy.value?.therapyNotes,
-        notes: notes.value?.notes ? notes.value.notes : null,
-        social_hx: social_hx.value,
-        family_hx: family_hx.value,
-        personal_hx: personal_hx.value,
-        forensic_hx: forensic_hx.value,
-        occupation_hx: occupation_hx.value,
-        past_hx: past_hx.value,
-      },
-      onResponseError({ response }) {
-        errors.value = response._data;
-      },
-    });
-    console.log(res);
-    router.push(`/patients/${route.params.id}`);
-  } catch (error) {
-    console.error(error);
+  if (route.query.dob && typeof route.query.dob === 'string') {
+    child.value = +calculateAge(route.query.dob) < 14
   }
-};
 
-const submit = () => {
-  // console.log("chief_complaint");
-  // console.log(chief_complaint.value);
-  // console.log("present_illness");
-  // console.log(present_illness.value);
-  // console.log("family_hx");
-  // console.log(family_hx.value);
-  // console.log("past_hx");
-  // console.log(past_hx.value);
-  // console.log("social_hx");
-  // console.log(social_hx.value);
-  // console.log("personal_hx");
-  // console.log(personal_hx.value);
-  // console.log("occupation_hx");
-  // console.log(occupation_hx.value);
-  // console.log("forensic_hx");
-  // console.log(forensic_hx.value);
-  // console.log("examination");
-  // console.log(examination.value);
-  // console.log("differential_diagnosis");
-  // console.log(differential_diagnosis.value);
-  // console.log("ix");
-  // console.log(ix.value);
-  // console.log("management");
-  // console.log(management.value);
-  // console.log("tests");
-  // console.log(tests.value);
-  // console.log("therapy");
-  // console.log(therapy.value);
-  // console.log("notes");
-  // console.log(notes.value);
-};
+  const numberedSteps =
+    storedUserData?.role === 'PSYCHOLOGIST'
+      ? numberedStepsPsychologist
+      : child.value
+      ? numberedStepsChild
+      : numberedStepsAdult
+
+  console.log(child.value)
+
+  const currentStep = ref(1)
+
+  const patient = ref(route.params.id)
+  const doctor = ref(storedUserData?.id)
+
+  const prescription = ref()
+  const clinic = ref()
+  const duration = ref()
+
+  const chief_complaint = ref()
+  const present_illness = ref()
+  const family_hx = ref()
+
+  const past_hx = ref()
+
+  const social_hx = ref()
+  const personal_hx = ref()
+  const occupation_hx = ref()
+  const forensic_hx = ref()
+
+  const examination = ref()
+  const ix = ref({ investigations: [{ name: '', result: '' }] })
+  const management = ref({ managements: [{ name: '', form: '', dose: '' }] })
+
+  const tests = ref({ tests: [{ name: '', result: '' }] })
+
+  const differential_diagnosis = ref()
+
+  const therapy = ref()
+  const notes = ref()
+
+  const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
+
+  const addVisit = async () => {
+    if (!storedUserData) return
+
+    try {
+      const res = await $api(link, {
+        method: 'POST',
+        body: {
+          chief_complaint: chief_complaint.value,
+          present_illness: present_illness.value,
+          examination: examination.value,
+          differential_diagnosis: differential_diagnosis.value?.differential,
+          ix:
+            ix.value.investigations[0].name === ''
+              ? null
+              : ix.value.investigations,
+          management:
+            management.value?.managements[0].name === ''
+              ? null
+              : management.value?.managements,
+          therapy: therapy.value?.therapyNotes,
+          notes: notes.value?.notes ? notes.value.notes : null,
+          social_hx: social_hx.value,
+          family_hx: family_hx.value,
+          personal_hx: personal_hx.value,
+          forensic_hx: forensic_hx.value,
+          occupation_hx: occupation_hx.value,
+          past_hx: past_hx.value,
+        },
+        onResponseError({ response }) {
+          errors.value = response._data
+        },
+      })
+      console.log(res)
+      router.push(`/patients/${route.params.id}`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const submit = () => {
+    // console.log("chief_complaint");
+    // console.log(chief_complaint.value);
+    // console.log("present_illness");
+    // console.log(present_illness.value);
+    // console.log("family_hx");
+    // console.log(family_hx.value);
+    // console.log("past_hx");
+    // console.log(past_hx.value);
+    // console.log("social_hx");
+    // console.log(social_hx.value);
+    // console.log("personal_hx");
+    // console.log(personal_hx.value);
+    // console.log("occupation_hx");
+    // console.log(occupation_hx.value);
+    // console.log("forensic_hx");
+    // console.log(forensic_hx.value);
+    // console.log("examination");
+    // console.log(examination.value);
+    // console.log("differential_diagnosis");
+    // console.log(differential_diagnosis.value);
+    // console.log("ix");
+    // console.log(ix.value);
+    // console.log("management");
+    // console.log(management.value);
+    // console.log("tests");
+    // console.log(tests.value);
+    // console.log("therapy");
+    // console.log(therapy.value);
+    // console.log("notes");
+    // console.log(notes.value);
+  }
 </script>
 
 <template>

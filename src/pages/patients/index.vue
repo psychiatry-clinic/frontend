@@ -1,61 +1,64 @@
 <script setup lang="ts">
-import type { Patient, User } from "@/utils/types";
-import ECommerceAddCustomerDrawer from "@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue";
+  import type { Patient, User } from '@/utils/types'
+  import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
 
-const router = useRouter();
+  const router = useRouter()
 
-const searchQuery = ref("");
-const isAddPatientDrawerOpen = ref(false);
+  const searchQuery = ref('')
+  const isAddPatientDrawerOpen = ref(false)
 
-// Data table options
-const itemsPerPage = ref(10);
-const page = ref(1);
-const sortBy = ref();
-const orderBy = ref();
+  // Data table options
+  const itemsPerPage = ref(10)
+  const page = ref(1)
+  const sortBy = ref()
+  const orderBy = ref()
 
-// Data table Headers
-const headers = [
-  { title: "Patient", key: "name" },
-  { title: "Gender", key: "gender" },
-  { title: "Date of Birth", key: "dob" },
-  { title: "Age", key: "age" },
-  { title: "Visits", key: "visits.length" },
-  { title: "First Visit", key: "createdAt" },
-  { title: "ACTIONS", key: "actions" },
-];
+  // Data table Headers
+  const headers = [
+    { title: 'Patient', key: 'name' },
+    { title: 'Gender', key: 'gender' },
+    { title: 'Date of Birth', key: 'dob' },
+    { title: 'Age', key: 'age' },
+    { title: 'Visits', key: 'visits.length' },
+    { title: 'Registration', key: 'createdAt' },
+    { title: 'ACTIONS', key: 'actions' },
+  ]
 
-// Update data table options
-const updateOptions = (options: any) => {
-  sortBy.value = options.sortBy[0]?.key;
-  orderBy.value = options.sortBy[0]?.order;
-};
+  // Update data table options
+  const updateOptions = (options: any) => {
+    sortBy.value = options.sortBy[0]?.key
+    orderBy.value = options.sortBy[0]?.order
+  }
 
-const storedUserData: User | undefined = useCookie("userData").value as
-  | User
-  | undefined;
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
 
-const link = `/patients/${storedUserData?.id}`;
+  const link = `/patients/${storedUserData?.id}`
 
-let { data } = await useApi<any>(
-  createUrl(link, {
-    query: {
-      q: searchQuery,
-      itemsPerPage,
-      page,
-      sortBy,
-      orderBy,
-    },
+  let { data } = await useApi<any>(
+    createUrl(link, {
+      query: {
+        q: searchQuery,
+        itemsPerPage,
+        page,
+        sortBy,
+        orderBy,
+      },
+    })
+  )
+
+  const patients = computed((): Patient[] => {
+    return data.value.patients.map((patient: Patient) => ({
+      ...patient,
+      createdAt: removeTimeFromDate(patient.createdAt), // Format createdAt date
+      age: calculateAge(patient.dob.toString()), // Calculate age
+      dob: removeTimeFromDate(patient.dob),
+    }))
   })
-);
 
-const patients = computed((): Patient[] => {
-  return data.value.patients.map((patient: Patient) => ({
-    ...patient,
-    createdAt: formatDate(patient.createdAt), // Format createdAt date
-    age: calculateAge(patient.dob.toString()), // Calculate age
-  }));
-});
-const totalPatients = computed(() => data.value.total);
+  console.log(typeof patients?.value[0].dob)
+  const totalPatients = computed(() => data.value.total)
 </script>
 
 <template>
@@ -118,7 +121,7 @@ const totalPatients = computed(() => data.value.total);
 </template>
 
 <style lang="scss" scoped>
-.customer-title:hover {
-  color: rgba(var(--v-theme-primary)) !important;
-}
+  .customer-title:hover {
+    color: rgba(var(--v-theme-primary)) !important;
+  }
 </style>

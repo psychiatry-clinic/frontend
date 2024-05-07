@@ -1,43 +1,66 @@
-export const calculateAge = (dob: string | number) => {
-  if (+dob===1) {
-    return 'Missing Date of Birth'
-  }
-  const birthYear = +dob;
-  const currentYear = new Date().getFullYear();
+import { differenceInYears, differenceInMonths, isValid } from 'date-fns'
 
-  return currentYear - +birthYear;
-};
+export const calculateAge = (
+  dob: string
+): { years: number; months: number } | string => {
+  const dobDate = new Date(dob)
+
+  if (!isValid(dobDate)) {
+    return 'Invalid Date of Birth'
+  }
+
+  const currentDate = new Date()
+  const years = differenceInYears(currentDate, dobDate)
+  const months = differenceInMonths(currentDate, dobDate) % 12
+
+  if (years > 0 && months > 0) {
+    return `${years} years & ${months} months`
+  } else if (years > 0 && months <= 0) {
+    return `${years} years`
+  } else if (years <= 0 && months > 0) {
+    return `${months} months`
+  } else {
+    return 'less than a month'
+  }
+}
 
 export const formatSiblingOrder = (order: number | string): string => {
-  const suffixes = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"];
-  const index = +order % 100;
-  return (
-    order + (suffixes[(index - 20) % 10] || suffixes[index] || suffixes[0])
-  );
-};
+  const suffixes = ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th']
+  const index = +order % 100
+  return order + (suffixes[(index - 20) % 10] || suffixes[index] || suffixes[0])
+}
 
-export const getVisitNumber=(visits: any, index: number): string => {
-  const totalVisits = visits.length;
-  const visitNumber = totalVisits - index;
-  return `${visitNumber}${getOrdinalSuffix(visitNumber)}`;
+export const getVisitNumber = (visits: any, index: number): string => {
+  const totalVisits = visits.length
+  const visitNumber = totalVisits - index
+  return `${visitNumber}${getOrdinalSuffix(visitNumber)}`
 }
 
 // Function to get the ordinal suffix for a number
 function getOrdinalSuffix(number: number): string {
   if (number === 11 || number === 12 || number === 13) {
-      return 'th';
+    return 'th'
   }
 
-  const lastDigit = number % 10;
+  const lastDigit = number % 10
 
   switch (lastDigit) {
-      case 1:
-          return 'st';
-      case 2:
-          return 'nd';
-      case 3:
-          return 'rd';
-      default:
-          return 'th';
+    case 1:
+      return 'st'
+    case 2:
+      return 'nd'
+    case 3:
+      return 'rd'
+    default:
+      return 'th'
   }
+}
+
+export const addTimeToDateString = (dateString: string): string => {
+  return `${dateString}T00:00:00.000Z`
+}
+
+export const removeTimeFromDate = (dateTimeString: string): string => {
+  console.log(dateTimeString)
+  return dateTimeString.split('T')[0]
 }

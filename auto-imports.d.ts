@@ -11,6 +11,8 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const accommodationSuggestions: typeof import('./src/utils/suggestions')['accommodationSuggestions']
+  const addTimeToDateString: typeof import('./src/utils/myFormat')['addTimeToDateString']
+  const adultEducation: typeof import('./src/utils/suggestions')['adultEducation']
   const ageValidator: typeof import('./src/@core/utils/validators')['ageValidator']
   const alphaDashValidator: typeof import('./src/@core/utils/validators')['alphaDashValidator']
   const alphaValidator: typeof import('./src/@core/utils/validators')['alphaValidator']
@@ -19,12 +21,14 @@ declare global {
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const avatarText: typeof import('./src/@core/utils/formatters')['avatarText']
-  const baghdadRegions: typeof import('./src/utils/lists')['baghdadRegions']
+  const baghdadRegions: typeof import('./src/utils/suggestions')['baghdadRegions']
   const betweenValidator: typeof import('./src/@core/utils/validators')['betweenValidator']
   const calculateAge: typeof import('./src/utils/myFormat')['calculateAge']
+  const calculateAgeF: typeof import('./src/utils/myFormat')['calculateAgeF']
   const chief_complains: typeof import('./src/utils/suggestions')['chief_complains']
+  const childEducation: typeof import('./src/utils/suggestions')['childEducation']
   const circumstancesSuggestions: typeof import('./src/utils/suggestions')['circumstancesSuggestions']
-  const cities: typeof import('./src/utils/lists')['cities']
+  const cities: typeof import('./src/utils/suggestions')['cities']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
   const computedEager: typeof import('@vueuse/core')['computedEager']
@@ -59,6 +63,7 @@ declare global {
   const differentialDiagnosis: typeof import('./src/utils/suggestions')['differentialDiagnosis']
   const durations: typeof import('./src/utils/suggestions')['durations']
   const eagerComputed: typeof import('@vueuse/core')['eagerComputed']
+  const education: typeof import('./src/utils/suggestions')['education']
   const effectScope: typeof import('vue')['effectScope']
   const emailValidator: typeof import('./src/@core/utils/validators')['emailValidator']
   const extendRef: typeof import('@vueuse/core')['extendRef']
@@ -151,6 +156,7 @@ declare global {
   const registerPlugins: typeof import('./src/@core/utils/plugins')['registerPlugins']
   const registerPlugins_: typeof import('./src/@core/utils/plugins')['registerPlugins_']
   const relationshipsSuggestions: typeof import('./src/utils/suggestions')['relationshipsSuggestions']
+  const removeTimeFromDate: typeof import('./src/utils/myFormat')['removeTimeFromDate']
   const requiredValidator: typeof import('./src/@core/utils/validators')['requiredValidator']
   const resolveComponent: typeof import('vue')['resolveComponent']
   const resolveRef: typeof import('@vueuse/core')['resolveRef']
@@ -405,6 +411,8 @@ declare module 'vue' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
+    readonly addTimeToDateString: UnwrapRef<typeof import('./src/utils/myFormat')['addTimeToDateString']>
+    readonly adultEducation: UnwrapRef<typeof import('./src/utils/suggestions')['adultEducation']>
     readonly ageValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['ageValidator']>
     readonly alphaDashValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaDashValidator']>
     readonly alphaValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaValidator']>
@@ -412,12 +420,13 @@ declare module 'vue' {
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly avatarText: UnwrapRef<typeof import('./src/@core/utils/formatters')['avatarText']>
-    readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
+    readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/suggestions')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
     readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
     readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
-    readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
+    readonly cities: UnwrapRef<typeof import('./src/utils/suggestions')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -540,6 +549,7 @@ declare module 'vue' {
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
     readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
+    readonly removeTimeFromDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeFromDate']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>
@@ -781,6 +791,8 @@ declare module '@vue/runtime-core' {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
+    readonly addTimeToDateString: UnwrapRef<typeof import('./src/utils/myFormat')['addTimeToDateString']>
+    readonly adultEducation: UnwrapRef<typeof import('./src/utils/suggestions')['adultEducation']>
     readonly ageValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['ageValidator']>
     readonly alphaDashValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaDashValidator']>
     readonly alphaValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['alphaValidator']>
@@ -788,12 +800,13 @@ declare module '@vue/runtime-core' {
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly avatarText: UnwrapRef<typeof import('./src/@core/utils/formatters')['avatarText']>
-    readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/lists')['baghdadRegions']>
+    readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/suggestions')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
     readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
     readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
-    readonly cities: UnwrapRef<typeof import('./src/utils/lists')['cities']>
+    readonly cities: UnwrapRef<typeof import('./src/utils/suggestions')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly computedAsync: UnwrapRef<typeof import('@vueuse/core')['computedAsync']>
     readonly computedEager: UnwrapRef<typeof import('@vueuse/core')['computedEager']>
@@ -916,6 +929,7 @@ declare module '@vue/runtime-core' {
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
     readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
+    readonly removeTimeFromDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeFromDate']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
     readonly resolveRef: UnwrapRef<typeof import('@vueuse/core')['resolveRef']>

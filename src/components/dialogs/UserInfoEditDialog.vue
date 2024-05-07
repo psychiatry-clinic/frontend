@@ -28,7 +28,7 @@ const onFormReset = () => {
 };
 
 const selectedRadio = ref();
-const age = +calculateAge(userData.value.dob);
+const age = +calculateAge(userData.value.dob.toString());
 selectedRadio.value = age > 18 ? "adult" : "child";
 
 const dialogModelValueUpdate = (val: boolean) => {

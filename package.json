@@ -132,5 +132,10 @@
   "packageManager": "pnpm@8.6.2",
   "msw": {
     "workerDirectory": "public"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "vueIndentScriptAndStyle": true
   }
 }

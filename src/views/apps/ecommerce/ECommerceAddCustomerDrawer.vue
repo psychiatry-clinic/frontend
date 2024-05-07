@@ -1,152 +1,159 @@
 <script setup lang="ts">
-import AppTextarea from "@/@core/components/app-form-elements/AppTextarea.vue";
-import { baghdadRegions, cities } from "@/utils/lists";
-import type { User } from "@/utils/types";
-import { BlobServiceClient } from "@azure/storage-blob";
-import type { CustomInputContent } from "@core/types";
-import { PerfectScrollbar } from "vue3-perfect-scrollbar";
-import { VForm } from "vuetify/components/VForm";
+  import { baghdadRegions, cities } from '@/utils/suggestions'
+  import type { User } from '@/utils/types'
+  import { BlobServiceClient } from '@azure/storage-blob'
+  import type { CustomInputContent } from '@core/types'
+  import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+  import { VForm } from 'vuetify/components/VForm'
 
-const blobSasUrl = "https://dakakean.blob.core.windows.net/psychiatry?sp=racwl&st=2024-05-02T06:46:34Z&se=2024-05-10T14:46:34Z&spr=https&sv=2022-11-02&sr=c&sig=oTStvDHsKPQiKZ4%2Bniqpd7Dt9w514Y52T6kIQlC5490%3D";
-const blobServiceClient = new BlobServiceClient(blobSasUrl);
-const containerName = "psychiatry";
-const containerClient = blobServiceClient.getContainerClient(containerName);
+  const blobSasUrl =
+    'https://dakakean.blob.core.windows.net/psychiatry?sp=racwl&st=2024-05-02T06:46:34Z&se=2024-05-10T14:46:34Z&spr=https&sv=2022-11-02&sr=c&sig=oTStvDHsKPQiKZ4%2Bniqpd7Dt9w514Y52T6kIQlC5490%3D'
+  const blobServiceClient = new BlobServiceClient(blobSasUrl)
+  const containerName = 'psychiatry'
+  const containerClient = blobServiceClient.getContainerClient(containerName)
 
-const uploadFiles = async () => {
-  const fileInput = document.getElementById("picture") as HTMLInputElement
+  const uploadFiles = async () => {
+    const fileInput = document.getElementById('picture') as HTMLInputElement
     try {
-        const promises = [];
-        if (fileInput && fileInput.files) {      
-          for (const file of fileInput.files) {
-            const blockBlobClient = containerClient.getBlockBlobClient(file.name);
-            promises.push(blockBlobClient.uploadBrowserData(file));
-          }
-          await Promise.all(promises);
-          avatar.value = (await promises[0])._response.request.url          
-          // listFiles();
+      const promises = []
+      if (fileInput && fileInput.files) {
+        for (const file of fileInput.files) {
+          const blockBlobClient = containerClient.getBlockBlobClient(file.name)
+          promises.push(blockBlobClient.uploadBrowserData(file))
         }
+        await Promise.all(promises)
+        avatar.value = (await promises[0])._response.request.url
+        // listFiles();
       }
-        catch (error) {
-            console.log(error);
+    } catch (error) {
+      console.log(error)
     }
-}
-
-interface Props {
-  isDrawerOpen: boolean;
-}
-
-interface Emit {
-  (e: "update:isDrawerOpen", value: boolean): void;
-}
-
-const props = defineProps<Props>();
-const emit = defineEmits<Emit>();
-const router = useRouter();
-
-const handleDrawerModelValueUpdate = (val: boolean) => {
-  emit("update:isDrawerOpen", val);
-};
-
-const errors = ref<Record<string, string | undefined>>({
-  message: undefined,
-});
-
-const radioContent: CustomInputContent[] = [
-  {
-    title: "Child",
-    value: "child",
-  },
-  {
-    title: "Adult",
-    value: "adult",
-  },
-];
-
-const selectedRadio = ref("child");
-
-const refVForm = ref<VForm>();
-const avatar = ref();
-const name = ref();
-const dob = ref();
-const gender = ref("Male");
-const phone = ref();
-const father_dob = ref();
-const father_edu = ref();
-const father_age = ref();
-const father_work = ref();
-const mother_dob = ref();
-const mother_age = ref();
-const mother_edu = ref();
-const mother_work = ref();
-const related = ref();
-const siblings = ref();
-const order = ref();
-const familyHx = ref();
-const notes = ref();
-
-// eslint-disable-next-line camelcase
-const marital_status = ref();
-const children = ref();
-const residence = ref("بغداد");
-const neighborhood = ref("");
-const occupation = ref();
-const education = ref();
-
-const resetForm = () => {
-  refVForm.value?.reset();
-  emit("update:isDrawerOpen", false);
-};
-
-const storedUserData: User | undefined = useCookie("userData").value as
-  | User
-  | undefined;
-
-const link = `/patients-new/${storedUserData?.id}`;
-
-const addPatient = async () => {  
-  if (!storedUserData) return
-  try {
-    const res = await $api(link, {
-      method: "POST",
-      body: {
-        doctor: storedUserData.id,
-        name: name.value,
-        dob: +dob.value,
-        gender: gender.value,
-        phone: phone.value,
-        avatar:avatar.value,
-        father_dob: +father_dob.value,
-        father_age: +father_age.value,
-        father_work: father_work.value,
-        father_edu: father_edu.value,
-        mother_dob: +mother_dob.value,
-        mother_age: +mother_age.value,
-        mother_work: mother_work.value,
-        mother_edu: mother_edu.value,
-        related: related.value,
-        siblings: +siblings.value,
-        order: +order.value,
-        familyHx: familyHx.value,
-        notes: notes.value,
-        // eslint-disable-next-line camelcase
-        marital_status: marital_status.value,
-        children: children.value,
-        residence: residence.value,
-        neighborhood: neighborhood.value,
-        occupation: occupation.value,
-        education: education.value,
-      },
-      onResponseError({ response }) {
-        errors.value = response._data;
-      },
-    });
-
-    console.log(res.id);
-    router.push(`/patients/${res.id}`);
-  } catch (error) {
-    console.error(error);
   }
-};
+
+  interface Props {
+    isDrawerOpen: boolean
+  }
+
+  interface Emit {
+    (e: 'update:isDrawerOpen', value: boolean): void
+  }
+
+  const props = defineProps<Props>()
+  const emit = defineEmits<Emit>()
+  const router = useRouter()
+
+  const handleDrawerModelValueUpdate = (val: boolean) => {
+    emit('update:isDrawerOpen', val)
+  }
+
+  const errors = ref<Record<string, string | undefined>>({
+    message: undefined,
+  })
+
+  const radioContent: CustomInputContent[] = [
+    {
+      title: 'Child',
+      value: 'child',
+    },
+    {
+      title: 'Adult',
+      value: 'adult',
+    },
+  ]
+
+  const selectedRadio = ref('child')
+
+  const refVForm = ref<VForm>()
+  const avatar = ref()
+  const name = ref()
+  const dob = ref<string>('2024-01-01')
+  const age = ref<string>()
+
+  const gender = ref('Male')
+  const phone = ref()
+  const father_dob = ref()
+  const father_edu = ref()
+  const father_age = ref()
+  const father_work = ref()
+  const mother_dob = ref()
+  const mother_age = ref()
+  const mother_edu = ref()
+  const mother_work = ref()
+  const related = ref()
+  const siblings = ref()
+  const order = ref()
+  const familyHx = ref()
+  const notes = ref()
+
+  // eslint-disable-next-line camelcase
+  const marital_status = ref()
+  const children = ref()
+  const residence = ref()
+  const neighborhood = ref('')
+  const occupation = ref()
+  const education = ref()
+
+  const resetForm = () => {
+    refVForm.value?.reset()
+    emit('update:isDrawerOpen', false)
+  }
+
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
+
+  const link = `/patients-new/${storedUserData?.id}`
+
+  const addPatient = async () => {
+    if (!storedUserData) return
+    try {
+      const res = await $api(link, {
+        method: 'POST',
+        body: {
+          doctor: storedUserData.id,
+          name: name.value,
+          dob: addTimeToDateString(dob.value),
+          gender: gender.value,
+          phone: phone.value,
+          avatar: avatar.value,
+          father_dob: +father_dob.value,
+          father_age: +father_age.value,
+          father_work: father_work.value,
+          father_edu: father_edu.value,
+          mother_dob: +mother_dob.value,
+          mother_age: +mother_age.value,
+          mother_work: mother_work.value,
+          mother_edu: mother_edu.value,
+          related: related.value,
+          siblings: +siblings.value,
+          order: +order.value,
+          familyHx: familyHx.value,
+          notes: notes.value,
+          // eslint-disable-next-line camelcase
+          marital_status: marital_status.value,
+          children: children.value,
+          residence: residence.value,
+          neighborhood: neighborhood.value,
+          occupation: occupation.value,
+          education: education.value,
+        },
+        onResponseError({ response }) {
+          errors.value = response._data
+        },
+      })
+
+      console.log(res.id)
+      router.push(`/patients/${res.id}`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  watch(dob, (newValue, oldValue) => {
+    if (newValue) {
+      age.value = calculateAge(newValue) as string
+    }
+  })
 </script>
 
 <template>
@@ -182,24 +189,20 @@ const addPatient = async () => {
               <VCol cols="12">
                 <h6 class="text-h6 text-primary">Image</h6>
               </VCol>
-              
+
               <VCol cols="12">
                 <VAvatar
-                circle
-                :size="100"
-                :color="avatar ? 'undefined' : 'secondary'"
-                :variant="!avatar ?  'tonal'  : undefined "
+                  circle
+                  :size="100"
+                  :color="avatar ? 'undefined' : 'secondary'"
+                  :variant="!avatar ? 'tonal' : undefined"
                 >
-                <VImg
-                v-if="avatar"
-                :src="avatar"
-                style="object-fit:cover"
-                />
-                <span v-else class="text-5xl font-weight-medium">
-                  {{ avatarText(name) }}
-                </span>
-              </VAvatar>
-            </VCol>
+                  <VImg v-if="avatar" :src="avatar" style="object-fit: cover" />
+                  <span v-else class="text-5xl font-weight-medium">
+                    {{ avatarText(name) }}
+                  </span>
+                </VAvatar>
+              </VCol>
               <VCol cols="12">
                 <label for="picture"
                   >Take a picture using back facing camera:</label
@@ -218,7 +221,6 @@ const addPatient = async () => {
                 <h6 class="text-h6 text-primary">Basic Information</h6>
               </VCol>
 
-
               <VCol cols="12">
                 <AppTextField
                   v-model="name"
@@ -229,10 +231,18 @@ const addPatient = async () => {
               </VCol>
 
               <VCol cols="12">
-                <AppTextField
+                <AppDateTimePicker
                   v-model="dob"
-                  label="Date of Birth*"
-                  :rules="[dateOfBirthValidator]"
+                  label="Birth Date*"
+                  placeholder="Select date"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppTextField
+                  disabled
+                  v-model="age"
+                  label="Age (Automatic)"
                   placeholder=""
                   maxlength="4"
                 />
@@ -304,6 +314,20 @@ const addPatient = async () => {
                   placeholder="Select Residence"
                   :items="cities"
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in cities"
+                    size="x-small"
+                    @click="
+                      () => {
+                        residence = suggestion
+                      }
+                    "
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <VCol cols="12" v-if="residence === 'بغداد'">
@@ -326,6 +350,23 @@ const addPatient = async () => {
               <!-- child education -->
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField v-model="education" label="Education" />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in childEducation"
+                    size="x-small"
+                    @click="
+                      () => {
+                        education =
+                          education === '' || education === undefined
+                            ? suggestion
+                            : `${education}, ${suggestion}`
+                      }
+                    "
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <!-- adult education -->
@@ -335,10 +376,12 @@ const addPatient = async () => {
                   label="Education"
                   placeholder="Select Education"
                   :items="[
+                    'أمي',
                     'ابتدائية',
                     'متوسطة',
                     'اعدادية',
                     'كلية',
+                    'دبلوم',
                     'بكالوريوس',
                     'ماجستير',
                     'دكتوراه',
@@ -353,8 +396,8 @@ const addPatient = async () => {
                 >
                   Parents Relationship
                 </div>
-              </VCol v-if="selectedRadio === 'child'">
-              <VCol cols="12">
+              </VCol>
+              <VCol cols="12" v-if="selectedRadio === 'child'">
                 <VRadioGroup v-model="related" inline>
                   <VRadio label="Related" value="true" />
                   <VRadio label="Not Related" value="false" />
@@ -386,7 +429,7 @@ const addPatient = async () => {
               <!-- Siblings -->
 
               <!-- Order -->
-              <VCol v-if="siblings > 1">
+              <VCol v-if="siblings >= 1">
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
@@ -395,14 +438,15 @@ const addPatient = async () => {
               </VCol>
               <VCol cols="12">
                 <VRadioGroup v-model="order" inline>
-                  <VRadio label="1st" value="1" v-if="siblings > 1" />
-                  <VRadio label="2nd" value="2" v-if="siblings > 1" />
-                  <VRadio label="3rd" value="3" v-if="siblings > 2" />
-                  <VRadio label="4th" value="4" v-if="siblings > 3" />
-                  <VRadio label="5th" value="5" v-if="siblings > 4" />
-                  <VRadio label="6th" value="6" v-if="siblings > 5" />
-                  <VRadio label="7th" value="7" v-if="siblings > 6" />
-                  <VRadio label="8th" value="8" v-if="siblings > 7" />
+                  <VRadio label="1st" value="1" v-if="siblings >= 1" />
+                  <VRadio label="2nd" value="2" v-if="siblings >= 1" />
+                  <VRadio label="3rd" value="3" v-if="siblings > 1" />
+                  <VRadio label="4th" value="4" v-if="siblings > 2" />
+                  <VRadio label="5th" value="5" v-if="siblings > 3" />
+                  <VRadio label="6th" value="6" v-if="siblings > 4" />
+                  <VRadio label="7th" value="7" v-if="siblings > 5" />
+                  <VRadio label="8th" value="8" v-if="siblings > 6" />
+                  <VRadio label="9th" value="8" v-if="siblings > 7" />
                 </VRadioGroup>
               </VCol>
               <!-- Order -->
@@ -538,7 +582,7 @@ const addPatient = async () => {
 </template>
 
 <style lang="scss">
-.v-navigation-drawer__content {
-  overflow-y: hidden !important;
-}
+  .v-navigation-drawer__content {
+    overflow-y: hidden !important;
+  }
 </style>
