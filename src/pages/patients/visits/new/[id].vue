@@ -260,8 +260,13 @@
 </script>
 
 <template>
-  <VBtn variant="outlined" class="mb-5" @click="router.back"> Back </VBtn>
-
+  <div class="d-flex justify-space-between">
+    <VBtn variant="outlined" class="mb-5" @click="router.back"> Back </VBtn>
+    <VBtn variant="outlined" color="secondary">
+      Patient :
+      {{ route.query.name }}
+    </VBtn>
+  </div>
   <VCard>
     <VRow>
       <VCol
@@ -331,15 +336,12 @@
                 Previous
               </VBtn>
 
-              <VBtn
-                v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
-                @click="addVisit"
-              >
-                submit
-              </VBtn>
+              <VBtn color="success" @click="addVisit"> Submit </VBtn>
 
-              <VBtn v-else @click="currentStep++">
+              <VBtn
+                v-if="currentStep !== numberedSteps.length - 1"
+                @click="currentStep++"
+              >
                 Next
 
                 <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />

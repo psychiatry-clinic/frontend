@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import type { Patient, User, Prescription, Test, Visit } from '@/utils/types'
+  import type { Patient, User } from '@/utils/types'
   import CustomerBioPanel from '@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue'
+  import CustomerTabTests from '@/views/apps/ecommerce/customer/view/CustomerTabTests.vue'
   import CustomerTabTherapy from '@/views/apps/ecommerce/customer/view/CustomerTabTherapy.vue'
   import CustomerTabVisits from '@/views/apps/ecommerce/customer/view/CustomerTabVisits.vue'
-  import CustomerTabTests from '@/views/apps/ecommerce/customer/view/CustomerTabTests.vue'
 
   import { RouteParams } from 'vue-router'
   const route = useRoute()

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
   import { User, Visit } from '@/utils/types'
+  import { RouteParams } from 'vue-router'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddxVue from '../ddxVue.vue'
@@ -15,7 +16,6 @@
   import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
-  import { RouteParams } from 'vue-router'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -269,8 +269,19 @@
 </script>
 
 <template>
-  <VBtn variant="outlined" class="mb-5" @click="router.back"> Back </VBtn>
-
+  <div class="d-flex justify-space-between">
+    <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
+      Back
+    </VBtn>
+    <VBtn variant="plain" color="secondary">
+      Patient :
+      {{ route.query.name }}
+    </VBtn>
+    <VBtn variant="plain" color="secondary">
+      Dr.
+      {{ visit.doctor?.name }}
+    </VBtn>
+  </div>
   <VCard>
     <VRow>
       <VCol
@@ -340,15 +351,12 @@
                 Previous
               </VBtn>
 
-              <VBtn
-                v-if="numberedSteps.length - 1 === currentStep"
-                color="success"
-                @click="saveVisit"
-              >
-                submit
-              </VBtn>
+              <VBtn color="success" @click="saveVisit"> Save </VBtn>
 
-              <VBtn v-else @click="currentStep++">
+              <VBtn
+                v-if="currentStep !== numberedSteps.length - 1"
+                @click="currentStep++"
+              >
                 Next
 
                 <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />

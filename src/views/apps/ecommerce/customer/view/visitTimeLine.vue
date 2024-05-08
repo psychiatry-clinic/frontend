@@ -43,7 +43,7 @@
           router.push({
             name: 'patients-visits-new-id',
             params: { id: patientData.id },
-            query: { dob: patientData.dob },
+            query: { dob: patientData.dob, name: patientData.name },
           })
         "
       >
@@ -125,7 +125,11 @@
               router.push({
                 name: 'patients-visits-edit-id',
                 params: { id: patientData.id },
-                query: { visit: visit.id, dob: patientData.dob },
+                query: {
+                  visit: visit.id,
+                  dob: patientData.dob,
+                  name: patientData.name,
+                },
               })
             "
           >
