@@ -70,11 +70,6 @@
     },
   ]
 
-  console.log('patientData.value.father_dob')
-  console.log(patientData.value.father_dob)
-  console.log('patientData.value.mother')
-  console.log(patientData.value.mother_dob)
-
   const selectedRadio = ref('child')
 
   const refVForm = ref<VForm>()
@@ -117,7 +112,7 @@
   const siblings = ref(patientData.value.siblings || 0)
   const order = ref(patientData.value.order)
   const notes = ref(patientData.value.notes)
-  const familyHx = ref(patientData.value.familyHx)
+  const familyHx = ref(patientData.value.family_hx)
 
   // eslint-disable-next-line camelcase
   const marital_status = ref(
@@ -192,8 +187,6 @@
           console.log(response._data)
         },
       })
-
-      console.log(res.id)
     } catch (error) {
       console.error(error)
     }

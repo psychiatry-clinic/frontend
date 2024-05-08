@@ -185,9 +185,7 @@
 
   const consultations = ref(visit.consultations)
 
-  const management = ref(
-    visit.management || [{ name: '', form: '', dose: '', use: '' }]
-  )
+  const management = ref(visit.management)
 
   const tests = ref(visit.tests)
 

@@ -22,12 +22,6 @@
       dob: removeTimeFromDate(patientData.value.dob),
     }
   })
-  console.log('props.patientData.dob')
-  console.log(props.patientData.dob)
-  console.log('props.patientData.father_age')
-  console.log(props.patientData.father_age)
-
-  console.log(props.patientData.dob)
 
   const child =
     differenceInYears(new Date(props.patientData.dob), new Date()) < 14
@@ -351,7 +345,7 @@
               <h6 class="text-h6 text-primary">
                 Family History :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.familyHx }}
+                  {{ props.patientData.family_hx }}
                 </span>
               </h6>
             </VListItem>
