@@ -2,7 +2,7 @@
   import { User, Visit } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
-  import ddx from '../ddx.vue'
+  import ddxVue from '../ddxVue.vue'
   import examinationVue from '../examination.vue'
   import FamilyHx from '../familyHx.vue'
   import forensicHx from '../forensicHx.vue'
@@ -183,23 +183,22 @@
   const personal_hx = ref(visit.patient.personal_hx)
   const occupation_hx = ref(visit.patient.occupation_hx)
   const forensic_hx = ref(visit.patient.forensic_hx)
-
+  const ix = ref(visit.ix)
   const examination = ref(visit.examination)
-  // const ix = ref(visit.ix)
-  const consultations = ref(visit.consultations)
 
-  // const management = ref(visit.management)
+  const consultations = ref(visit.consultations)
+  const management = ref(visit.management)
 
   const tests = ref(visit.tests)
 
-  const differential_diagnosis = ref(visit.differential_diagnosis)
+  const ddx = ref(visit.ddx)
 
   const therapy = ref()
-  const notes = ref()
+  const notes = ref(visit.notes)
 
-  const link = `/visits-edit/${storedUserData?.id}/${route.params.id}`
+  const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}`
 
-  const addVisit = async () => {
+  const saveVisit = async () => {
     if (!storedUserData) return
 
     submit()
@@ -209,28 +208,29 @@
         method: 'POST',
         body: {
           chief_complaint: chief_complaint.value,
-          present_illness: present_illness.value,
           examination: examination.value,
-          differential_diagnosis: differential_diagnosis.value?.differential,
-          ix:
-            ix.value.investigations[0].name === ''
-              ? null
-              : ix.value.investigations,
-          management:
-            management.value?.managements[0].name === ''
-              ? null
-              : management.value?.managements,
-          consultations:
-            consultations.value.consultations[0].branch === ''
-              ? null
-              : consultations.value.consultations,
-          notes: notes.value?.notes ? notes.value.notes : null,
-          social_hx: social_hx.value,
-          family_hx: family_hx.value,
-          personal_hx: personal_hx.value,
-          forensic_hx: forensic_hx.value,
-          occupation_hx: occupation_hx.value,
-          past_hx: past_hx.value,
+          ddx: ddx.value,
+          present_illness: present_illness.value,
+          consultations: consultations.value,
+          //       ix:
+          //         ix.value.investigations.[0].name === ''
+          //           ? null
+          //           : ix.value.investigations,
+          //       management:
+          //         management.value?.managements[0].name === ''
+          //           ? null
+          //           : management.value?.managements,
+          //       consultations:
+          //         consultations.value.consultations[0].branch === ''
+          //           ? null
+          //           : consultations.value.consultations,
+          notes: notes.value ? notes.value : null,
+          // social_hx: social_hx.value,
+          // family_hx: family_hx.value,
+          //       personal_hx: personal_hx.value,
+          //       forensic_hx: forensic_hx.value,
+          //       occupation_hx: occupation_hx.value,
+          //       past_hx: past_hx.value,
         },
         onResponseError({ response }) {
           errors.value = response._data
@@ -262,8 +262,8 @@
     console.log(forensic_hx.value)
     console.log('examination')
     console.log(examination.value)
-    console.log('differential_diagnosis')
-    console.log(differential_diagnosis.value)
+    console.log('ddx')
+    console.log(ddx.value)
     console.log('ix')
     console.log(ix.value)
     console.log('management')
@@ -313,7 +313,7 @@
                 <occupationHx v-model="occupation_hx" />
                 <forensicHx v-model="forensic_hx" />
                 <examinationVue v-model="examination" />
-                <ddx v-model="differential_diagnosis" :child="false" />
+                <ddxVue v-model="ddx" :child="false" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
@@ -329,7 +329,7 @@
                 <socialHx v-model="social_hx" />
                 <examinationVue v-model="examination" />
                 <consultationsVue v-model="consultations" :edit="true" />
-                <ddx v-model="differential_diagnosis" :child="true" />
+                <ddxVue v-model="ddx" :child="true" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
@@ -354,7 +354,7 @@
               <VBtn
                 v-if="numberedSteps.length - 1 === currentStep"
                 color="success"
-                @click="addVisit"
+                @click="saveVisit"
               >
                 submit
               </VBtn>

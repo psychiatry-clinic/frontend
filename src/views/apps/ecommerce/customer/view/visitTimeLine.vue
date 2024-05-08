@@ -96,7 +96,7 @@
           <div class="app-timeline-text mt-1">
             <span class="text-warning"> Diagnosis: </span>
             <li>
-              {{ visit.differential_diagnosis }}
+              {{ visit.ddx?.differential }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">

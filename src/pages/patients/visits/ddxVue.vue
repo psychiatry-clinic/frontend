@@ -19,8 +19,6 @@
     model.value = {
       differential: differential.value,
     }
-    console.log(differential)
-    console.log(model.value)
   }
 
   const appendTo = (target: string | undefined, text: string) => {

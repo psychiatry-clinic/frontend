@@ -12,72 +12,35 @@
 
   const model = defineModel<Model>()
 
-  if (model.value) {
-    model.value.managements[0] = { name: '', form: '', dose: '', use: '' }
-  }
+  // if (model.value) {
+  //   model.value.managements[0] = { name: '', form: '', dose: '', use: '' };
+  // }
 
-  const managements = ref(model.value?.managements)
+  const managements = ref<Management[]>(model.value?.managements || [])
+  console.log(managements.value)
+  console.log(model.value)
 
   let removeTimer: NodeJS.Timeout | null = null
 
-  // Attach event listener when component is mounted
-  document.addEventListener(
-    'blur',
-    () => {
-      if (removeTimer) clearTimeout(removeTimer)
-      removeTimer = setTimeout(removeEmptyNames, 1000)
-    },
-    true
-  )
-
-  // Clean up event listener when component is unmounted
-  onBeforeUnmount(() => {
-    document.removeEventListener('blur', removeEmptyNames, true)
-    if (removeTimer) clearTimeout(removeTimer)
-  })
-
   function addManagement() {
-    if (!model.value) {
-      return
-    }
+    if (!managements.value) return
+    const lastManagement = managements.value[managements.value.length - 1]
     if (
-      model.value.managements[model.value.managements.length - 1].name === '' ||
-      model.value.managements[model.value.managements.length - 1].form === '' ||
-      model.value.managements[model.value.managements.length - 1].dose === '' ||
-      model.value.managements[model.value.managements.length - 1].use === ''
-    ) {
+      !lastManagement ||
+      Object.values(lastManagement).some((val) => val === '')
+    )
       return
-    }
-    const newManagement: Management = { name: '', form: '', dose: '', use: '' }
-    model.value.managements.push(newManagement)
+    managements.value.push({ name: '', form: '', dose: '', use: '' })
   }
 
   function enableSecondField(index: number) {
-    const currentManagement = model.value?.managements[index]
-    return currentManagement?.name !== ''
+    const currentManagement = managements.value?.[index]
+    return !!currentManagement?.name
   }
 
   function saveNameUppercase(index: number) {
-    if (!model.value) return
-    model.value.managements[index].name =
-      model.value.managements[index].name.toUpperCase()
-  }
-
-  function removeEmptyNames() {
-    if (!model.value) return
-    // Keep the first management unchanged
-    const firstManagement = model.value.managements[0]
-    if (!model.value) return
-    // Filter out empty managements except for the first one and newly added ones
-    model.value.managements = [
-      firstManagement,
-      ...model.value.managements.slice(1).filter((management, index) => {
-        // Check if it's a newly added management (no result property)
-        const isNewManagement = !('use' in management)
-        // Remove empty managements that are not newly added
-        return isNewManagement || management.name.trim() !== ''
-      }),
-    ]
+    if (!managements.value || !managements.value[index]) return
+    managements.value[index].name = managements.value[index].name.toUpperCase()
   }
 </script>
 
@@ -86,12 +49,13 @@
     <VRow>
       <VCol cols="12">
         <h6 class="text-h6 font-weight-medium">Management</h6>
-        <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <template v-for="(management, index) in model?.managements" :key="index">
+    <!-- Iterate over managements -->
+    <template v-for="(management, index) in managements" :key="index">
       <VRow>
+        <!-- Name field -->
         <VCol cols="3">
           <AppTextField
             :placeholder="management.name ? '' : 'Type Name'"
@@ -99,6 +63,7 @@
             @input="saveNameUppercase(index)"
           />
         </VCol>
+        <!-- Form field -->
         <VCol cols="3">
           <AppTextField
             v-if="enableSecondField(index)"
@@ -106,6 +71,7 @@
             v-model="management.form"
           />
         </VCol>
+        <!-- Dose field -->
         <VCol cols="3">
           <AppTextField
             v-if="management.form && enableSecondField(index)"
@@ -113,6 +79,7 @@
             v-model="management.dose"
           />
         </VCol>
+        <!-- Use field -->
         <VCol cols="3">
           <AppTextField
             v-if="management.dose && enableSecondField(index)"
@@ -123,6 +90,7 @@
       </VRow>
     </template>
 
+    <!-- Add new management button -->
     <VRow>
       <VCol cols="12">
         <VBtn variant="outlined" @click.prevent="addManagement">

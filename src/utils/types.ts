@@ -86,9 +86,9 @@ export interface Visit {
   present_illness?: string
   suicide?: string
   examination?: string
-  differential_diagnosis?: string
+  ddx?: { differential: string }
   management?: ManagementItem[]
-  ix?: string
+  ix?: JSON
   consultations?: string
   prescription?: Prescription
   prescriptionId?: number
@@ -106,6 +106,10 @@ interface ManagementItem {
   form: string
   name: string
   use: string
+}
+
+interface differ {
+  differential: string
 }
 
 export interface Doctor {

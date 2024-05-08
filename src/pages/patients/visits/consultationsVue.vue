@@ -16,24 +16,6 @@
   const model = defineModel<Model>()
 
   const consultations = ref<Consultation[]>(model.value?.consultations || [])
-  console.log(model.value)
-
-  // Attach event listener when component is mounted
-  let removeTimer: NodeJS.Timeout | null = null
-  document.addEventListener(
-    'blur',
-    () => {
-      if (removeTimer) clearTimeout(removeTimer)
-      removeTimer = setTimeout(removeEmptyConsultations, 2000)
-    },
-    true
-  )
-
-  // Clean up event listener when component is unmounted
-  onBeforeUnmount(() => {
-    document.removeEventListener('blur', removeEmptyConsultations, true)
-    if (removeTimer) clearTimeout(removeTimer)
-  })
 
   // Function to add a new consultation
   function addConsultation() {
@@ -58,19 +40,6 @@
     if (!consultations.value || !consultations.value[index]) return
     consultations.value[index].branch =
       consultations.value[index].branch.toUpperCase()
-  }
-
-  // Function to remove empty consultations
-  function removeEmptyConsultations() {
-    if (!model.value || !consultations.value || !consultations.value[0]) return
-    const firstConsultation = consultations.value[0]
-    consultations.value = [
-      firstConsultation,
-      ...consultations.value.slice(1).filter((consultation) => {
-        const isNewConsultation = !('result' in consultation)
-        return isNewConsultation || consultation.branch.trim() !== ''
-      }),
-    ]
   }
 </script>
 

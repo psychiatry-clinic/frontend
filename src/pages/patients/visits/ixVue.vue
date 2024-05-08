@@ -1,82 +1,43 @@
 <script setup lang="ts">
-interface Investigation {
-  name: string;
-  result?: string; // Include result property
-}
+  import { defineModel, ref, onBeforeUnmount } from 'vue'
 
-interface Model {
-  investigations: Investigation[];
-}
-
-const model = defineModel<Model>();
-
-if (model.value) {
-  model.value.investigations[0] = { name: "", result: "" };
-}
-
-const investigations = ref(model.value?.investigations);
-
-let removeTimer: NodeJS.Timeout | null = null;
-
-// Attach event listener when component is mounted
-document.addEventListener(
-  "blur",
-  () => {
-    if (removeTimer) clearTimeout(removeTimer);
-    removeTimer = setTimeout(removeEmptyNames, 1000);
-  },
-  true
-);
-
-// Clean up event listener when component is unmounted
-onBeforeUnmount(() => {
-  document.removeEventListener("blur", removeEmptyNames, true);
-  if (removeTimer) clearTimeout(removeTimer);
-});
-
-function addInvestigation() {
-  if (!model.value) return;
-  if (
-    (model.value && // Add null check
-      model.value.investigations[model.value.investigations.length - 1].name ===
-        "") ||
-    model.value.investigations[model.value.investigations.length - 1].result ===
-      ""
-  ) {
-    return;
+  interface Investigation {
+    name: string
+    result?: string
   }
-  const newInvestigation: Investigation = { name: "", result: "" };
-  model.value.investigations.push(newInvestigation);
-}
 
-function enableSecondField(index: number) {
-  const currentInvestigation = model.value?.investigations[index]; // Add null check
-  return !!currentInvestigation?.name; // Add null check
-}
+  interface Model {
+    investigations: Investigation[]
+  }
 
-function saveNameUppercase(index: number) {
-  if (!model.value) return;
-  model.value.investigations[index].name =
-    model.value.investigations[index].name.toUpperCase();
-}
+  const model = defineModel<Model>()
+  const investigations = ref<Investigation[]>(model.value?.investigations || [])
 
-function removeEmptyNames() {
-  if (!model.value) return;
-  // Add null check
-  // Keep the first investigation unchanged
-  const firstInvestigation = model.value.investigations[0];
+  // Function to add a new investigation
+  function addInvestigation() {
+    if (!investigations.value) return
+    const lastInvestigation =
+      investigations.value[investigations.value.length - 1]
+    if (
+      !lastInvestigation ||
+      (lastInvestigation.name === '' && lastInvestigation.result === '')
+    )
+      return
+    investigations.value.push({ name: '', result: '' })
+  }
 
-  // Filter out empty investigations except for the first one and newly added ones
-  model.value.investigations = [
-    firstInvestigation,
-    ...model.value.investigations.slice(1).filter((investigation, index) => {
-      // Check if it's a newly added investigation (no result property)
-      const isNewInvestigation = !("result" in investigation);
-      // Remove empty investigations that are not newly added
-      return isNewInvestigation || investigation.name.trim() !== "";
-    }),
-  ];
-}
+  // Function to enable the second field based on the name value
+  function enableSecondField(index: number) {
+    const currentInvestigation = investigations.value[index]
+    return !!currentInvestigation?.name
+  }
+
+  // Function to save name as uppercase
+  function saveNameUppercase(index: number) {
+    if (!investigations.value || !investigations.value[index]) return
+    investigations.value[index].name =
+      investigations.value[index].name.toUpperCase()
+  }
 </script>
 
 <template>
@@ -84,15 +45,13 @@ function removeEmptyNames() {
     <VRow>
       <VCol cols="12">
         <h6 class="text-h6 font-weight-medium">Investigation</h6>
-        <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <template
-      v-for="(investigation, index) in model?.investigations"
-      :key="index"
-    >
+    <!-- Iterate over investigations -->
+    <template v-for="(investigation, index) in investigations" :key="index">
       <VRow>
+        <!-- Name field -->
         <VCol cols="6">
           <AppTextField
             :placeholder="
@@ -102,6 +61,7 @@ function removeEmptyNames() {
             @input="saveNameUppercase(index)"
           />
         </VCol>
+        <!-- Result field -->
         <VCol cols="6">
           <AppTextField
             v-if="enableSecondField(index)"
@@ -109,12 +69,12 @@ function removeEmptyNames() {
               investigation.result ? '' : 'Type Result of Investigation'
             "
             v-model="investigation.result"
-            @input="enableSecondField(index)"
           />
         </VCol>
       </VRow>
     </template>
 
+    <!-- Add new investigation button -->
     <VRow>
       <VCol cols="12">
         <VBtn variant="outlined" @click.prevent="addInvestigation">

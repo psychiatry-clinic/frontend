@@ -157,7 +157,7 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-chief-complaint': RouteRecordInfo<'patients-visits-chief-complaint', '/patients/visits/chiefComplaint', Record<never, never>, Record<never, never>>,
     'patients-visits-consult': RouteRecordInfo<'patients-visits-consult', '/patients/visits/consult', Record<never, never>, Record<never, never>>,
     'patients-visits-consultations-vue': RouteRecordInfo<'patients-visits-consultations-vue', '/patients/visits/consultationsVue', Record<never, never>, Record<never, never>>,
-    'patients-visits-ddx': RouteRecordInfo<'patients-visits-ddx', '/patients/visits/ddx', Record<never, never>, Record<never, never>>,
+    'patients-visits-ddx-vue': RouteRecordInfo<'patients-visits-ddx-vue', '/patients/visits/ddxVue', Record<never, never>, Record<never, never>>,
     'patients-visits-edit-id': RouteRecordInfo<'patients-visits-edit-id', '/patients/visits/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'patients-visits-examination': RouteRecordInfo<'patients-visits-examination', '/patients/visits/examination', Record<never, never>, Record<never, never>>,
     'patients-visits-family-hx': RouteRecordInfo<'patients-visits-family-hx', '/patients/visits/familyHx', Record<never, never>, Record<never, never>>,

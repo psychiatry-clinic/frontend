@@ -1,17 +1,19 @@
 <script setup lang="ts">
-interface Model {
-  notes: string | undefined;
-}
+  interface Model {
+    notes?: string
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const notes = ref(model.value?.notes);
+  const notes = ref(model.value?.notes)
+  console.log(notes.value)
+  console.log(model.value)
 
-function update() {
-  model.value = {
-    notes: notes.value,
-  };
-}
+  function update() {
+    model.value = {
+      notes: notes.value,
+    }
+  }
 </script>
 
 <template>

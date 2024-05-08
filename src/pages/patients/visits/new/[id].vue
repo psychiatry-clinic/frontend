@@ -2,7 +2,7 @@
   import { User } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
-  import ddx from '../ddx.vue'
+  import ddxVue from '../ddxVue.vue'
   import examinationVue from '../examination.vue'
   import FamilyHx from '../familyHx.vue'
   import forensicHx from '../forensicHx.vue'
@@ -163,7 +163,7 @@
   const duration = ref()
 
   const chief_complaint = ref()
-  const present_illness = ref()
+  const present_illness = ref({ notes: '' })
   const family_hx = ref()
 
   const past_hx = ref()
@@ -181,7 +181,7 @@
 
   const tests = ref({ tests: [{ name: '', result: '' }] })
 
-  const differential_diagnosis = ref()
+  const ddx = ref()
 
   const therapy = ref()
   const notes = ref()
@@ -191,11 +191,7 @@
   const addVisit = async () => {
     if (!storedUserData) return
 
-    console.log(
-      consultations.value.consultations[0].branch === ''
-        ? null
-        : consultations.value.consultations
-    )
+    console.log(ix.value)
 
     try {
       const res = await $api(link, {
@@ -204,7 +200,7 @@
           chief_complaint: chief_complaint.value,
           present_illness: present_illness.value,
           examination: examination.value,
-          differential_diagnosis: differential_diagnosis.value?.differential,
+          ddx: ddx.value,
           ix: ix.value.investigations[0].name === '' ? null : ix.value,
           management:
             management.value?.managements[0].name === ''
@@ -214,7 +210,7 @@
             consultations.value.consultations[0].branch === ''
               ? null
               : consultations.value,
-          notes: notes.value?.notes ? notes.value.notes : null,
+          notes: notes.value ? notes.value : null,
           social_hx: social_hx.value,
           family_hx: family_hx.value,
           personal_hx: personal_hx.value,
@@ -252,8 +248,8 @@
     console.log(forensic_hx.value)
     console.log('examination')
     console.log(examination.value)
-    console.log('differential_diagnosis')
-    console.log(differential_diagnosis.value)
+    console.log('ddx')
+    console.log(ddx.value)
     console.log('ix')
     console.log(ix.value)
     console.log('management')
@@ -303,7 +299,7 @@
                 <occupationHx v-model="occupation_hx" />
                 <forensicHx v-model="forensic_hx" />
                 <examinationVue v-model="examination" />
-                <ddx v-model="differential_diagnosis" :child="false" />
+                <ddxVue v-model="ddx" :child="false" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
@@ -319,7 +315,7 @@
                 <socialHx v-model="social_hx" />
                 <examinationVue v-model="examination" />
                 <consultationsVue v-model="consultations" />
-                <ddx v-model="differential_diagnosis" :child="true" />
+                <ddxVue v-model="ddx" :child="true" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
