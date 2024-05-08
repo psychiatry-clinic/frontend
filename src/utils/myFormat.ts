@@ -1,6 +1,9 @@
 import { differenceInYears, differenceInMonths, isValid } from 'date-fns'
 
-export const calculateAge = (dob: string): string => {
+export const calculateAge = (
+  dob: string,
+  justYears: boolean = false
+): string | number => {
   const dobDate = new Date(dob)
 
   if (!isValid(dobDate)) {
@@ -11,12 +14,16 @@ export const calculateAge = (dob: string): string => {
   const years = differenceInYears(currentDate, dobDate)
   const months = differenceInMonths(currentDate, dobDate) % 12
 
-  if (years > 0 && months > 0) {
-    return `${years} years & ${months} months`
-  } else if (years > 0 && months <= 0) {
-    return `${years} years`
-  } else if (years <= 0 && months > 0) {
+  if (years > 0 && !justYears) {
+    if (months > 0 && !justYears) {
+      return `${years} years & ${months} months`
+    } else {
+      return `${years} years`
+    }
+  } else if (months > 0 && !justYears) {
     return `${months} months`
+  } else if (justYears) {
+    return years
   } else {
     return 'less than a month'
   }

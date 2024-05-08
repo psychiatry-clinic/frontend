@@ -2,7 +2,7 @@
   import EditPatient from '@/pages/patients/editPatient.vue'
   import { formatSiblingOrder } from '@/utils/myFormat'
   import type { Patient } from '@/utils/types'
-  import { differenceInYears, differenceInCalendarYears } from 'date-fns'
+  import { differenceInCalendarYears, differenceInYears } from 'date-fns'
 
   const isUserInfoEditDialogVisible = ref(false)
   const isAddPatientDrawerOpen = ref(false)
@@ -18,7 +18,7 @@
     return {
       ...patientData.value,
       createdAt: removeTimeFromDate(patientData.value.createdAt),
-      age: calculateAge(patientData.value.dob),
+      age: calculateAge(patientData.value.dob) as string,
       dob: removeTimeFromDate(patientData.value.dob),
     }
   })
@@ -346,17 +346,6 @@
               <br />
             </div>
 
-            <VListItem>
-              <h6 class="text-h6 text-primary">
-                Notes :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.notes as string }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <br />
-
             <!-- 👉 Family Hx -->
             <VListItem>
               <h6 class="text-h6 text-primary">
@@ -366,19 +355,24 @@
                 </span>
               </h6>
             </VListItem>
+
+            <br />
+
+            <VListItem>
+              <h6 class="text-h6 text-primary">
+                Notes :
+                <span class="text-body-1 d-inline-block">
+                  {{ props.patientData.notes as string }}
+                </span>
+              </h6>
+            </VListItem>
           </VList>
         </VCardText>
 
         <!-- 👉 Edit Details -->
         <VCardText class="text-center">
-          <VBtn
-            block
-            @click="isUserInfoEditDialogVisible = !isUserInfoEditDialogVisible"
-          >
-            Edit Details
-          </VBtn>
           <VBtn block @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen">
-            Edit Details drawer
+            Edit Patient Details
           </VBtn>
         </VCardText>
       </VCard>

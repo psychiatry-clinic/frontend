@@ -1,32 +1,32 @@
 <script setup lang="ts">
-import { familyHistorySuggestions } from "@/utils/suggestions";
+  import { familyHistorySuggestions } from '@/utils/suggestions'
 
-interface Model {
-  similar: string | undefined;
-  different: string | undefined;
-  medical: string | undefined;
-}
+  interface Model {
+    similar: string | undefined
+    different: string | undefined
+    medical: string | undefined
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const similar = ref(model.value?.similar);
-const different = ref(model.value?.different);
-const medical = ref(model.value?.medical);
-const other = ref();
+  const similar = ref(model.value?.similar)
+  const different = ref(model.value?.different)
+  const medical = ref(model.value?.medical)
+  const other = ref()
 
-function update() {
-  model.value = {
-    similar: similar.value,
-    different: different.value,
-    medical: medical.value,
-  };
-  console.log(model.value);
-}
+  function update() {
+    model.value = {
+      similar: similar.value,
+      different: different.value,
+      medical: medical.value,
+    }
+    console.log(model.value)
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>
@@ -52,7 +52,7 @@ const appendTo = (target: string | undefined, text: string) => {
         <div class="my-5">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in familyHistorySuggestions"
+            v-for="suggestion in childFamilyHx"
             size="x-small"
             @click="similar = appendTo(similar, suggestion)"
           >
@@ -76,12 +76,12 @@ const appendTo = (target: string | undefined, text: string) => {
         <div class="my-5">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in familyHistorySuggestions"
+            v-for="suggestion in childFamilyHx"
             size="x-small"
             @click="
               () => {
-                different = appendTo(different, suggestion);
-                update();
+                different = appendTo(different, suggestion)
+                update()
               }
             "
           >
@@ -109,8 +109,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                medical = appendTo(medical, suggestion);
-                update();
+                medical = appendTo(medical, suggestion)
+                update()
               }
             "
           >
@@ -134,12 +134,12 @@ const appendTo = (target: string | undefined, text: string) => {
         <div class="my-5">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in familyHistorySuggestions"
+            v-for="suggestion in []"
             size="x-small"
             @click="
               () => {
-                other = appendTo(other, suggestion);
-                update();
+                other = appendTo(other, suggestion)
+                update()
               }
             "
           >

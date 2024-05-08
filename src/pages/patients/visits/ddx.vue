@@ -1,26 +1,32 @@
 <script setup lang="ts">
-import { differentialDiagnosis } from "@/utils/suggestions";
+  import { differentialDiagnosis, childDdx } from '@/utils/suggestions'
 
-interface Model {
-  differential: string | undefined;
-}
+  interface Props {
+    child: boolean
+  }
 
-const model = defineModel<Model>();
+  const props = defineProps<Props>()
 
-const differential = ref(model.value?.differential);
+  interface Model {
+    differential: string | undefined
+  }
 
-function update() {
-  model.value = {
-    differential: differential.value,
-  };
-  console.log(differential);
-  console.log(model.value);
-}
+  const model = defineModel<Model>()
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const differential = ref(model.value?.differential)
+
+  function update() {
+    model.value = {
+      differential: differential.value,
+    }
+    console.log(differential)
+    console.log(model.value)
+  }
+
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>
@@ -44,15 +50,30 @@ const appendTo = (target: string | undefined, text: string) => {
         />
       </VCol>
       <VCol>
-        <div class="my-5">
+        <div class="my-5" v-if="props.child">
+          <VChip
+            class="me-2 mb-2"
+            v-for="suggestion in childDdx"
+            size="x-small"
+            @click="
+              () => {
+                differential = appendTo(differential, suggestion)
+                update()
+              }
+            "
+          >
+            {{ suggestion }}
+          </VChip>
+        </div>
+        <div class="my-5" v-else>
           <VChip
             class="me-2 mb-2"
             v-for="suggestion in differentialDiagnosis"
             size="x-small"
             @click="
               () => {
-                differential = appendTo(differential, suggestion);
-                update();
+                differential = appendTo(differential, suggestion)
+                update()
               }
             "
           >

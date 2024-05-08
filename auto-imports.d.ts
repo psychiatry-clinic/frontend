@@ -26,7 +26,9 @@ declare global {
   const calculateAge: typeof import('./src/utils/myFormat')['calculateAge']
   const calculateAgeF: typeof import('./src/utils/myFormat')['calculateAgeF']
   const chief_complains: typeof import('./src/utils/suggestions')['chief_complains']
+  const childDdx: typeof import('./src/utils/suggestions')['childDdx']
   const childEducation: typeof import('./src/utils/suggestions')['childEducation']
+  const childFamilyHx: typeof import('./src/utils/suggestions')['childFamilyHx']
   const circumstancesSuggestions: typeof import('./src/utils/suggestions')['circumstancesSuggestions']
   const cities: typeof import('./src/utils/suggestions')['cities']
   const computed: typeof import('vue')['computed']
@@ -424,7 +426,9 @@ declare module 'vue' {
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
     readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly childDdx: UnwrapRef<typeof import('./src/utils/suggestions')['childDdx']>
     readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
+    readonly childFamilyHx: UnwrapRef<typeof import('./src/utils/suggestions')['childFamilyHx']>
     readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
     readonly cities: UnwrapRef<typeof import('./src/utils/suggestions')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
@@ -804,7 +808,9 @@ declare module '@vue/runtime-core' {
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
     readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
+    readonly childDdx: UnwrapRef<typeof import('./src/utils/suggestions')['childDdx']>
     readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
+    readonly childFamilyHx: UnwrapRef<typeof import('./src/utils/suggestions')['childFamilyHx']>
     readonly circumstancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['circumstancesSuggestions']>
     readonly cities: UnwrapRef<typeof import('./src/utils/suggestions')['cities']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>

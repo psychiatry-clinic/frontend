@@ -363,6 +363,23 @@
                   placeholder="Write an Occupation"
                   label="Occupation"
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in childEducation"
+                    size="x-small"
+                    @click="
+                      () => {
+                        occupation =
+                          occupation === '' || occupation === undefined
+                            ? suggestion
+                            : `${occupation}, ${suggestion}`
+                      }
+                    "
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <!-- child education -->

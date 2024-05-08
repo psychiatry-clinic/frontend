@@ -1,54 +1,54 @@
 <script setup lang="ts">
-import {} from "@/utils/suggestions";
+  import {} from '@/utils/suggestions'
 
-interface Model {
-  physical: string | undefined;
-  appearance: string | undefined;
-  behavior: string | undefined;
-  speech: string | undefined;
-  mood: string | undefined;
-  affect: string | undefined;
-  form: string | undefined;
-  content: string | undefined;
-  perception: string | undefined;
-  cognition: string | undefined;
-  insight: string | undefined;
-}
+  interface Model {
+    physical: string | undefined
+    appearance: string | undefined
+    behavior: string | undefined
+    speech: string | undefined
+    mood: string | undefined
+    affect: string | undefined
+    form: string | undefined
+    content: string | undefined
+    perception: string | undefined
+    cognition: string | undefined
+    insight: string | undefined
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const physical = ref(model.value?.physical);
-const appearance = ref(model.value?.appearance);
-const behavior = ref(model.value?.behavior);
-const speech = ref();
-const mood = ref();
-const affect = ref();
-const form = ref();
-const content = ref();
-const perception = ref();
-const cognition = ref();
-const insight = ref();
+  const physical = ref(model.value?.physical)
+  const appearance = ref(model.value?.appearance)
+  const behavior = ref(model.value?.behavior)
+  const speech = ref(model.value?.speech)
+  const mood = ref(model.value?.mood)
+  const affect = ref(model.value?.affect)
+  const form = ref(model.value?.form)
+  const content = ref(model.value?.content)
+  const perception = ref(model.value?.perception)
+  const cognition = ref(model.value?.cognition)
+  const insight = ref(model.value?.insight)
 
-function update() {
-  model.value = {
-    physical: physical.value,
-    appearance: appearance.value,
-    behavior: behavior.value,
-    speech: speech.value,
-    mood: mood.value,
-    affect: affect.value,
-    form: form.value,
-    content: content.value,
-    perception: perception.value,
-    cognition: cognition.value,
-    insight: insight.value,
-  };
-}
+  function update() {
+    model.value = {
+      physical: physical.value,
+      appearance: appearance.value,
+      behavior: behavior.value,
+      speech: speech.value,
+      mood: mood.value,
+      affect: affect.value,
+      form: form.value,
+      content: content.value,
+      perception: perception.value,
+      cognition: cognition.value,
+      insight: insight.value,
+    }
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>

@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { Patient } from "@/utils/types";
+  import { Patient } from '@/utils/types'
+  import visitTimeLine from './visitTimeLine.vue'
 
-interface Props {
-  patientData: Patient;
-}
+  interface Props {
+    patientData: Patient
+  }
 
-const { patientData } = defineProps<Props>();
+  const { patientData } = defineProps<Props>()
 </script>
 
 <template>
   <VRow>
     <VCol>
-      <TimelineBasic :patientData="patientData" />
+      <visitTimeLine :patientData="patientData" />
     </VCol>
   </VRow>
   <VRow>

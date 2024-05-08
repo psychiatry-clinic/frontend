@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { User } from '@/utils/types'
+  import { User, Visit } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddx from '../ddx.vue'
@@ -15,13 +15,17 @@
   import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
+  import { RouteParams } from 'vue-router'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
 
   const router = useRouter()
-  const route = useRoute('patients-visits-new-id')
+  const route = useRoute('patients-visits-edit-id')
+  const routeParams = route.params as RouteParams
+
+  console.log(routeParams)
 
   const child = ref(true)
 
@@ -153,49 +157,52 @@
       ? numberedStepsChild
       : numberedStepsAdult
 
-  const currentStep = ref(1)
+  const currentStep = ref(0)
+
+  const { data } = await useApi<any>(
+    `/patients/visits/${storedUserData?.id}/${route.query.visit}`
+  )
+
+  const visit = data.value as Visit
+  console.log(visit)
 
   const patient = ref(route.params.id)
-  const doctor = ref(storedUserData?.id)
+  const doctor = ref(visit.doctor?.name)
 
   const prescription = ref()
-  const clinic = ref()
+  const clinic = ref(visit.clinic)
   const duration = ref()
 
-  const chief_complaint = ref()
-  const present_illness = ref()
-  const family_hx = ref()
+  const chief_complaint = ref(visit.chief_complaint)
+  const present_illness = ref(visit.present_illness)
+  const family_hx = ref(visit.patient.family_hx)
 
-  const past_hx = ref()
+  const past_hx = ref(visit.patient.past_hx)
 
-  const social_hx = ref()
-  const personal_hx = ref()
-  const occupation_hx = ref()
-  const forensic_hx = ref()
+  const social_hx = ref(visit.patient.social_hx)
+  const personal_hx = ref(visit.patient.personal_hx)
+  const occupation_hx = ref(visit.patient.occupation_hx)
+  const forensic_hx = ref(visit.patient.forensic_hx)
 
-  const examination = ref()
-  const ix = ref({ investigations: [{ name: '', result: '' }] })
-  const consultations = ref({ consultations: [{ branch: '', result: '' }] })
+  const examination = ref(visit.examination)
+  // const ix = ref(visit.ix)
+  const consultations = ref(visit.consultations)
 
-  const management = ref({ managements: [{ name: '', form: '', dose: '' }] })
+  // const management = ref(visit.management)
 
-  const tests = ref({ tests: [{ name: '', result: '' }] })
+  const tests = ref(visit.tests)
 
-  const differential_diagnosis = ref()
+  const differential_diagnosis = ref(visit.differential_diagnosis)
 
   const therapy = ref()
   const notes = ref()
 
-  const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
+  const link = `/visits-edit/${storedUserData?.id}/${route.params.id}`
 
   const addVisit = async () => {
     if (!storedUserData) return
 
-    console.log(
-      consultations.value.consultations[0].branch === ''
-        ? null
-        : consultations.value.consultations
-    )
+    submit()
 
     try {
       const res = await $api(link, {
@@ -321,7 +328,7 @@
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />
                 <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" />
+                <consultationsVue v-model="consultations" :edit="true" />
                 <ddx v-model="differential_diagnosis" :child="true" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />

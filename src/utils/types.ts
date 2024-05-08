@@ -8,7 +8,6 @@ export interface Patient {
   father_edu: string
   mother_edu: string
   phone: null | string
-  familyHx: null | JSON
   father_dob: null | string
   mother_dob: null | string
   father_age: null | string
@@ -19,6 +18,12 @@ export interface Patient {
   order: null | number
   related: boolean
   notes: null | string
+  family_hx?: string
+  past_hx?: string
+  occupation_hx?: string
+  forensic_hx?: string
+  social_hx?: string
+  personal_hx?: string
   visits?: Visit[]
   demographics?: Demographics[] // Assuming demographics data structure is unknown
   prescriptions?: Prescription[]
@@ -80,32 +85,27 @@ export interface Visit {
   chief_complaint?: Chief_complaint
   present_illness?: string
   suicide?: string
-  past_psychiatric_hx?: string
-  past_medical_hx?: string
-  forensic_hx?: string
-  social_hx?: string
-  drug_hx?: string
-  substance?: string
-  personal_hx?: string
-  appearance?: string
-  behavior?: string
-  speech?: string
-  mood?: string
-  thought_form?: string
-  thought_content?: string
-  perception?: string
-  cognitive_state?: string
+  examination?: string
   differential_diagnosis?: string
-  management?: string
+  management?: ManagementItem[]
+  ix?: string
+  consultations?: string
   prescription?: Prescription
   prescriptionId?: number
   tests: Test[]
-  sessionId?: number
-  session?: Session
+  therapyId?: number
+  therapy?: Therapy
   notes?: string
   insight?: string
   createdAt: string
   updatedAt: string
+}
+
+interface ManagementItem {
+  dose: string
+  form: string
+  name: string
+  use: string
 }
 
 export interface Doctor {
@@ -127,7 +127,7 @@ enum Clinic {
   AutismCenter = 'AutismCenter',
 }
 
-export interface Session {
+export interface Therapy {
   id: number
   notes: string
   clinic: Clinic
@@ -143,7 +143,7 @@ interface Psychologist {
   name: string
   phone: string
   user: User[]
-  sessions: Session[]
+  therapies: Therapy[]
   createdAt: string
   updatedAt: string
 }

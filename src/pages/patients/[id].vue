@@ -1,33 +1,33 @@
 <script setup lang="ts">
-import type { Patient, User, Prescription, Test, Visit } from "@/utils/types";
-import { RouteParams } from "vue-router";
-import CustomerBioPanel from "@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue";
-import CustomerTabTherapy from "@/views/apps/ecommerce/customer/view/CustomerTabTherapy.vue";
-import CustomerTabVisits from "@/views/apps/ecommerce/customer/view/CustomerTabVisits.vue";
-import CustomerTabTests from "@/views/apps/ecommerce/customer/view/CustomerTabTests.vue";
+  import type { Patient, User, Prescription, Test, Visit } from '@/utils/types'
+  import CustomerBioPanel from '@/views/apps/ecommerce/customer/view/CustomerBioPanel.vue'
+  import CustomerTabTherapy from '@/views/apps/ecommerce/customer/view/CustomerTabTherapy.vue'
+  import CustomerTabVisits from '@/views/apps/ecommerce/customer/view/CustomerTabVisits.vue'
+  import CustomerTabTests from '@/views/apps/ecommerce/customer/view/CustomerTabTests.vue'
 
-const route = useRoute();
+  import { RouteParams } from 'vue-router'
+  const route = useRoute()
 
-const routeParams = route.params as RouteParams;
+  const routeParams = route.params as RouteParams
 
-const storedUserData: User | undefined = useCookie("userData").value as
-  | User
-  | undefined;
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
 
-const patientData = ref<Patient>();
-const userTab = ref(null);
+  const patientData = ref<Patient>()
+  const userTab = ref(null)
 
-const tabs = [
-  { title: "Visits", icon: "tabler-file" },
-  { title: "Tests", icon: "tabler-flask" },
-  { title: "Therapy", icon: "tabler-user" },
-];
+  const tabs = [
+    { title: 'Visits', icon: 'tabler-file' },
+    { title: 'Tests', icon: 'tabler-flask' },
+    { title: 'Therapy', icon: 'tabler-user' },
+  ]
 
-const { data } = await useApi<any>(
-  `/patients/${storedUserData?.id}/${routeParams.id}`
-);
+  const { data } = await useApi<any>(
+    `/patients/${storedUserData?.id}/${routeParams.id}`
+  )
 
-patientData.value = data.value;
+  patientData.value = data.value
 </script>
 
 <template>
@@ -40,9 +40,7 @@ patientData.value = data.value;
         <h4 class="text-h4 mb-1">Patient ID #{{ routeParams.id }}</h4>
         <div class="text-body-1">
           First visit:
-          {{
-            new Date(patientData?.createdAt as Date).toLocaleDateString("en-GB")
-          }}
+          {{ removeTimeFromDate(patientData?.createdAt as string) }}
         </div>
       </div>
       <!-- <div class="d-flex gap-4">

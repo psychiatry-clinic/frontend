@@ -632,7 +632,7 @@
                     :disabled="!name || !dob"
                     @click="editPatient"
                   >
-                    Add
+                    Save
                   </VBtn>
                   <VBtn color="error" variant="tonal" @click="resetForm">
                     Discard
