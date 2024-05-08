@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { baghdadRegions, cities } from '@/utils/suggestions'
-  import type { User } from '@/utils/types'
+  import type { Patient, User } from '@/utils/types'
   import { BlobServiceClient } from '@azure/storage-blob'
   import type { CustomInputContent } from '@core/types'
   import { differenceInCalendarYears } from 'date-fns'
@@ -33,9 +33,16 @@
 
   interface Props {
     isDrawerOpen: boolean
+    patientData?: Patient
   }
 
   const props = defineProps<Props>()
+
+  const patientData = ref<Patient>(props.patientData as Patient)
+
+  watch(props, () => {
+    patientData.value = props.patientData as Patient
+  })
 
   interface Emit {
     (e: 'update:isDrawerOpen', value: boolean): void
@@ -63,37 +70,80 @@
     },
   ]
 
+  console.log('patientData.value.father_dob')
+  console.log(patientData.value.father_dob)
+  console.log('patientData.value.mother')
+  console.log(patientData.value.mother_dob)
+
   const selectedRadio = ref('child')
 
   const refVForm = ref<VForm>()
   const avatar = ref()
-  const name = ref()
-  const dob = ref<string>('2024-01-01')
+  const name = ref(patientData.value.name)
+  const dob = ref<string>(patientData.value.dob)
   const age = ref<string>()
 
-  const gender = ref()
-  const phone = ref()
+  const gender = ref(patientData.value.gender)
+  const phone = ref(patientData.value.phone)
   const father_dob = ref()
-  const father_edu = ref()
   const father_age = ref()
-  const father_work = ref()
+
+  if (patientData.value.father_dob) {
+    father_dob.value = new Date(patientData.value.father_dob).getFullYear()
+
+    father_age.value = differenceInCalendarYears(
+      patientData.value.dob,
+      patientData.value.father_dob as string
+    )
+  }
+
+  const father_edu = ref(patientData.value.father_edu)
+  const father_work = ref(patientData.value.father_work)
   const mother_dob = ref()
   const mother_age = ref()
-  const mother_edu = ref()
-  const mother_work = ref()
-  const related = ref<boolean>()
-  const siblings = ref()
-  const order = ref()
-  const familyHx = ref()
-  const notes = ref()
+
+  if (patientData.value.mother_dob) {
+    mother_dob.value = new Date(patientData.value.mother_dob).getFullYear()
+
+    mother_age.value = differenceInCalendarYears(
+      patientData.value.dob,
+      patientData.value.mother_age as string
+    )
+  }
+
+  const mother_edu = ref(patientData.value.mother_edu)
+  const mother_work = ref(patientData.value.mother_work)
+  const related = ref<boolean>(patientData.value.related)
+  const siblings = ref(patientData.value.siblings || 0)
+  const order = ref(patientData.value.order)
+  const notes = ref(patientData.value.notes)
+  const familyHx = ref(patientData.value.familyHx)
 
   // eslint-disable-next-line camelcase
-  const marital_status = ref()
-  const children = ref()
-  const residence = ref()
-  const neighborhood = ref('')
-  const occupation = ref()
-  const education = ref()
+  const marital_status = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .marital_status
+  )
+  const children = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .children
+  )
+  const residence = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .residence
+  )
+  const neighborhood = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .neighborhood
+  )
+  const occupation = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .occupation
+  )
+  const education = ref(
+    patientData.value.demographics?.[patientData.value.demographics.length - 1]
+      .education
+  )
 
   const resetForm = () => {
     refVForm.value?.reset()
@@ -104,74 +154,52 @@
     | User
     | undefined
 
-  const link = `/patients-new/${storedUserData?.id}`
+  const link = `/patients-edit/${storedUserData?.id}/${patientData.value.id}`
 
-  const addPatient = async () => {
+  const editPatient = async () => {
     if (!storedUserData) return
 
     try {
       const res = await $api(link, {
         method: 'POST',
         body: {
-          doctor: storedUserData.id,
           name: name.value,
           dob: addTimeToDateString(dob.value),
           gender: gender.value,
           phone: phone.value,
           avatar: avatar.value,
-          father_dob: new Date(father_dob.value, 0, 1),
-          father_age: +father_age.value,
+          father_dob: father_dob.value ? father_dob.value : null,
           father_work: father_work.value,
           father_edu: father_edu.value,
-          mother_dob: new Date(mother_dob.value, 0, 1),
-          mother_age: +mother_age.value,
+          mother_dob: mother_dob.value ? mother_dob.value : null,
           mother_work: mother_work.value,
           mother_edu: mother_edu.value,
           related: related.value,
           siblings: +siblings.value,
-          order: +order.value,
+          order: order.value,
           familyHx: familyHx.value,
           notes: notes.value,
-          // eslint-disable-next-line camelcase
           marital_status: marital_status.value,
           children: children.value,
           residence: residence.value,
           neighborhood: neighborhood.value,
           occupation: occupation.value,
           education: education.value,
+          demographics_id: patientData.value.demographics?.[0].id,
         },
         onResponseError({ response }) {
           errors.value = response._data
+          console.log(response._data)
         },
       })
 
       console.log(res.id)
-      router.push(`/patients/${res.id}`)
     } catch (error) {
       console.error(error)
     }
   }
 
-  watch(dob, (newValue, oldValue) => {
-    if (newValue) {
-      age.value = calculateAge(newValue) as string
-      console.log(newValue)
-    }
-  })
-
-  watch(father_dob, (newValue, oldValue) => {
-    if (newValue.length === 4) {
-      const date = new Date(father_dob.value, 0, 1)
-      father_age.value = differenceInCalendarYears(dob.value, date)
-    }
-  })
-
-  watch(mother_dob, (newValue, oldValue) => {
-    if (newValue.length === 4) {
-      const date = new Date(mother_dob.value, 0, 1)
-      mother_age.value = differenceInCalendarYears(dob.value, date)
-    }
-  })
+  age.value = calculateAge(patientData.value.dob) as string
 </script>
 
 <template>
@@ -185,7 +213,7 @@
   >
     <!-- 👉 Header -->
     <AppDrawerHeaderSection
-      title="Add a Patient"
+      :title="'Edit ' + patientData.name"
       @cancel="$emit('update:isDrawerOpen', false)"
     />
 
@@ -481,7 +509,6 @@
                 <AppTextField
                   v-model="father_dob"
                   label="Date of Birth"
-                  :rules="[dateOfBirthValidator]"
                   placeholder=""
                   maxlength="4"
                 />
@@ -539,7 +566,6 @@
                 <AppTextField
                   v-model="mother_dob"
                   label="Date of Birth"
-                  :rules="[dateOfBirthValidator]"
                   placeholder=""
                   maxlength="4"
                 />
@@ -604,7 +630,7 @@
                     type="submit"
                     color="primary"
                     :disabled="!name || !dob"
-                    @click="addPatient"
+                    @click="editPatient"
                   >
                     Add
                   </VBtn>

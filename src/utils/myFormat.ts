@@ -1,8 +1,6 @@
 import { differenceInYears, differenceInMonths, isValid } from 'date-fns'
 
-export const calculateAge = (
-  dob: string
-): { years: number; months: number } | string => {
+export const calculateAge = (dob: string): string => {
   const dobDate = new Date(dob)
 
   if (!isValid(dobDate)) {
@@ -57,10 +55,13 @@ function getOrdinalSuffix(number: number): string {
 }
 
 export const addTimeToDateString = (dateString: string): string => {
+  console.log('dateString')
+  console.log(dateString)
+
   return `${dateString}T00:00:00.000Z`
 }
 
-export const removeTimeFromDate = (dateTimeString: string): string => {
-  console.log(dateTimeString)
+export const removeTimeFromDate = (dateTimeString: string | null): string => {
+  if (!dateTimeString) return ''
   return dateTimeString.split('T')[0]
 }

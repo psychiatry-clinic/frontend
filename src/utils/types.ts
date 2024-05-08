@@ -2,16 +2,17 @@ export interface Patient {
   id: number
   name: string
   dob: string
+  age: string
   gender: string
   avatar: string
   father_edu: string
   mother_edu: string
   phone: null | string
   familyHx: null | JSON
-  father_dob: null | number
-  mother_dob: null | number
-  father_age: null | number
-  mother_age: null | number
+  father_dob: null | string
+  mother_dob: null | string
+  father_age: null | string
+  mother_age: null | string
   father_work: null | string
   mother_work: null | string
   siblings: null | number

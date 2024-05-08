@@ -1,19 +1,36 @@
 <script setup lang="ts">
-  import { calculateAge, formatSiblingOrder } from '@/utils/myFormat'
+  import EditPatient from '@/pages/patients/editPatient.vue'
+  import { formatSiblingOrder } from '@/utils/myFormat'
   import type { Patient } from '@/utils/types'
+  import { differenceInYears, differenceInCalendarYears } from 'date-fns'
+
+  const isUserInfoEditDialogVisible = ref(false)
+  const isAddPatientDrawerOpen = ref(false)
 
   const props = defineProps<Props>()
-  const isUserInfoEditDialogVisible = ref(false)
 
   interface Props {
     patientData: Patient
   }
+  const patientData = ref<Patient>(props.patientData as Patient)
 
-  const editPatientData = () => {
-    console.log('change data')
+  const patient = computed((): Patient => {
+    return {
+      ...patientData.value,
+      createdAt: removeTimeFromDate(patientData.value.createdAt),
+      age: calculateAge(patientData.value.dob),
+      dob: removeTimeFromDate(patientData.value.dob),
+    }
+  })
+  console.log('props.patientData.dob')
+  console.log(props.patientData.dob)
+  console.log('props.patientData.father_age')
+  console.log(props.patientData.father_age)
 
-    //later
-  }
+  console.log(props.patientData.dob)
+
+  const child =
+    differenceInYears(new Date(props.patientData.dob), new Date()) < 14
 </script>
 
 <template>
@@ -72,7 +89,7 @@
               <h6 class="text-h6">
                 Birth Date :
                 <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.dob }}
+                  {{ removeTimeFromDate(props.patientData.dob) }}
                 </span>
               </h6>
             </VListItem>
@@ -101,7 +118,7 @@
 
             <!-- 👉 Marital Status -->
             <div v-if="props.patientData.demographics">
-              <VListItem v-if="+calculateAge(props.patientData.dob) > 18">
+              <VListItem v-if="child">
                 <h6 class="text-h6">
                   Marital Status :
                   <span class="text-body-1 d-inline-block">
@@ -111,7 +128,7 @@
               </VListItem>
 
               <!-- 👉 Children -->
-              <VListItem v-if="+calculateAge(props.patientData.dob) > 18">
+              <VListItem v-if="child">
                 <h6 class="text-h6">
                   Children :
                   <span class="text-body-1 d-inline-block">
@@ -141,7 +158,7 @@
               </VListItem>
 
               <!-- 👉 Work -->
-              <VListItem v-if="+calculateAge(props.patientData.dob) > 18">
+              <VListItem v-if="child">
                 <h6 class="text-h6">
                   Work :
                   <span class="text-body-1 d-inline-block">
@@ -153,7 +170,7 @@
 
             <br />
 
-            <div v-if="+calculateAge(props.patientData.dob) < 18">
+            <div v-if="child">
               <!-- 👉 Relationship -->
               <VListItem>
                 <h6 class="text-h6">
@@ -173,7 +190,13 @@
                 <h6 class="text-h6">
                   Birth Date :
                   <span class="text-body-1 d-inline-block">
-                    {{ props.patientData.father_dob }}
+                    {{
+                      props.patientData.father_dob
+                        ? new Date(
+                            props.patientData.father_dob as string
+                          ).getFullYear()
+                        : ''
+                    }}
                   </span>
                 </h6>
               </VListItem>
@@ -182,7 +205,14 @@
                 <h6 class="text-h6">
                   Age at Birth :
                   <span class="text-body-1 d-inline-block">
-                    {{ props.patientData.father_age }}
+                    {{
+                      props.patientData.father_dob
+                        ? differenceInCalendarYears(
+                            props.patientData.dob,
+                            props.patientData.father_dob as string
+                          )
+                        : ''
+                    }}
                   </span>
                 </h6>
               </VListItem>
@@ -192,11 +222,13 @@
                   Age Now :
                   <span class="text-body-1 d-inline-block">
                     {{
-                      calculateAge(
-                        props.patientData.father_dob
-                          ? props.patientData.father_dob.toString()
-                          : '1'
-                      )
+                      props.patientData.father_dob
+                        ? calculateAge(
+                            props.patientData.father_dob
+                              ? props.patientData.father_dob.toString()
+                              : '1'
+                          )
+                        : ''
                     }}
                   </span>
                 </h6>
@@ -227,7 +259,13 @@
                 <h6 class="text-h6">
                   Birth Date :
                   <span class="text-body-1 d-inline-block">
-                    {{ props.patientData.mother_dob }}
+                    {{
+                      props.patientData.mother_dob
+                        ? new Date(
+                            props.patientData.mother_dob as string
+                          ).getFullYear()
+                        : ''
+                    }}
                   </span>
                 </h6>
               </VListItem>
@@ -236,7 +274,14 @@
                 <h6 class="text-h6">
                   Age at Birth :
                   <span class="text-body-1 d-inline-block">
-                    {{ props.patientData.mother_age }}
+                    {{
+                      props.patientData.mother_dob
+                        ? differenceInCalendarYears(
+                            props.patientData.dob,
+                            props.patientData.mother_dob as string
+                          )
+                        : ''
+                    }}
                   </span>
                 </h6>
               </VListItem>
@@ -246,11 +291,13 @@
                   Age Now :
                   <span class="text-body-1 d-inline-block">
                     {{
-                      calculateAge(
-                        props.patientData.mother_dob
-                          ? props.patientData.mother_dob.toString()
-                          : '1'
-                      )
+                      props.patientData.mother_dob
+                        ? calculateAge(
+                            props.patientData.mother_dob
+                              ? props.patientData.mother_dob.toString()
+                              : '1'
+                          )
+                        : ''
                     }}
                   </span>
                 </h6>
@@ -330,14 +377,21 @@
           >
             Edit Details
           </VBtn>
+          <VBtn block @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen">
+            Edit Details drawer
+          </VBtn>
         </VCardText>
       </VCard>
     </VCol>
+    <EditPatient
+      :patient-data="patient"
+      v-model:is-drawer-open="isAddPatientDrawerOpen"
+    />
   </VRow>
   <UserInfoEditDialog
     v-model:isDialogVisible="isUserInfoEditDialogVisible"
     :user-data="patientData"
-    @submit="editPatientData"
+    @submit=""
   />
 </template>
 

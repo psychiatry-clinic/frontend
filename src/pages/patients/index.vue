@@ -57,7 +57,6 @@
     }))
   })
 
-  console.log(typeof patients?.value[0].dob)
   const totalPatients = computed(() => data.value.total)
 </script>
 
