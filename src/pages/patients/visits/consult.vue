@@ -1,7 +1,7 @@
 <script setup lang="ts">
   interface Consultation {
     branch: string
-    result?: string
+    result?: string // Include result property
   }
 
   interface Model {
@@ -13,61 +13,73 @@
   }
 
   const props = defineProps<Props>()
+
   const model = defineModel<Model>()
 
   const consultations = ref<Consultation[]>(model.value?.consultations || [])
-  console.log(model.value)
+
+  if (model.value && props.edit) {
+    console.log(model.value)
+    console.log(consultations.value)
+    consultations.value = model.value
+  }
+
+  let removeTimer: NodeJS.Timeout | null = null
 
   // Attach event listener when component is mounted
-  let removeTimer: NodeJS.Timeout | null = null
   document.addEventListener(
     'blur',
     () => {
       if (removeTimer) clearTimeout(removeTimer)
-      removeTimer = setTimeout(removeEmptyConsultations, 2000)
+      removeTimer = setTimeout(removeEmptyNames, 2000)
     },
     true
   )
 
   // Clean up event listener when component is unmounted
   onBeforeUnmount(() => {
-    document.removeEventListener('blur', removeEmptyConsultations, true)
+    document.removeEventListener('blur', removeEmptyNames, true)
     if (removeTimer) clearTimeout(removeTimer)
   })
 
-  // Function to add a new consultation
   function addConsultation() {
     if (!consultations.value) return
-    const lastConsultation = consultations.value[consultations.value.length - 1]
     if (
-      !lastConsultation ||
-      (lastConsultation.branch === '' && lastConsultation.result === '')
-    )
+      (consultations.value && // Add null check
+        consultations.value[consultations.value.length - 1].branch === '') ||
+      consultations.value[consultations.value.length - 1].result === ''
+    ) {
       return
+    }
     consultations.value.push({ branch: '', result: '' })
   }
 
-  // Function to enable the second field based on the branch value
   function enableSecondField(index: number) {
     const currentConsultation = consultations.value?.[index]
     return !!currentConsultation?.branch
   }
 
-  // Function to save branch name as uppercase
   function saveNameUppercase(index: number) {
     if (!consultations.value || !consultations.value[index]) return
     consultations.value[index].branch =
       consultations.value[index].branch.toUpperCase()
   }
 
-  // Function to remove empty consultations
-  function removeEmptyConsultations() {
-    if (!model.value || !consultations.value || !consultations.value[0]) return
+  function removeEmptyNames() {
+    if (!model.value) return
+    if (!consultations.value) return
+    if (!consultations.value[0]) return
+
+    // Keep the first consultation unchanged
     const firstConsultation = consultations.value[0]
+
+    // Filter out empty consultations except for the first one and newly added ones
     consultations.value = [
       firstConsultation,
-      ...consultations.value.slice(1).filter((consultation) => {
+      ...consultations.value.slice(1).filter((consultation, index) => {
+        // Check if it's a newly added consultation (no result property)
         const isNewConsultation = !('result' in consultation)
+        // Remove empty consultations that are not newly added
         return isNewConsultation || consultation.branch.trim() !== ''
       }),
     ]
@@ -79,13 +91,12 @@
     <VRow>
       <VCol cols="12">
         <h6 class="text-h6 font-weight-medium">Consultation</h6>
+        <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- Iterate over consultations -->
     <template v-for="(consultation, index) in consultations" :key="index">
       <VRow>
-        <!-- Branch field -->
         <VCol cols="6">
           <AppAutocomplete
             :placeholder="
@@ -103,7 +114,6 @@
             @input="saveNameUppercase(index)"
           />
         </VCol>
-        <!-- Result field -->
         <VCol cols="6">
           <AppTextField
             v-if="enableSecondField(index)"
@@ -111,12 +121,12 @@
               consultation.result ? '' : 'Type Result of consultation'
             "
             v-model="consultation.result"
+            @input="enableSecondField(index)"
           />
         </VCol>
       </VRow>
     </template>
 
-    <!-- Add new consultation button -->
     <VRow>
       <VCol cols="12">
         <VBtn variant="outlined" @click.prevent="addConsultation">

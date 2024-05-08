@@ -205,18 +205,15 @@
           present_illness: present_illness.value,
           examination: examination.value,
           differential_diagnosis: differential_diagnosis.value?.differential,
-          ix:
-            ix.value.investigations[0].name === ''
-              ? null
-              : ix.value.investigations,
+          ix: ix.value.investigations[0].name === '' ? null : ix.value,
           management:
             management.value?.managements[0].name === ''
               ? null
-              : management.value?.managements,
+              : management.value,
           consultations:
             consultations.value.consultations[0].branch === ''
               ? null
-              : consultations.value.consultations,
+              : consultations.value,
           notes: notes.value?.notes ? notes.value.notes : null,
           social_hx: social_hx.value,
           family_hx: family_hx.value,
