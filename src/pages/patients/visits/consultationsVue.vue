@@ -15,6 +15,8 @@
   const props = defineProps<Props>()
   const model = defineModel<Model>()
 
+  const isThereData = model.value ? true : false
+
   const consultations = ref<Consultation[]>(model.value?.consultations || [])
 
   // Function to add a new consultation

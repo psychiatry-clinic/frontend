@@ -6,8 +6,6 @@
   const model = defineModel<Model>()
 
   const notes = ref(model.value?.notes)
-  console.log(notes.value)
-  console.log(model.value)
 
   function update() {
     model.value = {

@@ -5,6 +5,7 @@
     similar: string | undefined
     different: string | undefined
     medical: string | undefined
+    other: string | undefined
   }
 
   const model = defineModel<Model>()
@@ -12,15 +13,15 @@
   const similar = ref(model.value?.similar)
   const different = ref(model.value?.different)
   const medical = ref(model.value?.medical)
-  const other = ref()
+  const other = ref(model.value?.other)
 
   function update() {
     model.value = {
       similar: similar.value,
       different: different.value,
       medical: medical.value,
+      other: other.value,
     }
-    console.log(model.value)
   }
 
   const appendTo = (target: string | undefined, text: string) => {

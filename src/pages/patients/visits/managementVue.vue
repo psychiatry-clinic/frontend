@@ -17,10 +17,6 @@
   // }
 
   const managements = ref<Management[]>(model.value?.managements || [])
-  console.log(managements.value)
-  console.log(model.value)
-
-  let removeTimer: NodeJS.Timeout | null = null
 
   function addManagement() {
     if (!managements.value) return

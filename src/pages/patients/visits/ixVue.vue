@@ -11,6 +11,7 @@
   }
 
   const model = defineModel<Model>()
+
   const investigations = ref<Investigation[]>(model.value?.investigations || [])
 
   // Function to add a new investigation

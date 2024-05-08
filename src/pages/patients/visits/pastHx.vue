@@ -1,37 +1,37 @@
 <script setup lang="ts">
-import {
-  pastPsychiatricHistorySuggestions,
-  pastMedicalHistorySuggestions,
-  pastSurgicalHistorySuggestions,
-} from "@/utils/suggestions";
+  import {
+    pastPsychiatricHistorySuggestions,
+    pastMedicalHistorySuggestions,
+    pastSurgicalHistorySuggestions,
+  } from '@/utils/suggestions'
 
-interface Model {
-  past_psychiatric: string | undefined;
-  past_medical: string | undefined;
-  past_surgical: string | undefined;
-  past_substance: string | undefined;
-}
+  interface Model {
+    past_psychiatric: string | undefined
+    past_medical: string | undefined
+    past_surgical: string | undefined
+    past_substance: string | undefined
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const past_psychiatric = ref(model.value?.past_psychiatric);
-const past_medical = ref(model.value?.past_medical);
-const past_surgical = ref(model.value?.past_surgical);
-const past_substance = ref(model.value?.past_surgical);
+  const past_psychiatric = ref(model.value?.past_psychiatric)
+  const past_medical = ref(model.value?.past_medical)
+  const past_surgical = ref(model.value?.past_surgical)
+  const past_substance = ref(model.value?.past_substance)
 
-function update() {
-  model.value = {
-    past_psychiatric: past_psychiatric.value as string,
-    past_medical: past_medical.value as string,
-    past_surgical: past_surgical.value as string,
-    past_substance: past_substance.value as string,
-  };
-}
+  function update() {
+    model.value = {
+      past_psychiatric: past_psychiatric.value as string,
+      past_medical: past_medical.value as string,
+      past_surgical: past_surgical.value as string,
+      past_substance: past_substance.value as string,
+    }
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>
@@ -62,8 +62,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                past_psychiatric = appendTo(past_psychiatric, suggestion);
-                update();
+                past_psychiatric = appendTo(past_psychiatric, suggestion)
+                update()
               }
             "
           >
@@ -93,8 +93,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                past_medical = appendTo(past_medical, suggestion);
-                update();
+                past_medical = appendTo(past_medical, suggestion)
+                update()
               }
             "
           >
@@ -124,8 +124,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                past_surgical = appendTo(past_surgical, suggestion);
-                update();
+                past_surgical = appendTo(past_surgical, suggestion)
+                update()
               }
             "
           >
@@ -155,8 +155,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                past_substance = appendTo(past_substance, suggestion);
-                update();
+                past_substance = appendTo(past_substance, suggestion)
+                update()
               }
             "
           >
@@ -169,7 +169,7 @@ const appendTo = (target: string | undefined, text: string) => {
 </template>
 
 <style scoped>
-VRow {
-  margin-bottom: 100px;
-}
+  VRow {
+    margin-bottom: 100px;
+  }
 </style>

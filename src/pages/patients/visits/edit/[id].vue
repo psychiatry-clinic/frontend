@@ -25,8 +25,6 @@
   const route = useRoute('patients-visits-edit-id')
   const routeParams = route.params as RouteParams
 
-  console.log(routeParams)
-
   const child = ref(true)
 
   const numberedStepsAdult = [
@@ -164,7 +162,6 @@
   )
 
   const visit = data.value as Visit
-  console.log(visit)
 
   const patient = ref(route.params.id)
   const doctor = ref(visit.doctor?.name)
@@ -187,7 +184,10 @@
   const examination = ref(visit.examination)
 
   const consultations = ref(visit.consultations)
-  const management = ref(visit.management)
+
+  const management = ref(
+    visit.management || [{ name: '', form: '', dose: '', use: '' }]
+  )
 
   const tests = ref(visit.tests)
 
@@ -196,7 +196,7 @@
   const therapy = ref()
   const notes = ref(visit.notes)
 
-  const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}`
+  const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}/${visit.patient.id}`
 
   const saveVisit = async () => {
     if (!storedUserData) return
@@ -207,30 +207,21 @@
       const res = await $api(link, {
         method: 'POST',
         body: {
+          patient_id: visit.patient.id,
           chief_complaint: chief_complaint.value,
           examination: examination.value,
           ddx: ddx.value,
           present_illness: present_illness.value,
           consultations: consultations.value,
-          //       ix:
-          //         ix.value.investigations.[0].name === ''
-          //           ? null
-          //           : ix.value.investigations,
-          //       management:
-          //         management.value?.managements[0].name === ''
-          //           ? null
-          //           : management.value?.managements,
-          //       consultations:
-          //         consultations.value.consultations[0].branch === ''
-          //           ? null
-          //           : consultations.value.consultations,
-          notes: notes.value ? notes.value : null,
-          // social_hx: social_hx.value,
-          // family_hx: family_hx.value,
-          //       personal_hx: personal_hx.value,
-          //       forensic_hx: forensic_hx.value,
-          //       occupation_hx: occupation_hx.value,
-          //       past_hx: past_hx.value,
+          ix: ix.value,
+          management: management.value,
+          notes: notes.value,
+          social_hx: social_hx.value,
+          family_hx: family_hx.value,
+          personal_hx: personal_hx.value,
+          forensic_hx: forensic_hx.value,
+          occupation_hx: occupation_hx.value,
+          past_hx: past_hx.value,
         },
         onResponseError({ response }) {
           errors.value = response._data
@@ -244,10 +235,10 @@
   }
 
   const submit = () => {
-    console.log('chief_complaint')
-    console.log(chief_complaint.value)
-    console.log('present_illness')
-    console.log(present_illness.value)
+    // console.log('chief_complaint')
+    // console.log(chief_complaint.value)
+    // console.log('present_illness')
+    // console.log(present_illness.value)
     console.log('family_hx')
     console.log(family_hx.value)
     console.log('past_hx')
@@ -261,21 +252,21 @@
     console.log('forensic_hx')
     console.log(forensic_hx.value)
     console.log('examination')
-    console.log(examination.value)
-    console.log('ddx')
-    console.log(ddx.value)
-    console.log('ix')
-    console.log(ix.value)
-    console.log('management')
-    console.log(management.value)
-    console.log('consultations')
-    console.log(consultations.value)
-    console.log('tests')
-    console.log(tests.value)
-    console.log('therapy')
-    console.log(therapy.value)
-    console.log('notes')
-    console.log(notes.value)
+    // console.log(examination.value)
+    // console.log('ddx')
+    // console.log(ddx.value)
+    // console.log('ix')
+    // console.log(ix.value)
+    // console.log('management')
+    // console.log(management.value)
+    // console.log('consultations')
+    // console.log(consultations.value)
+    // console.log('tests')
+    // console.log(tests.value)
+    // console.log('therapy')
+    // console.log(therapy.value)
+    // console.log('notes')
+    // console.log(notes.value)
   }
 </script>
 
@@ -328,7 +319,7 @@
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />
                 <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" :edit="true" />
+                <consultationsVue v-model="consultations" />
                 <ddxVue v-model="ddx" :child="true" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />

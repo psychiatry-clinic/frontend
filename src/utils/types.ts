@@ -87,7 +87,7 @@ export interface Visit {
   suicide?: string
   examination?: string
   ddx?: { differential: string }
-  management?: ManagementItem[]
+  management?: { managements: ManagementItem[] }
   ix?: JSON
   consultations?: string
   prescription?: Prescription

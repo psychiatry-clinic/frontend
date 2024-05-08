@@ -201,16 +201,10 @@
           present_illness: present_illness.value,
           examination: examination.value,
           ddx: ddx.value,
-          ix: ix.value.investigations[0].name === '' ? null : ix.value,
-          management:
-            management.value?.managements[0].name === ''
-              ? null
-              : management.value,
-          consultations:
-            consultations.value.consultations[0].branch === ''
-              ? null
-              : consultations.value,
-          notes: notes.value ? notes.value : null,
+          ix: ix.value,
+          management: management.value,
+          consultations: consultations.value,
+          notes: notes.value,
           social_hx: social_hx.value,
           family_hx: family_hx.value,
           personal_hx: personal_hx.value,

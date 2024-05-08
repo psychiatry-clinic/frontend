@@ -101,7 +101,7 @@
           </div>
           <div class="app-timeline-text mt-1">
             <span class="text-warning"> Management: </span>
-            <li v-for="item in visit.management">
+            <li v-for="item in visit.management?.managements">
               {{ item.name }} {{ item.form }} {{ item.dose }} {{ item.use }}
             </li>
           </div>
