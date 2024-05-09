@@ -156,10 +156,10 @@ export interface Psychologist {
 }
 
 export interface Chief_complaint {
-  complaint: string
-  duration: string
-  referral: string
-  source: string
+  complaint?: string
+  duration?: string
+  referral?: string
+  source?: string
 }
 
 export interface Present_illness {

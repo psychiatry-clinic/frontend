@@ -1,28 +1,19 @@
 <script setup lang="ts">
   import { familyHistorySuggestions } from '@/utils/suggestions'
 
-  interface Model {
-    similar?: string
-    different?: string
-    medical?: string
-    other?: string
+  const suggestions: { [key: string]: string[] } = {
+    similar: familyHistorySuggestions,
+    different: familyHistorySuggestions,
+    medical: familyHistorySuggestions,
   }
+
+  interface Model {
+    [key: string | number]: string
+  }
+
+  const fields = ['similar', 'different', 'medical', 'other']
 
   const model = defineModel<Model>()
-
-  const similar = ref(model.value?.similar)
-  const different = ref(model.value?.different)
-  const medical = ref(model.value?.medical)
-  const other = ref(model.value?.other)
-
-  function update() {
-    model.value = {
-      similar: similar.value,
-      different: different.value,
-      medical: medical.value,
-      other: other.value,
-    }
-  }
 
   const appendTo = (target: string | undefined, text: string) => {
     // Append the text and return the new string
@@ -38,8 +29,32 @@
         <p class="mb-0"></p>
       </VCol>
     </VRow>
+
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
+        <AppTextarea
+          v-model="model[field]"
+          :label="field.charAt(0).toUpperCase() + field.slice(1)"
+          auto-grow
+          rows="2"
+        />
+      </VCol>
+      <VCol>
+        <div class="my-5" v-if="model">
+          <VChip
+            class="me-2 mb-2"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
+            size="x-small"
+            @click="model[field] = appendTo(model[field], suggestion)"
+          >
+            {{ suggestion }}
+          </VChip>
+        </div>
+      </VCol>
+    </VRow>
     <!-- similar -->
-    <VRow>
+    <!-- <VRow>
       <VCol cols="6" md="6">
         <AppTextarea
           v-model="similar"
@@ -61,9 +76,9 @@
           </VChip>
         </div>
       </VCol>
-    </VRow>
+    </VRow> -->
     <!-- different -->
-    <VRow>
+    <!-- <VRow>
       <VCol cols="6" md="6">
         <AppTextarea
           v-model="different"
@@ -90,9 +105,9 @@
           </VChip>
         </div>
       </VCol>
-    </VRow>
+    </VRow> -->
     <!-- medical -->
-    <VRow>
+    <!-- <VRow>
       <VCol cols="6" md="6">
         <AppTextarea
           v-model="medical"
@@ -119,9 +134,9 @@
           </VChip>
         </div>
       </VCol>
-    </VRow>
+    </VRow> -->
     <!-- other -->
-    <VRow>
+    <!-- <VRow>
       <VCol cols="6" md="6">
         <AppTextarea
           v-model="other"
@@ -148,6 +163,6 @@
           </VChip>
         </div>
       </VCol>
-    </VRow>
+    </VRow> -->
   </VWindowItem>
 </template>

@@ -1,32 +1,23 @@
 <script setup lang="ts">
-import { chief_complains, durations, sourceOfInfo } from "@/utils/suggestions";
+  import { chief_complains, durations, sourceOfInfo } from '@/utils/suggestions'
 
-interface Model {
-  complaint: string | undefined;
-  duration: string | undefined;
-  source: string | undefined;
-  referral: string | undefined;
-}
+  const suggestions: { [key: string]: string[] } = {
+    complaint: chief_complains,
+    duration: durations,
+    source: sourceOfInfo,
+  }
 
-const model = defineModel<Model>();
+  const fields = ['complaint', 'duration', 'source', 'referral']
 
-const complaint = ref(model.value?.complaint);
-const duration = ref(model.value?.duration);
-const source = ref(model.value?.source);
-const referral = ref(model.value?.referral);
+  interface Model {
+    [key: string | number]: string
+  }
 
-const update = () => {
-  model.value = {
-    complaint: complaint.value as string,
-    duration: duration.value as string,
-    source: source.value as string,
-    referral: referral.value as string,
-  };
-};
+  const model = defineModel<Model>()
 
-const appendTo = (target: string | undefined, text: string) => {
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    return target ? target + ', ' + text : text
+  }
 </script>
 
 <template>
@@ -38,119 +29,23 @@ const appendTo = (target: string | undefined, text: string) => {
       </VCol>
     </VRow>
 
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="complaint"
-          label="Complaint"
+          v-model="model[field]"
+          :label="field.charAt(0).toUpperCase() + field.slice(1)"
           auto-grow
           rows="2"
-          @keyup="update"
-          :rules="[requiredValidator]"
         />
       </VCol>
       <VCol>
-        <div class="my-5">
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in chief_complains"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="
-              () => {
-                complaint = appendTo(complaint, suggestion);
-                update();
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="duration"
-          label="Duration"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in durations"
-            size="x-small"
-            @click="
-              () => {
-                duration = appendTo(duration, suggestion);
-                update();
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="source"
-          label="Source of Information"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in sourceOfInfo"
-            size="x-small"
-            @click="
-              () => {
-                source = appendTo(source, suggestion);
-                update();
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="referral"
-          label="Referral Information"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="
-              () => {
-                referral = appendTo(referral, suggestion);
-                update();
-              }
-            "
+            @click="model[field] = appendTo(model[field], suggestion)"
           >
             {{ suggestion }}
           </VChip>

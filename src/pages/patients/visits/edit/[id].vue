@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-  import { User, Visit } from '@/utils/types'
+  import {
+    Chief_complaint,
+    Development,
+    Present_illness,
+    User,
+    Visit,
+  } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddxVue from '../ddxVue.vue'
@@ -149,9 +155,18 @@
   const clinic = ref(visit.clinic)
   const duration = ref()
 
-  const chief_complaint = ref(visit.chief_complaint)
-  const present_illness = ref(visit.present_illness)
-  const development = ref(visit.patient.development)
+  const chief_complaint = ref<Chief_complaint>(
+    visit.chief_complaint || { complaint: '' }
+  )
+  const present_illness = ref<Present_illness>(
+    visit.present_illness || { notes: '' }
+  )
+  const development = ref<Development>(
+    visit.patient.development || {
+      selectedYear: [''],
+      selectedPeripartum: [''],
+    }
+  )
   const family_hx = ref(visit.patient.family_hx)
   const past_hx = ref(visit.patient.past_hx)
   const social_hx = ref(visit.patient.social_hx)

@@ -167,7 +167,7 @@
   const clinic = ref()
   const duration = ref()
 
-  const chief_complaint = ref<Chief_complaint>()
+  const chief_complaint = ref<Chief_complaint>({ complaint: '' })
   const present_illness = ref<Present_illness>({ notes: '' })
 
   const development = ref(

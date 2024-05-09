@@ -36,7 +36,7 @@
 
   function saveNameUppercase(index: number) {
     if (!managements.value || !managements.value[index]) return
-    managements.value[index].name = managements.value[index].name.toUpperCase()
+    managements.value[index].name = managements.value[index].name?.toUpperCase()
   }
 </script>
 

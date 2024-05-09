@@ -6,16 +6,6 @@
 
   const model = defineModel<Model>()
 
-  const selectedPeripartum = ref(model.value?.selectedPeripartum || [])
-  const selectedYear = ref(model.value?.selectedYear || [])
-
-  const update = () => {
-    // model.value = {
-    //   selectedYear: selectedYear.value as string[],
-    //   selectedPeripartum: selectedPeripartum.value as string[],
-    // }
-  }
-
   const appendTo = (target: string | undefined, text: string) => {
     return target === '' || target === undefined ? text : `${target}, ${text}`
   }
@@ -37,7 +27,7 @@
 
       <VCard flat>
         <VCardText>
-          <VWindow v-model="tab" class="disable-tab-transition">
+          <VWindow v-model="tab" class="disable-tab-transition" v-if="model">
             <VWindowItem value="peri">
               <VRow>
                 <VCol
@@ -54,7 +44,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                   </div>
                 </VCol>
@@ -77,7 +66,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                   </div>
                 </VCol>
@@ -100,7 +88,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                     <!-- <CheckboxGroup :items="category" v-model="model?.selectedYear" /> -->
                   </div>
@@ -124,7 +111,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                   </div>
                 </VCol> </VRow
@@ -145,7 +131,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                   </div>
                 </VCol> </VRow
@@ -166,7 +151,6 @@
                       :label="item"
                       color="success"
                       :value="item"
-                      @click="update"
                     />
                   </div>
                 </VCol> </VRow
@@ -174,62 +158,6 @@
           </VWindow>
         </VCardText>
       </VCard>
-
-      <!-- <VRow>
-      <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Development History</h6>
-        <p class="mb-0"></p>
-      </VCol>
-    </VRow>
-
-    <VRow>
-      <div class="demo-space-x">
-        <VCheckbox
-          v-model="selected"
-          :true-value="1"
-          :false-value="0"
-          label="drink from cup"
-        />
-
-        <VCheckbox
-          v-model="selected"
-          true-value="Show"
-          false-value="Hide"
-          color="success"
-          :label="`${selected.toString()}`"
-        />
-      </div>
-    </VRow> -->
-
-      <!-- <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="complaint"
-          label="Complaint"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[requiredValidator]"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in chief_complains"
-            size="x-small"
-            @click="
-              () => {
-                complaint = appendTo(complaint, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow> -->
     </VWindowItem>
   </VCard>
 </template>
