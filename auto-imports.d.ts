@@ -112,6 +112,8 @@ declare global {
   const markRaw: typeof import('vue')['markRaw']
   const myApi: typeof import('./src/utils/myApi')['myApi']
   const nextTick: typeof import('vue')['nextTick']
+  const occupation: typeof import('./src/utils/suggestions')['occupation']
+  const occupationSuggestions: typeof import('./src/utils/suggestions')['occupationSuggestions']
   const onActivated: typeof import('vue')['onActivated']
   const onBeforeMount: typeof import('vue')['onBeforeMount']
   const onBeforeRouteLeave: typeof import('vue-router/auto')['onBeforeRouteLeave']
@@ -396,6 +398,8 @@ declare global {
   const watchTriggerable: typeof import('@vueuse/core')['watchTriggerable']
   const watchWithFilter: typeof import('@vueuse/core')['watchWithFilter']
   const whenever: typeof import('@vueuse/core')['whenever']
+  const year1List: typeof import('./src/utils/suggestions')['year1List']
+  const year2List: typeof import('./src/utils/suggestions')['year2List']
 }
 // for type re-export
 declare global {
@@ -508,6 +512,7 @@ declare module 'vue' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router/auto')['onBeforeRouteLeave']>
@@ -785,6 +790,8 @@ declare module 'vue' {
     readonly watchTriggerable: UnwrapRef<typeof import('@vueuse/core')['watchTriggerable']>
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
+    readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
+    readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
   }
 }
 declare module '@vue/runtime-core' {
@@ -890,6 +897,7 @@ declare module '@vue/runtime-core' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
     readonly onBeforeRouteLeave: UnwrapRef<typeof import('vue-router/auto')['onBeforeRouteLeave']>
@@ -1167,5 +1175,7 @@ declare module '@vue/runtime-core' {
     readonly watchTriggerable: UnwrapRef<typeof import('@vueuse/core')['watchTriggerable']>
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
+    readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
+    readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
   }
 }

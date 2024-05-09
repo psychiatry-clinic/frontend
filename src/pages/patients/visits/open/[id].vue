@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-  import { User } from '@/utils/types'
+  import { User, Visit } from '@/utils/types'
+  import { RouteParams } from 'vue-router'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddxVue from '../ddxVue.vue'
@@ -15,14 +16,14 @@
   import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
-  import DevelopmentVue from '../developmentVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
 
   const router = useRouter()
-  const route = useRoute('patients-visits-new-id')
+  const route = useRoute('patients-visits-edit-id')
+  const routeParams = route.params as RouteParams
 
   const child = ref(true)
 
@@ -91,10 +92,6 @@
       subtitle: '',
     },
     {
-      title: 'Developmental History',
-      subtitle: '',
-    },
-    {
       title: 'Family History',
       subtitle: '',
     },
@@ -158,204 +155,120 @@
       ? numberedStepsChild
       : numberedStepsAdult
 
-  const currentStep = ref(2)
+  const currentStep = ref(0)
 
-  const patient = ref(route.params.id)
-  const doctor = ref(storedUserData?.id)
+  const { data } = await useApi<any>(
+    `/patients/visits/${storedUserData?.id}/${route.query.visit}`
+  )
 
-  const prescription = ref()
-  const clinic = ref()
-  const duration = ref()
+  const visit = data.value as Visit
+  let chiefComplaintText = ''
 
-  const chief_complaint = ref()
-  const present_illness = ref({ notes: '' })
-  const development = ref()
+  if (visit.chief_complaint) {
+    chiefComplaintText += visit.chief_complaint.complaint ?? ''
 
-  const family_hx = ref()
-  const past_hx = ref()
-  const social_hx = ref()
-  const personal_hx = ref()
-  const occupation_hx = ref()
-  const forensic_hx = ref()
+    if (visit.chief_complaint.duration) {
+      chiefComplaintText += ' for ' + visit.chief_complaint.duration
+    }
 
-  const examination = ref()
-  const ix = ref({ investigations: [{ name: '', result: '' }] })
-  const consultations = ref({ consultations: [{ branch: '', result: '' }] })
+    if (visit.chief_complaint.source) {
+      chiefComplaintText += ' source ' + visit.chief_complaint.source
+    }
 
-  const management = ref({ managements: [{ name: '', form: '', dose: '' }] })
-
-  const tests = ref({ tests: [{ name: '', result: '' }] })
-
-  const ddx = ref()
-
-  const therapy = ref()
-  const notes = ref()
-
-  const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
-
-  const addVisit = async () => {
-    if (!storedUserData) return
-
-    console.log(ix.value)
-
-    try {
-      const res = await $api(link, {
-        method: 'POST',
-        body: {
-          chief_complaint: chief_complaint.value,
-          present_illness: present_illness.value,
-          examination: examination.value,
-          ddx: ddx.value,
-          ix: ix.value,
-          management: management.value,
-          consultations: consultations.value,
-          notes: notes.value,
-          social_hx: social_hx.value,
-          family_hx: family_hx.value,
-          personal_hx: personal_hx.value,
-          forensic_hx: forensic_hx.value,
-          occupation_hx: occupation_hx.value,
-          past_hx: past_hx.value,
-        },
-        onResponseError({ response }) {
-          errors.value = response._data
-        },
-      })
-      console.log(res)
-      router.push(`/patients/${route.params.id}`)
-    } catch (error) {
-      console.error(error)
+    if (visit.chief_complaint.referral) {
+      chiefComplaintText += ' referred ' + visit.chief_complaint.referral
     }
   }
 
-  const submit = () => {
-    console.log('chief_complaint')
-    console.log(chief_complaint.value)
-    console.log('present_illness')
-    console.log(present_illness.value)
-    console.log('family_hx')
-    console.log(family_hx.value)
-    console.log('past_hx')
-    console.log(past_hx.value)
-    console.log('social_hx')
-    console.log(social_hx.value)
-    console.log('personal_hx')
-    console.log(personal_hx.value)
-    console.log('occupation_hx')
-    console.log(occupation_hx.value)
-    console.log('forensic_hx')
-    console.log(forensic_hx.value)
-    console.log('examination')
-    console.log(examination.value)
-    console.log('ddx')
-    console.log(ddx.value)
-    console.log('ix')
-    console.log(ix.value)
-    console.log('management')
-    console.log(management.value)
-    console.log('consultations')
-    console.log(consultations.value)
-    console.log('tests')
-    console.log(tests.value)
-    console.log('therapy')
-    console.log(therapy.value)
-    console.log('notes')
-    console.log(notes.value)
+  let presentIllnessText = ''
+
+  if (visit.present_illness) {
+    const presentIllness = visit.present_illness
+
+    const presentIllnessFields = [
+      'course',
+      'circumstances',
+      'vegetative',
+      'associated',
+      'ASD',
+      'ADHD',
+      'Speech',
+      'Intellectual Disability',
+      'Language',
+      'Fluency',
+      'Communication',
+      'Learning',
+      'Movement',
+      'Coordination',
+      'associated',
+      'functioning',
+      'relationships',
+      'treatments',
+      'substances',
+      'risk',
+      'notes',
+    ]
+
+    presentIllnessFields.forEach((field) => {
+      if (presentIllness[field]) {
+        presentIllnessText += presentIllness[field] + ' '
+      }
+    })
   }
+
+  const present_illness = ref(visit.present_illness)
+  const family_hx = ref(visit.patient.family_hx)
+  const past_hx = ref(visit.patient.past_hx)
+  const social_hx = ref(visit.patient.social_hx)
+  const personal_hx = ref(visit.patient.personal_hx)
+  const occupation_hx = ref(visit.patient.occupation_hx)
+  const forensic_hx = ref(visit.patient.forensic_hx)
+  const ix = ref(visit.ix)
+  const examination = ref(visit.examination)
+  const consultations = ref(visit.consultations)
+  const management = ref(visit.management)
+  const ddx = ref(visit.ddx)
+  const notes = ref(visit.notes)
+
+  console.log(
+    visit.chief_complaint?.complaint + ' for ' + visit.chief_complaint?.duration
+  )
 </script>
 
 <template>
   <div class="d-flex justify-space-between">
-    <VBtn variant="outlined" class="mb-5" @click="router.back"> Back </VBtn>
-    <VBtn variant="outlined" color="secondary">
+    <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
+      Back
+    </VBtn>
+    <VBtn variant="plain" color="secondary">
       Patient :
       {{ route.query.name }}
     </VBtn>
+    <VBtn variant="plain" color="secondary">
+      Dr.
+      {{ visit.doctor?.name }}
+    </VBtn>
   </div>
+
   <VCard>
     <VRow>
-      <VCol
-        cols="12"
-        md="3"
-        :class="$vuetify.display.smAndDown ? 'border-b' : 'border-e'"
-      >
-        <VCardText>
-          <!-- 👉 Stepper -->
-          <AppStepper
-            v-model:current-step="currentStep"
-            direction="vertical"
-            :items="numberedSteps"
-          />
-        </VCardText>
-      </VCol>
       <!-- 👉 stepper content -->
-      <VCol cols="12" md="9">
+      <VCol cols="12" md="8">
         <VCardText>
-          <VForm>
-            <div v-if="numberedSteps === numberedStepsAdult">
-              <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
-                <presentIllness v-model="present_illness" />
-                <DevelopmentVue v-model="development" />
-                <FamilyHx v-model="family_hx" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <personalHx v-model="personal_hx" />
-                <occupationHx v-model="occupation_hx" />
-                <forensicHx v-model="forensic_hx" />
-                <examinationVue v-model="examination" />
-                <ddxVue v-model="ddx" :child="false" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
-                <notesVue v-model="notes" />
-              </VWindow>
-            </div>
-
-            <div v-else-if="numberedSteps === numberedStepsChild">
-              <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
-                <presentIllnessChild v-model="present_illness" />
-                <DevelopmentVue v-model="development" />
-
-                <FamilyHx v-model="family_hx" :child="true" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" />
-                <ddxVue v-model="ddx" :child="true" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
-                <notesVue v-model="notes" />
-              </VWindow>
-            </div>
-
-            <div v-else-if="numberedSteps === numberedStepsPsychologist"></div>
-
-            <div
-              class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
-            >
-              <VBtn
-                color="secondary"
-                variant="tonal"
-                :disabled="currentStep === 0"
-                @click="currentStep--"
-              >
-                <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
-                Previous
-              </VBtn>
-
-              <VBtn color="success" @click="addVisit"> Submit </VBtn>
-
-              <VBtn
-                v-if="currentStep !== numberedSteps.length - 1"
-                @click="currentStep++"
-              >
-                Next
-
-                <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
-              </VBtn>
-            </div>
-          </VForm>
+          <div>
+            <span class="text-success"> Chief Complaint: </span>
+            {{ chiefComplaintText }}
+          </div>
+          <div>
+            <span class="text-success"> Present Illness: </span>
+            {{ presentIllnessText }}
+          </div>
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
         </VCardText>
       </VCol>
     </VRow>

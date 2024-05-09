@@ -80,6 +80,7 @@ export interface Visit {
   patientId: number
   doctor?: Doctor
   doctorId?: number
+  active: boolean
   clinic: Clinic
   duration?: number
   chief_complaint?: Chief_complaint

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { baghdadRegions, cities } from '@/utils/suggestions'
   import type { User } from '@/utils/types'
   import { BlobServiceClient } from '@azure/storage-blob'
   import type { CustomInputContent } from '@core/types'
@@ -366,7 +365,7 @@
                 <div class="mt-5">
                   <VChip
                     class="me-2 mb-2"
-                    v-for="suggestion in childEducation"
+                    v-for="suggestion in occupationSuggestions"
                     size="x-small"
                     @click="
                       () => {
@@ -410,17 +409,7 @@
                   v-model="education"
                   label="Education"
                   placeholder="Select Education"
-                  :items="[
-                    'أمي',
-                    'ابتدائية',
-                    'متوسطة',
-                    'اعدادية',
-                    'كلية',
-                    'دبلوم',
-                    'بكالوريوس',
-                    'ماجستير',
-                    'دكتوراه',
-                  ]"
+                  :items="adultEducation"
                 />
               </VCol>
 
@@ -541,6 +530,23 @@
                   label="Work"
                   placeholder=""
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in occupationSuggestions"
+                    size="x-small"
+                    @click="
+                      () => {
+                        father_work =
+                          father_work === '' || father_work === undefined
+                            ? suggestion
+                            : `${father_work}, ${suggestion}`
+                      }
+                    "
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
               <!-- Father -->
 
@@ -599,6 +605,23 @@
                   label="Work"
                   placeholder=""
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in occupationSuggestions"
+                    size="x-small"
+                    @click="
+                      () => {
+                        mother_work =
+                          mother_work === '' || mother_work === undefined
+                            ? suggestion
+                            : `${mother_work}, ${suggestion}`
+                      }
+                    "
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
               <!-- Mother -->
 

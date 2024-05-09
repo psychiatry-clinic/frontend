@@ -17,6 +17,8 @@
 
   let isNewVisit = false
 
+  const visitsList = patientData.visits?.slice().reverse()
+
   watchEffect(() => {
     if (patientData.visits?.slice().reverse()[0]) {
       const difference = differenceInHours(
@@ -114,13 +116,7 @@
           <VBtn
             variant="tonal"
             class="d-inline-flex align-center mt-4"
-            v-if="isNewVisit"
-            >Open Visit
-          </VBtn>
-          <VBtn
-            variant="tonal"
-            class="d-inline-flex align-center mt-4"
-            v-else
+            v-if="!isNewVisit && visit.active"
             @click="
               router.push({
                 name: 'patients-visits-edit-id',
@@ -134,6 +130,23 @@
             "
           >
             Edit Visit
+          </VBtn>
+          <VBtn
+            variant="tonal"
+            class="d-inline-flex align-center mt-4"
+            v-else
+            @click="
+              router.push({
+                name: 'patients-visits-open-id',
+                params: { id: patientData.id },
+                query: {
+                  visit: visit.id,
+                  dob: patientData.dob,
+                  name: patientData.name,
+                },
+              })
+            "
+            >Open Visit
           </VBtn>
         </VTimelineItem>
         <!-- !SECTION -->
