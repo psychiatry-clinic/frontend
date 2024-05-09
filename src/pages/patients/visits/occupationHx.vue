@@ -1,30 +1,25 @@
 <script setup lang="ts">
-import {
-  accommodationSuggestions,
-  financeSuggestions,
-} from "@/utils/suggestions";
+  interface Model {
+    jobs?: string
+    unemployment?: string
+  }
 
-interface Model {
-  jobs: string | undefined;
-  unemployment: string | undefined;
-}
+  const model = defineModel<Model>()
 
-const model = defineModel<Model>();
+  const jobs = ref(model.value?.jobs)
+  const unemployment = ref(model.value?.unemployment)
 
-const jobs = ref(model.value?.jobs);
-const unemployment = ref(model.value?.unemployment);
+  function update() {
+    model.value = {
+      jobs: jobs.value as string,
+      unemployment: unemployment.value as string,
+    }
+  }
 
-function update() {
-  model.value = {
-    jobs: jobs.value as string,
-    unemployment: unemployment.value as string,
-  };
-}
-
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>

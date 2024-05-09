@@ -6,10 +6,10 @@
   } from '@/utils/suggestions'
 
   interface Model {
-    past_psychiatric: string | undefined
-    past_medical: string | undefined
-    past_surgical: string | undefined
-    past_substance: string | undefined
+    past_psychiatric?: string
+    past_medical?: string
+    past_surgical?: string
+    past_substance?: string
   }
 
   const model = defineModel<Model>()

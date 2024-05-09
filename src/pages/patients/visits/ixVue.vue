@@ -1,13 +1,11 @@
 <script setup lang="ts">
-  import { defineModel, ref, onBeforeUnmount } from 'vue'
-
   interface Investigation {
-    name: string
+    name?: string
     result?: string
   }
 
   interface Model {
-    investigations: Investigation[]
+    investigations?: Investigation[]
   }
 
   const model = defineModel<Model>()
@@ -37,7 +35,7 @@
   function saveNameUppercase(index: number) {
     if (!investigations.value || !investigations.value[index]) return
     investigations.value[index].name =
-      investigations.value[index].name.toUpperCase()
+      investigations.value[index].name?.toUpperCase()
   }
 </script>
 

@@ -4,11 +4,6 @@
     circumstancesSuggestions,
     vegetativeSymptomsSuggestions,
     associatedSymptomsSuggestions,
-    functioningSuggestions,
-    relationshipsSuggestions,
-    treatmentsSuggestions,
-    substancesSuggestions,
-    riskAssessmentSuggestions,
   } from '@/utils/suggestions'
 
   const suggestions: { [key: string]: string[] } = {
@@ -28,29 +23,51 @@
     Coordination: [],
   }
 
-  const fields = [
-    'course',
-    'circumstances',
-    'vegetative',
-    'associated',
-    'ASD',
-    'ADHD',
-    'Speech',
-    'Intellectual Disability',
-    'Language',
-    'Fluency',
-    'Communication',
-    'Learning',
-    'Movement',
-    'Coordination',
-    'associated',
-    'functioning',
-    'relationships',
-    'treatments',
-    'substances',
-    'risk',
-    'notes',
-  ]
+  const props = defineProps<Props>()
+
+  interface Props {
+    child: boolean
+  }
+
+  let fields: string[] = []
+
+  if (props.child) {
+    fields = [
+      'course',
+      'circumstances',
+      'vegetative',
+      'ASD',
+      'ADHD',
+      'Speech',
+      'Intellectual Disability',
+      'Language',
+      'Fluency',
+      'Communication',
+      'Learning',
+      'Movement',
+      'Coordination',
+      'associated',
+      'functioning',
+      'relationships',
+      'treatments',
+      'substances',
+      'risk',
+      'notes',
+    ]
+  } else {
+    fields = [
+      'course',
+      'circumstances',
+      'vegetative',
+      'associated',
+      'functioning',
+      'relationships',
+      'treatments',
+      'substances',
+      'risk',
+      'notes',
+    ]
+  }
 
   // interface Model {
   //   course: string | undefined
@@ -81,7 +98,6 @@
 
   const model = defineModel<Model>()
 
-  // const complaint = ref(model.value?.complaint);
   const course = ref(model.value?.course)
   const circumstances = ref(model.value?.circumstances)
   const vegetative = ref(model.value?.vegetative)

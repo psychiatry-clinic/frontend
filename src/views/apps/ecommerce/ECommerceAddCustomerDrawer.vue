@@ -12,6 +12,10 @@
   const containerName = 'psychiatry'
   const containerClient = blobServiceClient.getContainerClient(containerName)
 
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
+
   const uploadFiles = async () => {
     const fileInput = document.getElementById('picture') as HTMLInputElement
     try {
@@ -62,7 +66,12 @@
     },
   ]
 
-  const selectedRadio = ref('child')
+  const selectedRadio = ref('')
+  if (storedUserData?.clinic === 'Kadhimiya') {
+    selectedRadio.value = 'adult'
+  }else{
+    selectedRadio.value = 'child'
+  }
 
   const refVForm = ref<VForm>()
   const avatar = ref()
@@ -85,8 +94,6 @@
   const order = ref()
   const familyHx = ref()
   const notes = ref()
-
-  // eslint-disable-next-line camelcase
   const marital_status = ref()
   const children = ref()
   const residence = ref()
@@ -98,10 +105,6 @@
     refVForm.value?.reset()
     emit('update:isDrawerOpen', false)
   }
-
-  const storedUserData: User | undefined = useCookie('userData').value as
-    | User
-    | undefined
 
   const link = `/patients-new/${storedUserData?.id}`
 
@@ -308,11 +311,13 @@
                   v-model="marital_status"
                   label="Marital Status"
                   placeholder="Select Status"
-                  :items="
-                    gender === 'Male'
-                      ? ['متزوج', 'اعزب', 'ارمل', 'منفصل']
-                      : ['متزوجة', 'عزباء', 'ارملة', 'منفصلة']
-                  "
+                  :items="[
+                    'Married',
+                    'Divorced',
+                    'Single',
+                    'Separated',
+                    'Widow',
+                  ]"
                 />
               </VCol>
 

@@ -18,13 +18,13 @@ export interface Patient {
   order: null | number
   related: boolean
   notes: null | string
-  family_hx?: string
-  past_hx?: string
-  occupation_hx?: string
-  forensic_hx?: string
-  social_hx?: string
-  development?: string
-  personal_hx?: string
+  family_hx?: FamilyHX
+  past_hx?: PastHX
+  occupation_hx?: OccupationHX
+  forensic_hx?: ForensicHX
+  social_hx?: SocialHX
+  development?: Development
+  personal_hx?: PersonalHX
   visits?: Visit[]
   demographics?: Demographics[] // Assuming demographics data structure is unknown
   prescriptions?: Prescription[]
@@ -38,6 +38,7 @@ export interface User {
   username: string
   password: string
   role: string
+  clinic: string
 }
 export interface Prescription {
   id: number
@@ -85,19 +86,19 @@ export interface Visit {
   clinic: Clinic
   duration?: number
   chief_complaint?: Chief_complaint
-  present_illness?: string
+  present_illness?: Present_illness
   suicide?: string
-  examination?: string
+  examination?: Examination
   ddx?: { differential: string }
   management?: { managements: ManagementItem[] }
-  ix?: JSON
-  consultations?: string
+  ix?: Ix
+  consultations?: Consultations
   prescription?: Prescription
   prescriptionId?: number
   tests: Test[]
   therapyId?: number
   therapy?: Therapy
-  notes?: string
+  notes?: Notes
   insight?: string
   createdAt: string
   updatedAt: string
@@ -144,7 +145,7 @@ export interface Therapy {
   updatedAt: string
 }
 
-interface Psychologist {
+export interface Psychologist {
   id: number
   name: string
   phone: string
@@ -154,9 +155,122 @@ interface Psychologist {
   updatedAt: string
 }
 
-interface Chief_complaint {
+export interface Chief_complaint {
   complaint: string
   duration: string
   referral: string
   source: string
+}
+
+export interface Present_illness {
+  course?: string
+  circumstances?: string
+  vegetative?: string
+  associated?: string
+  ASD?: string
+  ADHD?: string
+  Speech?: string
+  ID?: string
+  Language?: string
+  Fluency?: string
+  Communication?: string
+  Learning?: string
+  Movement?: string
+  Coordination?: string
+  notes?: string
+}
+
+export interface FamilyHX {
+  similar?: string
+  different?: string
+  medical?: string
+  other?: string
+}
+
+export interface PastHX {
+  past_psychiatric?: string
+  past_medical?: string
+  past_surgical?: string
+  past_substance?: string
+}
+
+export interface SocialHX {
+  accommodation?: string
+  finances?: string
+  indoor?: string
+  outdoor?: string
+  caregivers?: string
+}
+
+export interface PersonalHX {
+  familyBackground?: string
+  familyAtmosphere?: string
+  childhood?: string
+  school?: string
+  adolescence?: string
+}
+
+export interface OccupationHX {
+  jobs?: string
+  unemployment?: string
+}
+
+export interface ForensicHX {
+  offenseType?: string
+  offenseDate?: string
+  attitudeOffense?: string
+  attitudePunishment?: string
+  prison?: string
+}
+
+export interface Development {
+  selectedPeripartum?: string[]
+  selectedYear?: string[]
+}
+
+export interface Examination {
+  physical?: string
+  appearance?: string
+  behavior?: string
+  speech?: string
+  mood?: string
+  affect?: string
+  form?: string
+  content?: string
+  perception?: string
+  cognition?: string
+  insight?: string
+}
+
+interface Investigation {
+  name?: string
+  result?: string
+}
+
+export interface Ix {
+  investigations?: Investigation[]
+}
+
+export interface Notes {
+  notes?: string
+}
+
+interface Consultation {
+  branch?: string
+  result?: string
+}
+
+export interface Consultations {
+  consultations?: Consultation[]
+}
+
+interface Management {
+  name?: string
+  form?: string
+  dose?: string
+  use?: string
+}
+
+export interface Managements {
+  managements: Management[]
 }

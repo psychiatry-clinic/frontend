@@ -2,10 +2,10 @@
   import { familyHistorySuggestions } from '@/utils/suggestions'
 
   interface Model {
-    similar: string | undefined
-    different: string | undefined
-    medical: string | undefined
-    other: string | undefined
+    similar?: string
+    different?: string
+    medical?: string
+    other?: string
   }
 
   const model = defineModel<Model>()

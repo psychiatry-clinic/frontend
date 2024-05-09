@@ -24,7 +24,24 @@
   })
 
   const child =
-    differenceInYears(new Date(props.patientData.dob), new Date()) < 14
+    differenceInYears(new Date(), new Date(props.patientData.dob)) < 14
+
+  let items: { name: string; data: any }[] = []
+
+  if (child) {
+    items = [
+      { name: 'Family History', data: patientData.value.family_hx },
+      { name: 'Social History', data: patientData.value.social_hx },
+    ]
+  } else {
+    items = [
+      { name: 'Family History', data: patientData.value.family_hx },
+      { name: 'Social History', data: patientData.value.social_hx },
+      { name: 'Personal History', data: patientData.value.personal_hx },
+      { name: 'Occupation History', data: patientData.value.occupation_hx },
+      { name: 'Forensic History', data: patientData.value.forensic_hx },
+    ]
+  }
 </script>
 
 <template>
@@ -340,18 +357,6 @@
               <br />
             </div>
 
-            <!-- 👉 Family Hx -->
-            <VListItem>
-              <h6 class="text-h6 text-primary">
-                Family History :
-                <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.family_hx }}
-                </span>
-              </h6>
-            </VListItem>
-
-            <br />
-
             <VListItem>
               <h6 class="text-h6 text-primary">
                 Notes :
@@ -361,6 +366,17 @@
               </h6>
             </VListItem>
           </VList>
+
+          <br />
+
+          <VExpansionPanels multiple v-if="items && items[0].data">
+            <VExpansionPanel v-for="item in items">
+              <VExpansionPanelTitle> {{ item.name }} </VExpansionPanelTitle>
+              <VExpansionPanelText v-for="(value, key) in item.data">
+                {{ key }}: {{ value }}
+              </VExpansionPanelText>
+            </VExpansionPanel>
+          </VExpansionPanels>
         </VCardText>
 
         <!-- 👉 Edit Details -->

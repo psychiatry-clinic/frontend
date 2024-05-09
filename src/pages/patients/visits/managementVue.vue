@@ -1,13 +1,13 @@
 <script setup lang="ts">
   interface Management {
-    name: string
+    name?: string
     form?: string
     dose?: string
     use?: string
   }
 
   interface Model {
-    managements: Management[]
+    managements?: Management[]
   }
 
   const model = defineModel<Model>()

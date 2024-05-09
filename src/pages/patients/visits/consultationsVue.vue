@@ -1,11 +1,11 @@
 <script setup lang="ts">
   interface Consultation {
-    branch: string
+    branch?: string
     result?: string
   }
 
   interface Model {
-    consultations: Consultation[]
+    consultations?: Consultation[]
   }
 
   interface Props {
@@ -41,7 +41,7 @@
   function saveNameUppercase(index: number) {
     if (!consultations.value || !consultations.value[index]) return
     consultations.value[index].branch =
-      consultations.value[index].branch.toUpperCase()
+      consultations.value[index].branch?.toUpperCase()
   }
 </script>
 

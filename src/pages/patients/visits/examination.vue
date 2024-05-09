@@ -2,17 +2,17 @@
   import {} from '@/utils/suggestions'
 
   interface Model {
-    physical: string | undefined
-    appearance: string | undefined
-    behavior: string | undefined
-    speech: string | undefined
-    mood: string | undefined
-    affect: string | undefined
-    form: string | undefined
-    content: string | undefined
-    perception: string | undefined
-    cognition: string | undefined
-    insight: string | undefined
+    physical?: string
+    appearance?: string
+    behavior?: string
+    speech?: string
+    mood?: string
+    affect?: string
+    form?: string
+    content?: string
+    perception?: string
+    cognition?: string
+    insight?: string
   }
 
   const model = defineModel<Model>()

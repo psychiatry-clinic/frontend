@@ -73,7 +73,7 @@
           <div class="d-flex flex-row gap-4 align-center flex-wrap">
             <AppSelect v-model="itemsPerPage" :items="[5, 10, 20, 50, 100]" />
             <VBtn
-              v-if="storedUserData?.role === 'DOCTOR'"
+              v-if="storedUserData?.role === 'DOCTOR' || 'ADMIN'"
               prepend-icon="tabler-plus"
               @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen"
             >

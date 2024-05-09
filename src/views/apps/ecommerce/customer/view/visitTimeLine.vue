@@ -123,8 +123,6 @@
                 params: { id: patientData.id },
                 query: {
                   visit: visit.id,
-                  dob: patientData.dob,
-                  name: patientData.name,
                 },
               })
             "

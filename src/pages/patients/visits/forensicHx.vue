@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import {
-  accommodationSuggestions,
-  financeSuggestions,
-} from "@/utils/suggestions";
+  import {
+    accommodationSuggestions,
+    financeSuggestions,
+  } from '@/utils/suggestions'
 
-interface Model {
-  offenseType: string | undefined;
-  offenseDate: string | undefined;
-  attitudeOffense: string | undefined;
-  attitudePunishment: string | undefined;
-  prison: string | undefined;
-}
+  interface Model {
+    offenseType?: string
+    offenseDate?: string
+    attitudeOffense?: string
+    attitudePunishment?: string
+    prison?: string
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const offenseType = ref(model.value?.offenseType);
-const offenseDate = ref(model.value?.offenseDate);
-const attitudeOffense = ref(model.value?.attitudeOffense);
-const attitudePunishment = ref(model.value?.attitudePunishment);
-const prison = ref(model.value?.prison);
+  const offenseType = ref(model.value?.offenseType)
+  const offenseDate = ref(model.value?.offenseDate)
+  const attitudeOffense = ref(model.value?.attitudeOffense)
+  const attitudePunishment = ref(model.value?.attitudePunishment)
+  const prison = ref(model.value?.prison)
 
-function update() {
-  model.value = {
-    offenseType: offenseType.value as string,
-    offenseDate: offenseDate.value as string,
-    attitudeOffense: attitudeOffense.value as string,
-    attitudePunishment: attitudePunishment.value as string,
-    prison: prison.value as string,
-  };
-}
+  function update() {
+    model.value = {
+      offenseType: offenseType.value as string,
+      offenseDate: offenseDate.value as string,
+      attitudeOffense: attitudeOffense.value as string,
+      attitudePunishment: attitudePunishment.value as string,
+      prison: prison.value as string,
+    }
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>

@@ -7,12 +7,15 @@
 
   import { RouteParams } from 'vue-router'
   const route = useRoute()
+  const router = useRouter()
 
   const routeParams = route.params as RouteParams
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
+
+  console.log(storedUserData)
 
   const patientData = ref<Patient>()
   const userTab = ref(null)
@@ -27,6 +30,26 @@
     `/patients/${storedUserData?.id}/${routeParams.id}`
   )
 
+  const deletePatient = async () => {
+    if (!storedUserData) return
+
+    try {
+      const res = await $api(
+        `/patient-delete/${storedUserData?.id}/${routeParams.id}`,
+        {
+          method: 'DELETE',
+          onResponseError({ response }) {
+            console.log(response)
+          },
+        }
+      )
+      console.log(res)
+      router.push(`/patients`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   patientData.value = data.value
 </script>
 
@@ -39,18 +62,19 @@
       <div>
         <h4 class="text-h4 mb-1">Patient ID #{{ routeParams.id }}</h4>
         <div class="text-body-1">
-          First visit:
-          {{ removeTimeFromDate(patientData?.createdAt as string) }}
+          Added At:
+          {{
+            patientData?.createdAt
+              ? new Date(patientData?.createdAt).toLocaleString()
+              : 'Cannot Display Date'
+          }}
         </div>
       </div>
-      <!-- <div class="d-flex gap-4">
-        <VBtn
-          variant="tonal"
-          color="error"
-        >
+      <div class="d-flex gap-4" v-if="storedUserData?.role === 'ADMIN'">
+        <VBtn @click="deletePatient" variant="tonal" color="error">
           Delete Patient
         </VBtn>
-      </div> -->
+      </div>
     </div>
     <!-- 👉 Customer Profile  -->
     <VRow v-if="patientData">

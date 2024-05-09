@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import {
-  accommodationSuggestions,
-  financeSuggestions,
-} from "@/utils/suggestions";
+  import {
+    accommodationSuggestions,
+    financeSuggestions,
+  } from '@/utils/suggestions'
 
-interface Model {
-  accommodation: string | undefined;
-  finances: string | undefined;
-  indoor: string | undefined;
-  outdoor: string | undefined;
-  caregivers: string | undefined;
-}
+  interface Model {
+    accommodation?: string
+    finances?: string
+    indoor?: string
+    outdoor?: string
+    caregivers?: string
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const accommodation = ref(model.value?.accommodation);
-const finances = ref(model.value?.finances);
-const indoor = ref(model.value?.indoor);
-const outdoor = ref(model.value?.outdoor);
-const caregivers = ref(model.value?.caregivers);
+  const accommodation = ref(model.value?.accommodation)
+  const finances = ref(model.value?.finances)
+  const indoor = ref(model.value?.indoor)
+  const outdoor = ref(model.value?.outdoor)
+  const caregivers = ref(model.value?.caregivers)
 
-function update() {
-  model.value = {
-    accommodation: accommodation.value as string,
-    finances: finances.value as string,
-    indoor: indoor.value as string,
-    outdoor: outdoor.value as string,
-    caregivers: caregivers.value as string,
-  };
-}
+  function update() {
+    model.value = {
+      accommodation: accommodation.value as string,
+      finances: finances.value as string,
+      indoor: indoor.value as string,
+      outdoor: outdoor.value as string,
+      caregivers: caregivers.value as string,
+    }
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>
@@ -65,8 +65,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                accommodation = appendTo(accommodation, suggestion);
-                update();
+                accommodation = appendTo(accommodation, suggestion)
+                update()
               }
             "
           >
@@ -96,8 +96,8 @@ const appendTo = (target: string | undefined, text: string) => {
             size="x-small"
             @click="
               () => {
-                finances = appendTo(finances, suggestion);
-                update();
+                finances = appendTo(finances, suggestion)
+                update()
               }
             "
           >

@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import {
-  accommodationSuggestions,
-  financeSuggestions,
-} from "@/utils/suggestions";
+  import {
+    accommodationSuggestions,
+    financeSuggestions,
+  } from '@/utils/suggestions'
 
-interface Model {
-  familyBackground: string | undefined;
-  familyAtmosphere: string | undefined;
-  childhood: string | undefined;
-  school: string | undefined;
-  adolescence: string | undefined;
-}
+  interface Model {
+    familyBackground?: string
+    familyAtmosphere?: string
+    childhood?: string
+    school?: string
+    adolescence?: string
+  }
 
-const model = defineModel<Model>();
+  const model = defineModel<Model>()
 
-const familyBackground = ref(model.value?.familyBackground);
-const familyAtmosphere = ref(model.value?.familyAtmosphere);
-const childhood = ref(model.value?.childhood);
-const school = ref(model.value?.school);
-const adolescence = ref(model.value?.adolescence);
+  const familyBackground = ref(model.value?.familyBackground)
+  const familyAtmosphere = ref(model.value?.familyAtmosphere)
+  const childhood = ref(model.value?.childhood)
+  const school = ref(model.value?.school)
+  const adolescence = ref(model.value?.adolescence)
 
-function update() {
-  model.value = {
-    familyBackground: familyBackground.value as string,
-    familyAtmosphere: familyAtmosphere.value as string,
-    childhood: childhood.value as string,
-    school: school.value as string,
-    adolescence: adolescence.value as string,
-  };
-}
+  function update() {
+    model.value = {
+      familyBackground: familyBackground.value as string,
+      familyAtmosphere: familyAtmosphere.value as string,
+      childhood: childhood.value as string,
+      school: school.value as string,
+      adolescence: adolescence.value as string,
+    }
+  }
 
-const appendTo = (target: string | undefined, text: string) => {
-  // Append the text and return the new string
-  return target === "" || target === undefined ? text : `${target}, ${text}`;
-};
+  const appendTo = (target: string | undefined, text: string) => {
+    // Append the text and return the new string
+    return target === '' || target === undefined ? text : `${target}, ${text}`
+  }
 </script>
 
 <template>

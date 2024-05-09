@@ -1,10 +1,25 @@
 <script lang="ts" setup>
-  import { Patient, User } from '@/utils/types'
+  import {
+    Patient,
+    User,
+    Present_illness,
+    Chief_complaint,
+    FamilyHX,
+    PastHX,
+    PersonalHX,
+    SocialHX,
+    Consultations,
+    Examination,
+    ForensicHX,
+    Managements,
+    OccupationHX,
+    Ix,
+  } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddxVue from '../ddxVue.vue'
   import examinationVue from '../examination.vue'
-  import FamilyHx from '../familyHx.vue'
+  import familyHx from '../familyHx.vue'
   import forensicHx from '../forensicHx.vue'
   import ixVue from '../ixVue.vue'
   import managementVue from '../managementVue.vue'
@@ -12,10 +27,10 @@
   import occupationHx from '../occupationHx.vue'
   import pastHx from '../pastHx.vue'
   import personalHx from '../personalHx.vue'
-  import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
   import developmentVue from '../developmentVue.vue'
+  import { differenceInYears } from 'date-fns'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -23,8 +38,6 @@
 
   const router = useRouter()
   const route = useRoute('patients-visits-new-id')
-
-  const child = ref(true)
 
   const numberedStepsAdult = [
     {
@@ -91,7 +104,7 @@
       subtitle: '',
     },
     {
-      title: 'Developmental History',
+      title: 'Development History',
       subtitle: '',
     },
     {
@@ -132,37 +145,20 @@
     },
   ]
 
-  const numberedStepsPsychologist = [
-    {
-      title: 'Psychometric Tests',
-      subtitle: '',
-    },
-    {
-      title: 'Therapy',
-      subtitle: '',
-    },
-  ]
-
   const errors = ref<Record<string, string | undefined>>({
     message: undefined,
   })
 
-  if (route.query.dob && typeof route.query.dob === 'string') {
-    child.value = +calculateAge(route.query.dob, true) < 14
-  }
+  const childBoolean =
+    differenceInYears(new Date(), new Date(route.query.dob as string)) < 14
 
   const { data } = await useApi<Patient>(
     `/patients/${storedUserData?.id}/${route.params.id}`
   )
 
-  const numberedSteps =
-    storedUserData?.role === 'PSYCHOLOGIST'
-      ? numberedStepsPsychologist
-      : child.value
-      ? numberedStepsChild
-      : numberedStepsAdult
+  const numberedSteps = childBoolean ? numberedStepsChild : numberedStepsAdult
 
-  const currentStep = ref(2)
+  const currentStep = ref(0)
 
   const patient = ref(route.params.id)
   const doctor = ref(storedUserData?.id)
@@ -171,38 +167,49 @@
   const clinic = ref()
   const duration = ref()
 
-  const chief_complaint = ref()
-  const present_illness = ref({ notes: '' })
+  const chief_complaint = ref<Chief_complaint>()
+  const present_illness = ref<Present_illness>({ notes: '' })
+
   const development = ref(
     data.value?.development || { selectedYear: [], selectedPeripartum: [] }
   )
+  const family_hx = ref<FamilyHX>(
+    data.value?.family_hx
+      ? data.value.family_hx
+      : { different: '', medical: '', other: '', similar: '' }
+  )
+  const past_hx = ref<PastHX>(data.value?.past_hx ? data.value.past_hx : {})
+  const social_hx = ref<SocialHX>(
+    data.value?.social_hx ? data.value.social_hx : {}
+  )
+  const personal_hx = ref<PersonalHX>(
+    data.value?.personal_hx ? data.value?.personal_hx : {}
+  )
+  const occupation_hx = ref<OccupationHX>(
+    data.value?.occupation_hx ? data.value?.occupation_hx : {}
+  )
+  const forensic_hx = ref<ForensicHX>(
+    data.value?.forensic_hx ? data.value?.forensic_hx : {}
+  )
+  const examination = ref<Examination>({})
 
-  const family_hx = ref(data.value?.family_hx)
-  const past_hx = ref(data.value?.past_hx)
-  const social_hx = ref(data.value?.social_hx)
-  const personal_hx = ref(data.value?.personal_hx)
-  const occupation_hx = ref(data.value?.occupation_hx)
-  const forensic_hx = ref(data.value?.forensic_hx)
+  const ix = ref<Ix>({ investigations: [{ name: '', result: '' }] })
 
-  const examination = ref()
-  const ix = ref({ investigations: [{ name: '', result: '' }] })
-  const consultations = ref({ consultations: [{ branch: '', result: '' }] })
+  const consultations = ref<Consultations>({
+    consultations: [{ branch: '', result: '' }],
+  })
 
-  const management = ref({ managements: [{ name: '', form: '', dose: '' }] })
-
-  const tests = ref({ tests: [{ name: '', result: '' }] })
+  const management = ref<Managements>({
+    managements: [{ name: '', form: '', dose: '' }],
+  })
 
   const ddx = ref()
-
-  const therapy = ref()
   const notes = ref()
 
   const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
 
   const addVisit = async () => {
     if (!storedUserData) return
-
-    console.log(development.value)
 
     try {
       const res = await $api(link, {
@@ -262,10 +269,6 @@
     console.log(management.value)
     console.log('consultations')
     console.log(consultations.value)
-    console.log('tests')
-    console.log(tests.value)
-    console.log('therapy')
-    console.log(therapy.value)
     console.log('notes')
     console.log(notes.value)
   }
@@ -281,11 +284,7 @@
   </div>
   <VCard>
     <VRow>
-      <VCol
-        cols="12"
-        md="3"
-        :class="$vuetify.display.smAndDown ? 'border-b' : 'border-e'"
-      >
+      <VCol cols="12" md="3" class="border-e">
         <VCardText>
           <!-- 👉 Stepper -->
           <AppStepper
@@ -299,44 +298,28 @@
       <VCol cols="12" md="9">
         <VCardText>
           <VForm>
-            <div v-if="numberedSteps === numberedStepsAdult">
+            <div v-if="numberedSteps">
               <VWindow v-model="currentStep" class="disable-tab-transition">
                 <chiefComplaint v-model="chief_complaint" />
-                <presentIllness v-model="present_illness" />
-                <developmentVue v-model="development" />
-                <FamilyHx v-model="family_hx" />
+                <presentIllnessChild
+                  v-model="present_illness"
+                  :child="childBoolean"
+                />
+                <developmentVue v-model="development" v-if="childBoolean" />
+                <familyHx v-model="family_hx" />
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />
-                <personalHx v-model="personal_hx" />
-                <occupationHx v-model="occupation_hx" />
-                <forensicHx v-model="forensic_hx" />
+                <personalHx v-model="personal_hx" v-if="!childBoolean" />
+                <occupationHx v-model="occupation_hx" v-if="!childBoolean" />
+                <forensicHx v-model="forensic_hx" v-if="!childBoolean" />
                 <examinationVue v-model="examination" />
-                <ddxVue v-model="ddx" :child="false" />
+                <consultationsVue v-model="consultations" v-if="childBoolean" />
+                <ddxVue v-model="ddx" :child="childBoolean" />
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
               </VWindow>
             </div>
-
-            <div v-else-if="numberedSteps === numberedStepsChild">
-              <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
-                <presentIllnessChild v-model="present_illness" />
-                <DevelopmentVue v-model="development" />
-
-                <FamilyHx v-model="family_hx" :child="true" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" />
-                <ddxVue v-model="ddx" :child="true" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
-                <notesVue v-model="notes" />
-              </VWindow>
-            </div>
-
-            <div v-else-if="numberedSteps === numberedStepsPsychologist"></div>
 
             <div
               class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
