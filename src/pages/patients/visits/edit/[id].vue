@@ -16,6 +16,7 @@
   import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
+  import developmentVue from '../developmentVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -89,6 +90,10 @@
     },
     {
       title: 'Present Illness',
+      subtitle: '',
+    },
+    {
+      title: 'Development History',
       subtitle: '',
     },
     {
@@ -172,6 +177,7 @@
 
   const chief_complaint = ref(visit.chief_complaint)
   const present_illness = ref(visit.present_illness)
+  const development = ref(visit.patient.development)
   const family_hx = ref(visit.patient.family_hx)
 
   const past_hx = ref(visit.patient.past_hx)
@@ -220,6 +226,7 @@
           forensic_hx: forensic_hx.value,
           occupation_hx: occupation_hx.value,
           past_hx: past_hx.value,
+          development: development.value,
         },
         onResponseError({ response }) {
           errors.value = response._data
@@ -237,19 +244,21 @@
     // console.log(chief_complaint.value)
     // console.log('present_illness')
     // console.log(present_illness.value)
-    console.log('family_hx')
-    console.log(family_hx.value)
-    console.log('past_hx')
-    console.log(past_hx.value)
-    console.log('social_hx')
-    console.log(social_hx.value)
-    console.log('personal_hx')
-    console.log(personal_hx.value)
-    console.log('occupation_hx')
-    console.log(occupation_hx.value)
-    console.log('forensic_hx')
-    console.log(forensic_hx.value)
-    console.log('examination')
+    // console.log('family_hx')
+    // console.log(family_hx.value)
+    console.log('development')
+    console.log(development.value)
+    // console.log('past_hx')
+    // console.log(past_hx.value)
+    // console.log('social_hx')
+    // console.log(social_hx.value)
+    // console.log('personal_hx')
+    // console.log(personal_hx.value)
+    // console.log('occupation_hx')
+    // console.log(occupation_hx.value)
+    // console.log('forensic_hx')
+    // console.log(forensic_hx.value)
+    // console.log('examination')
     // console.log(examination.value)
     // console.log('ddx')
     // console.log(ddx.value)
@@ -299,7 +308,7 @@
         </VCardText>
       </VCol>
       <!-- 👉 stepper content -->
-      <VCol cols="12" md="8">
+      <VCol cols="12" md="9">
         <VCardText>
           <VForm>
             <div v-if="numberedSteps === numberedStepsAdult">
@@ -324,6 +333,7 @@
               <VWindow v-model="currentStep" class="disable-tab-transition">
                 <chiefComplaint v-model="chief_complaint" />
                 <presentIllnessChild v-model="present_illness" />
+                <developmentVue v-model="development" />
                 <FamilyHx v-model="family_hx" :child="true" />
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />

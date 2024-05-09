@@ -111,6 +111,7 @@ declare global {
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
   const myApi: typeof import('./src/utils/myApi')['myApi']
+  const natalList: typeof import('./src/utils/suggestions')['natalList']
   const nextTick: typeof import('vue')['nextTick']
   const occupation: typeof import('./src/utils/suggestions')['occupation']
   const occupationSuggestions: typeof import('./src/utils/suggestions')['occupationSuggestions']
@@ -139,8 +140,13 @@ declare global {
   const pastPsychiatricHistorySuggestions: typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']
   const pastSurgicalHistorySuggestions: typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
+  const peripartumList: typeof import('./src/utils/suggestions')['peripartumList']
   const phoneNumberValidator: typeof import('./src/@core/utils/validators')['phoneNumberValidator']
+  const postnatalList: typeof import('./src/utils/suggestions')['postnatalList']
   const prefixWithPlus: typeof import('./src/@core/utils/formatters')['prefixWithPlus']
+  const preipartum: typeof import('./src/utils/suggestions')['preipartum']
+  const preipartumList: typeof import('./src/utils/suggestions')['preipartumList']
+  const prenatalList: typeof import('./src/utils/suggestions')['prenatalList']
   const provide: typeof import('vue')['provide']
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
   const reactify: typeof import('@vueuse/core')['reactify']
@@ -400,6 +406,9 @@ declare global {
   const whenever: typeof import('@vueuse/core')['whenever']
   const year1List: typeof import('./src/utils/suggestions')['year1List']
   const year2List: typeof import('./src/utils/suggestions')['year2List']
+  const year3List: typeof import('./src/utils/suggestions')['year3List']
+  const year4List: typeof import('./src/utils/suggestions')['year4List']
+  const year5List: typeof import('./src/utils/suggestions')['year5List']
 }
 // for type re-export
 declare global {
@@ -538,6 +547,7 @@ declare module 'vue' {
     readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
     readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly peripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['peripartumList']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -792,6 +802,9 @@ declare module 'vue' {
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
     readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
     readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
+    readonly year3List: UnwrapRef<typeof import('./src/utils/suggestions')['year3List']>
+    readonly year4List: UnwrapRef<typeof import('./src/utils/suggestions')['year4List']>
+    readonly year5List: UnwrapRef<typeof import('./src/utils/suggestions')['year5List']>
   }
 }
 declare module '@vue/runtime-core' {
@@ -923,6 +936,7 @@ declare module '@vue/runtime-core' {
     readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
     readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
+    readonly peripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['peripartumList']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -1177,5 +1191,8 @@ declare module '@vue/runtime-core' {
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
     readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
     readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
+    readonly year3List: UnwrapRef<typeof import('./src/utils/suggestions')['year3List']>
+    readonly year4List: UnwrapRef<typeof import('./src/utils/suggestions')['year4List']>
+    readonly year5List: UnwrapRef<typeof import('./src/utils/suggestions')['year5List']>
   }
 }

@@ -23,6 +23,7 @@ export interface Patient {
   occupation_hx?: string
   forensic_hx?: string
   social_hx?: string
+  development?: string
   personal_hx?: string
   visits?: Visit[]
   demographics?: Demographics[] // Assuming demographics data structure is unknown

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { User } from '@/utils/types'
+  import { Patient, User } from '@/utils/types'
   import chiefComplaint from '../chiefComplaint.vue'
   import consultationsVue from '../consultationsVue.vue'
   import ddxVue from '../ddxVue.vue'
@@ -15,7 +15,7 @@
   import presentIllness from '../presentIllness.vue'
   import presentIllnessChild from '../presentIllnessChild.vue'
   import socialHx from '../socialHx.vue'
-  import DevelopmentVue from '../developmentVue.vue'
+  import developmentVue from '../developmentVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -151,6 +151,10 @@
     child.value = +calculateAge(route.query.dob, true) < 14
   }
 
+  const { data } = await useApi<Patient>(
+    `/patients/${storedUserData?.id}/${route.params.id}`
+  )
+
   const numberedSteps =
     storedUserData?.role === 'PSYCHOLOGIST'
       ? numberedStepsPsychologist
@@ -169,14 +173,16 @@
 
   const chief_complaint = ref()
   const present_illness = ref({ notes: '' })
-  const development = ref()
+  const development = ref(
+    data.value?.development || { selectedYear: [], selectedPeripartum: [] }
+  )
 
-  const family_hx = ref()
-  const past_hx = ref()
-  const social_hx = ref()
-  const personal_hx = ref()
-  const occupation_hx = ref()
-  const forensic_hx = ref()
+  const family_hx = ref(data.value?.family_hx)
+  const past_hx = ref(data.value?.past_hx)
+  const social_hx = ref(data.value?.social_hx)
+  const personal_hx = ref(data.value?.personal_hx)
+  const occupation_hx = ref(data.value?.occupation_hx)
+  const forensic_hx = ref(data.value?.forensic_hx)
 
   const examination = ref()
   const ix = ref({ investigations: [{ name: '', result: '' }] })
@@ -196,7 +202,7 @@
   const addVisit = async () => {
     if (!storedUserData) return
 
-    console.log(ix.value)
+    console.log(development.value)
 
     try {
       const res = await $api(link, {
@@ -216,6 +222,7 @@
           forensic_hx: forensic_hx.value,
           occupation_hx: occupation_hx.value,
           past_hx: past_hx.value,
+          development: development.value,
         },
         onResponseError({ response }) {
           errors.value = response._data
@@ -296,7 +303,7 @@
               <VWindow v-model="currentStep" class="disable-tab-transition">
                 <chiefComplaint v-model="chief_complaint" />
                 <presentIllness v-model="present_illness" />
-                <DevelopmentVue v-model="development" />
+                <developmentVue v-model="development" />
                 <FamilyHx v-model="family_hx" />
                 <pastHx v-model="past_hx" />
                 <socialHx v-model="social_hx" />

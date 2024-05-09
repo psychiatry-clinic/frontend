@@ -1,121 +1,65 @@
 <script setup lang="ts">
-  import { chief_complains } from '@/utils/suggestions'
-
   interface Model {
-    complaint: string | undefined
-    duration: string | undefined
-    source: string | undefined
-    referral: string | undefined
+    selectedPeripartum?: string[]
+    selectedYear?: string[]
   }
 
   const model = defineModel<Model>()
 
-  const complaint = ref(model.value?.complaint)
-  const duration = ref(model.value?.duration)
-  const source = ref(model.value?.source)
-  const referral = ref(model.value?.referral)
+  const selectedPeripartum = ref(model.value?.selectedPeripartum || [])
+  const selectedYear = ref(model.value?.selectedYear || [])
 
   const update = () => {
-    model.value = {
-      complaint: complaint.value as string,
-      duration: duration.value as string,
-      source: source.value as string,
-      referral: referral.value as string,
-    }
+    // model.value = {
+    //   selectedYear: selectedYear.value as string[],
+    //   selectedPeripartum: selectedPeripartum.value as string[],
+    // }
   }
 
   const appendTo = (target: string | undefined, text: string) => {
     return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 
-  const tab = ref('Year1')
-
-  const selectedYear1 = ref([])
-  const selectedYear2 = ref([])
-  const prenatal = ref([])
-  const natal = ref([])
-  const postnatal = ref([])
+  const tab = ref('peri')
 </script>
 
 <template>
   <VCard>
     <VWindowItem>
       <VTabs v-model="tab">
-        <VTab value="Prenatal"> Prenatal </VTab>
-        <VTab value="Natal"> Natal </VTab>
-        <VTab value="Postnatal"> Postnatal </VTab>
+        <VTab value="peri"> Peripartum </VTab>
         <VTab value="Year1"> Year 1 </VTab>
         <VTab value="Year2"> Year 2 </VTab>
         <VTab value="Year3"> Year 3 </VTab>
         <VTab value="Year4"> Year 4 </VTab>
         <VTab value="Year5"> Year 5 </VTab>
-        <VTab value="Year6"> Year 6 </VTab>
       </VTabs>
 
       <VCard flat>
         <VCardText>
           <VWindow v-model="tab" class="disable-tab-transition">
-            <VWindowItem value="Prenatal">
+            <VWindowItem value="peri">
               <VRow>
-                <VCol cols="3">
+                <VCol
+                  cols="4"
+                  v-for="(category, categoryName) in peripartumList"
+                  :key="categoryName"
+                >
                   <div>
-                    <p>Personal-Social</p>
+                    <p>{{ categoryName }}</p>
                     <VCheckbox
                       class="mt-2"
-                      v-for="item in year1List['PERSONAL-SOCIAL']"
-                      v-model="selectedYear1"
+                      v-for="item in category"
+                      v-model="model.selectedPeripartum"
                       :label="item"
                       color="success"
                       :value="item"
+                      @click="update"
                     />
                   </div>
                 </VCol>
-                <VCol cols="3">
-                  <div>
-                    <p>Fine Motor-Adaptive</p>
-                    <VCheckbox
-                      class="mt-2"
-                      v-for="item in year1List['FINE MOTOR-ADAPTIVE']"
-                      v-model="selectedYear1"
-                      :label="item"
-                      color="success"
-                      :value="item"
-                    />
-                  </div>
-                </VCol>
-                <VCol cols="3">
-                  <div>
-                    <p>Language</p>
-                    <VCheckbox
-                      class="mt-2"
-                      v-for="item in year1List['LANGUAGE']"
-                      v-model="selectedYear1"
-                      :label="item"
-                      color="success"
-                      :value="item"
-                    />
-                  </div>
-                </VCol>
-                <VCol cols="3">
-                  <div>
-                    <p>Gross Motor</p>
-                    <VCheckbox
-                      class="mt-2"
-                      v-for="item in year1List['GROSS MOTOR']"
-                      v-model="selectedYear1"
-                      :label="item"
-                      color="success"
-                      :value="item"
-                    />
-                  </div>
-                </VCol>
-                {{ selectedYear1 }}
               </VRow>
             </VWindowItem>
-
-            <VWindowItem value="Natal"> </VWindowItem>
-
-            <VWindowItem value="Postnatal"> </VWindowItem>
 
             <VWindowItem value="Year1">
               <VRow>
@@ -129,16 +73,17 @@
                     <VCheckbox
                       class="mt-2"
                       v-for="item in category"
-                      v-model="selectedYear1"
+                      v-model="model.selectedYear"
                       :label="item"
                       color="success"
                       :value="item"
+                      @click="update"
                     />
-                    <!-- <CheckboxGroup :items="category" v-model="selectedYear1" /> -->
                   </div>
                 </VCol>
               </VRow>
             </VWindowItem>
+
             <VWindowItem value="Year2">
               <VRow>
                 <VCol
@@ -151,20 +96,81 @@
                     <VCheckbox
                       class="mt-2"
                       v-for="item in category"
-                      v-model="selectedYear2"
+                      v-model="model.selectedYear"
                       :label="item"
                       color="success"
                       :value="item"
+                      @click="update"
                     />
-                    <!-- <CheckboxGroup :items="category" v-model="selectedYear1" /> -->
+                    <!-- <CheckboxGroup :items="category" v-model="model?.selectedYear" /> -->
                   </div>
                 </VCol>
               </VRow>
             </VWindowItem>
-            <VWindowItem value="Year3"> </VWindowItem>
-            <VWindowItem value="Year4"> </VWindowItem>
-            <VWindowItem value="Year5"> </VWindowItem>
-            <VWindowItem value="Year6"> </VWindowItem>
+
+            <VWindowItem value="Year3">
+              <VRow>
+                <VCol
+                  cols="3"
+                  v-for="(category, categoryName) in year3List"
+                  :key="categoryName"
+                >
+                  <div>
+                    <p>{{ categoryName }}</p>
+                    <VCheckbox
+                      class="mt-2"
+                      v-for="item in category"
+                      v-model="model.selectedYear"
+                      :label="item"
+                      color="success"
+                      :value="item"
+                      @click="update"
+                    />
+                  </div>
+                </VCol> </VRow
+            ></VWindowItem>
+            <VWindowItem value="Year4">
+              <VRow>
+                <VCol
+                  cols="3"
+                  v-for="(category, categoryName) in year4List"
+                  :key="categoryName"
+                >
+                  <div>
+                    <p>{{ categoryName }}</p>
+                    <VCheckbox
+                      class="mt-2"
+                      v-for="item in category"
+                      v-model="model.selectedYear"
+                      :label="item"
+                      color="success"
+                      :value="item"
+                      @click="update"
+                    />
+                  </div>
+                </VCol> </VRow
+            ></VWindowItem>
+            <VWindowItem value="Year5">
+              <VRow>
+                <VCol
+                  cols="3"
+                  v-for="(category, categoryName) in year5List"
+                  :key="categoryName"
+                >
+                  <div>
+                    <p>{{ categoryName }}</p>
+                    <VCheckbox
+                      class="mt-2"
+                      v-for="item in category"
+                      v-model="model.selectedYear"
+                      :label="item"
+                      color="success"
+                      :value="item"
+                      @click="update"
+                    />
+                  </div>
+                </VCol> </VRow
+            ></VWindowItem>
           </VWindow>
         </VCardText>
       </VCard>
