@@ -9,6 +9,12 @@ declare global {
   const COOKIE_MAX_AGE_1_YEAR: typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']
   const CreateUrl: typeof import('./src/@core/composable/CreateUrl')['CreateUrl']
   const EffectScope: typeof import('vue')['EffectScope']
+  const PeripartumList: typeof import('./src/utils/suggestions')['PeripartumList']
+  const Year1List: typeof import('./src/utils/suggestions')['Year1List']
+  const Year2List: typeof import('./src/utils/suggestions')['Year2List']
+  const Year3List: typeof import('./src/utils/suggestions')['Year3List']
+  const Year4List: typeof import('./src/utils/suggestions')['Year4List']
+  const Year5List: typeof import('./src/utils/suggestions')['Year5List']
   const acceptHMRUpdate: typeof import('pinia')['acceptHMRUpdate']
   const accommodationSuggestions: typeof import('./src/utils/suggestions')['accommodationSuggestions']
   const addTimeToDateString: typeof import('./src/utils/myFormat')['addTimeToDateString']
@@ -424,6 +430,12 @@ declare module 'vue' {
     readonly $api: UnwrapRef<typeof import('./src/utils/api')['$api']>
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly PeripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['PeripartumList']>
+    readonly Year1List: UnwrapRef<typeof import('./src/utils/suggestions')['Year1List']>
+    readonly Year2List: UnwrapRef<typeof import('./src/utils/suggestions')['Year2List']>
+    readonly Year3List: UnwrapRef<typeof import('./src/utils/suggestions')['Year3List']>
+    readonly Year4List: UnwrapRef<typeof import('./src/utils/suggestions')['Year4List']>
+    readonly Year5List: UnwrapRef<typeof import('./src/utils/suggestions')['Year5List']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
     readonly addTimeToDateString: UnwrapRef<typeof import('./src/utils/myFormat')['addTimeToDateString']>
@@ -547,7 +559,6 @@ declare module 'vue' {
     readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
     readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
-    readonly peripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['peripartumList']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -800,11 +811,6 @@ declare module 'vue' {
     readonly watchTriggerable: UnwrapRef<typeof import('@vueuse/core')['watchTriggerable']>
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
-    readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
-    readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
-    readonly year3List: UnwrapRef<typeof import('./src/utils/suggestions')['year3List']>
-    readonly year4List: UnwrapRef<typeof import('./src/utils/suggestions')['year4List']>
-    readonly year5List: UnwrapRef<typeof import('./src/utils/suggestions')['year5List']>
   }
 }
 declare module '@vue/runtime-core' {
@@ -813,6 +819,12 @@ declare module '@vue/runtime-core' {
     readonly $api: UnwrapRef<typeof import('./src/utils/api')['$api']>
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly PeripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['PeripartumList']>
+    readonly Year1List: UnwrapRef<typeof import('./src/utils/suggestions')['Year1List']>
+    readonly Year2List: UnwrapRef<typeof import('./src/utils/suggestions')['Year2List']>
+    readonly Year3List: UnwrapRef<typeof import('./src/utils/suggestions')['Year3List']>
+    readonly Year4List: UnwrapRef<typeof import('./src/utils/suggestions')['Year4List']>
+    readonly Year5List: UnwrapRef<typeof import('./src/utils/suggestions')['Year5List']>
     readonly acceptHMRUpdate: UnwrapRef<typeof import('pinia')['acceptHMRUpdate']>
     readonly accommodationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['accommodationSuggestions']>
     readonly addTimeToDateString: UnwrapRef<typeof import('./src/utils/myFormat')['addTimeToDateString']>
@@ -936,7 +948,6 @@ declare module '@vue/runtime-core' {
     readonly pastPsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']>
     readonly pastSurgicalHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']>
     readonly pausableWatch: UnwrapRef<typeof import('@vueuse/core')['pausableWatch']>
-    readonly peripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['peripartumList']>
     readonly phoneNumberValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['phoneNumberValidator']>
     readonly prefixWithPlus: UnwrapRef<typeof import('./src/@core/utils/formatters')['prefixWithPlus']>
     readonly provide: UnwrapRef<typeof import('vue')['provide']>
@@ -1189,10 +1200,5 @@ declare module '@vue/runtime-core' {
     readonly watchTriggerable: UnwrapRef<typeof import('@vueuse/core')['watchTriggerable']>
     readonly watchWithFilter: UnwrapRef<typeof import('@vueuse/core')['watchWithFilter']>
     readonly whenever: UnwrapRef<typeof import('@vueuse/core')['whenever']>
-    readonly year1List: UnwrapRef<typeof import('./src/utils/suggestions')['year1List']>
-    readonly year2List: UnwrapRef<typeof import('./src/utils/suggestions')['year2List']>
-    readonly year3List: UnwrapRef<typeof import('./src/utils/suggestions')['year3List']>
-    readonly year4List: UnwrapRef<typeof import('./src/utils/suggestions')['year4List']>
-    readonly year5List: UnwrapRef<typeof import('./src/utils/suggestions')['year5List']>
   }
 }

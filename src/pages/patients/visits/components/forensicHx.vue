@@ -5,27 +5,27 @@
   } from '@/utils/suggestions'
 
   interface Model {
-    offenseType?: string
-    offenseDate?: string
-    attitudeOffense?: string
-    attitudePunishment?: string
+    offense_type?: string
+    offense_date?: string
+    attitude_to_offense?: string
+    attitude_to_punishment?: string
     prison?: string
   }
 
   const model = defineModel<Model>()
 
-  const offenseType = ref(model.value?.offenseType)
-  const offenseDate = ref(model.value?.offenseDate)
-  const attitudeOffense = ref(model.value?.attitudeOffense)
-  const attitudePunishment = ref(model.value?.attitudePunishment)
+  const offense_type = ref(model.value?.offense_type)
+  const offense_date = ref(model.value?.offense_date)
+  const attitude_to_offense = ref(model.value?.attitude_to_offense)
+  const attitude_to_punishment = ref(model.value?.attitude_to_punishment)
   const prison = ref(model.value?.prison)
 
   function update() {
     model.value = {
-      offenseType: offenseType.value as string,
-      offenseDate: offenseDate.value as string,
-      attitudeOffense: attitudeOffense.value as string,
-      attitudePunishment: attitudePunishment.value as string,
+      offense_type: offense_type.value as string,
+      offense_date: offense_date.value as string,
+      attitude_to_offense: attitude_to_offense.value as string,
+      attitude_to_punishment: attitude_to_punishment.value as string,
       prison: prison.value as string,
     }
   }
@@ -45,11 +45,11 @@
       </VCol>
     </VRow>
 
-    <!-- offenseType -->
+    <!-- offense_type -->
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="offenseType"
+          v-model="offense_type"
           label="Offense Type"
           auto-grow
           rows="2"
@@ -63,7 +63,7 @@
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="offenseType = appendTo(offenseType, suggestion)"
+            @click="offense_type = appendTo(offense_type, suggestion)"
           >
             {{ suggestion }}
           </VChip>
@@ -71,11 +71,11 @@
       </VCol>
     </VRow>
 
-    <!-- offenseDate -->
+    <!-- offense_date -->
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="offenseDate"
+          v-model="offense_date"
           label="Offense Date"
           auto-grow
           rows="2"
@@ -89,7 +89,7 @@
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="offenseDate = appendTo(offenseDate, suggestion)"
+            @click="offense_date = appendTo(offense_date, suggestion)"
           >
             {{ suggestion }}
           </VChip>
@@ -101,7 +101,7 @@
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="attitudeOffense"
+          v-model="attitude_to_offense"
           label="Attitude To Offense"
           auto-grow
           rows="2"
@@ -115,7 +115,9 @@
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="attitudeOffense = appendTo(attitudeOffense, suggestion)"
+            @click="
+              attitude_to_offense = appendTo(attitude_to_offense, suggestion)
+            "
           >
             {{ suggestion }}
           </VChip>
@@ -123,11 +125,11 @@
       </VCol>
     </VRow>
 
-    <!-- attitudePunishment -->
+    <!-- attitude_to_punishment -->
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="attitudePunishment"
+          v-model="attitude_to_punishment"
           label="Attitude To Punishment"
           auto-grow
           rows="2"
@@ -142,7 +144,10 @@
             v-for="suggestion in []"
             size="x-small"
             @click="
-              attitudePunishment = appendTo(attitudePunishment, suggestion)
+              attitude_to_punishment = appendTo(
+                attitude_to_punishment,
+                suggestion
+              )
             "
           >
             {{ suggestion }}

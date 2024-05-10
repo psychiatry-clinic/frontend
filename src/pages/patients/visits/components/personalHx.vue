@@ -5,8 +5,8 @@
   } from '@/utils/suggestions'
 
   interface Model {
-    familyBackground?: string
-    familyAtmosphere?: string
+    family_background?: string
+    family_atmosphere?: string
     childhood?: string
     school?: string
     adolescence?: string
@@ -14,16 +14,16 @@
 
   const model = defineModel<Model>()
 
-  const familyBackground = ref(model.value?.familyBackground)
-  const familyAtmosphere = ref(model.value?.familyAtmosphere)
+  const family_background = ref(model.value?.family_background)
+  const family_atmosphere = ref(model.value?.family_atmosphere)
   const childhood = ref(model.value?.childhood)
   const school = ref(model.value?.school)
   const adolescence = ref(model.value?.adolescence)
 
   function update() {
     model.value = {
-      familyBackground: familyBackground.value as string,
-      familyAtmosphere: familyAtmosphere.value as string,
+      family_background: family_background.value as string,
+      family_atmosphere: family_atmosphere.value as string,
       childhood: childhood.value as string,
       school: school.value as string,
       adolescence: adolescence.value as string,
@@ -49,7 +49,7 @@
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="familyBackground"
+          v-model="family_background"
           label="Family Background"
           auto-grow
           rows="2"
@@ -63,7 +63,7 @@
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="familyBackground = appendTo(familyBackground, suggestion)"
+            @click="family_background = appendTo(family_background, suggestion)"
           >
             {{ suggestion }}
           </VChip>
@@ -75,7 +75,7 @@
     <VRow class="mb-5">
       <VCol cols="6" md="6">
         <AppTextarea
-          v-model="familyAtmosphere"
+          v-model="family_atmosphere"
           label="Family Atmosphere"
           auto-grow
           rows="2"
@@ -89,7 +89,7 @@
             class="me-2 mb-2"
             v-for="suggestion in []"
             size="x-small"
-            @click="familyAtmosphere = appendTo(familyAtmosphere, suggestion)"
+            @click="family_atmosphere = appendTo(family_atmosphere, suggestion)"
           >
             {{ suggestion }}
           </VChip>

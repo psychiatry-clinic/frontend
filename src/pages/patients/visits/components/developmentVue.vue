@@ -32,7 +32,7 @@
               <VRow>
                 <VCol
                   cols="4"
-                  v-for="(category, categoryName) in peripartumList"
+                  v-for="(category, categoryName) in PeripartumList"
                   :key="categoryName"
                 >
                   <div>
@@ -54,7 +54,7 @@
               <VRow>
                 <VCol
                   cols="3"
-                  v-for="(category, categoryName) in year1List"
+                  v-for="(category, categoryName) in Year1List"
                   :key="categoryName"
                 >
                   <div>
@@ -76,7 +76,7 @@
               <VRow>
                 <VCol
                   cols="3"
-                  v-for="(category, categoryName) in year2List"
+                  v-for="(category, categoryName) in Year2List"
                   :key="categoryName"
                 >
                   <div>
@@ -99,7 +99,7 @@
               <VRow>
                 <VCol
                   cols="3"
-                  v-for="(category, categoryName) in year3List"
+                  v-for="(category, categoryName) in Year3List"
                   :key="categoryName"
                 >
                   <div>
@@ -119,7 +119,7 @@
               <VRow>
                 <VCol
                   cols="3"
-                  v-for="(category, categoryName) in year4List"
+                  v-for="(category, categoryName) in Year4List"
                   :key="categoryName"
                 >
                   <div>
@@ -139,7 +139,7 @@
               <VRow>
                 <VCol
                   cols="3"
-                  v-for="(category, categoryName) in year5List"
+                  v-for="(category, categoryName) in Year5List"
                   :key="categoryName"
                 >
                   <div>

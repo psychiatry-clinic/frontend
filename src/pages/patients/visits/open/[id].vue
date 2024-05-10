@@ -1,21 +1,12 @@
 <script lang="ts" setup>
-  import { User, Visit } from '@/utils/types'
+  import {
+    Chief_complaint,
+    Development,
+    Present_illness,
+    User,
+    Visit,
+  } from '@/utils/types'
   import { differenceInYears } from 'date-fns'
-  import chiefComplaint from '../components/chiefComplaint.vue'
-  import ixVue from '../components/ixVue.vue'
-  import managementVue from '../components/managementVue.vue'
-  import consultationsVue from '../components/consultationsVue.vue'
-  import ddxVue from '../components/ddxVue.vue'
-  import developmentVue from '../components/developmentVue.vue'
-  import examinationVue from '../components/examination.vue'
-  import familyHx from '../components/familyHx.vue'
-  import forensicHx from '../components/forensicHx.vue'
-  import notesVue from '../components/notesVue.vue'
-  import occupationHx from '../components/occupationHx.vue'
-  import pastHx from '../components/pastHx.vue'
-  import personalHx from '../components/personalHx.vue'
-  import presentIllnessChild from '../components/presentIllnessChild.vue'
-  import socialHx from '../components/socialHx.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -149,9 +140,18 @@
   const clinic = ref(visit.clinic)
   const duration = ref()
 
-  const chief_complaint = ref(visit.chief_complaint)
-  const present_illness = ref(visit.present_illness)
-  const development = ref(visit.patient.development)
+  const chief_complaint = ref<Chief_complaint>(
+    visit.chief_complaint || { complaint: '' }
+  )
+  const present_illness = ref<Present_illness>(
+    visit.present_illness || { notes: '' }
+  )
+  const development = ref<Development>(
+    visit.patient.development || {
+      selectedYear: [''],
+      selectedPeripartum: [''],
+    }
+  )
   const family_hx = ref(visit.patient.family_hx)
   const past_hx = ref(visit.patient.past_hx)
   const social_hx = ref(visit.patient.social_hx)
@@ -169,8 +169,6 @@
 
   const saveVisit = async () => {
     if (!storedUserData) return
-
-    // submit()
 
     try {
       const res = await $api(link, {
@@ -203,38 +201,40 @@
     }
   }
 
-  const submit = () => {
-    console.log('chief_complaint')
-    console.log(chief_complaint.value)
-    console.log('present_illness')
-    console.log(present_illness.value)
-    console.log('family_hx')
-    console.log(family_hx.value)
-    console.log('development')
-    console.log(development.value)
-    console.log('past_hx')
-    console.log(past_hx.value)
-    console.log('social_hx')
-    console.log(social_hx.value)
-    console.log('personal_hx')
-    console.log(personal_hx.value)
-    console.log('occupation_hx')
-    console.log(occupation_hx.value)
-    console.log('forensic_hx')
-    console.log(forensic_hx.value)
-    console.log('examination')
-    console.log(examination.value)
-    console.log('ddx')
-    console.log(ddx.value)
-    console.log('ix')
-    console.log(ix.value)
-    console.log('management')
-    console.log(management.value)
-    console.log('consultations')
-    console.log(consultations.value)
-    console.log('notes')
-    console.log(notes.value)
-  }
+  const patientFields = [
+    { key: 'name', label: 'Patient', value: visit.patient.name },
+    {
+      key: 'dob',
+      label: 'Birth Date',
+      value: removeTimeFromDate(visit.patient.dob),
+    },
+    { key: 'age', label: 'Age', value: calculateAge(visit.patient.dob) },
+    {
+      key: 'residence',
+      label: 'Residence',
+      value: visit.patient?.demographics?.[0].residence,
+    },
+    {
+      key: 'education',
+      label: 'Education',
+      value: visit.patient?.demographics?.[0].education,
+    },
+    {
+      key: 'occupation',
+      label: 'Occupation',
+      value: visit.patient?.demographics?.[0].occupation,
+    },
+    {
+      key: 'maritalStatus',
+      label: 'Marital Status',
+      value: visit.patient?.demographics?.[0].marital_status,
+    },
+    {
+      key: 'children',
+      label: 'Children',
+      value: visit.patient?.demographics?.[0].children,
+    },
+  ]
 </script>
 
 <template>
@@ -253,244 +253,366 @@
   </div>
   <VCard>
     <VRow>
-      <VCol cols="12" md="3" class="border-e">
-        <VCardText>
-          <!-- 👉 Stepper -->
-          <AppStepper
-            v-model:current-step="currentStep"
-            direction="vertical"
-            :items="numberedSteps"
-          />
-        </VCardText>
-      </VCol>
       <!-- 👉 stepper content -->
-      <VCol cols="12" md="9">
+      <VCol cols="12">
         <VCardText>
-          <VForm>
-            <div v-if="numberedSteps">
-              <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
-                <presentIllnessChild
-                  v-model="present_illness"
-                  :child="childBoolean"
-                />
-                <developmentVue v-model="development" v-if="childBoolean" />
-                <familyHx v-model="family_hx" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <personalHx v-model="personal_hx" v-if="!childBoolean" />
-                <occupationHx v-model="occupation_hx" v-if="!childBoolean" />
-                <forensicHx v-model="forensic_hx" v-if="!childBoolean" />
-                <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" v-if="childBoolean" />
-                <ddxVue v-model="ddx" :child="childBoolean" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
-                <notesVue v-model="notes" />
-              </VWindow>
-            </div>
+          <VCard>
+            <VCardItem>
+              <VCardTitle>Demographic Data</VCardTitle>
+            </VCardItem>
 
-            <div
-              class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
-            >
-              <VBtn
-                color="secondary"
-                variant="tonal"
-                :disabled="currentStep === 0"
-                @click="currentStep--"
-              >
-                <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
-                Previous
-              </VBtn>
+            <VCardText>
+              <VRow>
+                <VCol>
+                  <div class="patient-info">
+                    <template v-for="field in patientFields" :key="field.key">
+                      <div class="patient-info__field">
+                        <span class="text-success me-1"
+                          >{{ field.label }}:</span
+                        >
+                        {{ field.value }}
+                      </div>
+                    </template>
+                  </div>
+                </VCol>
+              </VRow>
+            </VCardText>
 
-              <VBtn color="success" @click="saveVisit"> Save </VBtn>
+            <VCardItem>
+              <VCardTitle>History & Examination</VCardTitle>
+            </VCardItem>
 
-              <VBtn
-                v-if="currentStep !== numberedSteps.length - 1"
-                @click="currentStep++"
-              >
-                Next
+            <VCardText>
+              <VRow>
+                <VCol cols="6">
+                  <div>
+                    <span class="text-primary"> Chief complaint: </span>
+                    {{ visit.chief_complaint?.complaint
+                    }}<span v-if="visit.chief_complaint?.duration">
+                      for {{ visit.chief_complaint?.duration }}
+                    </span>
+                  </div>
 
-                <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
-              </VBtn>
-            </div>
-          </VForm>
+                  <div v-if="visit.chief_complaint?.source">
+                    Source of information: {{ visit.chief_complaint?.source }}
+                  </div>
+                  <div v-if="visit.chief_complaint?.referral">
+                    Referral: {{ visit.chief_complaint?.referral }}
+                  </div>
+                  <br />
+
+                  <div v-if="visit.present_illness">
+                    <span class="text-primary">Present Illness: </span>
+                    <div
+                      v-for="key in [
+                        'course',
+                        'circumstances',
+                        'vegetative',
+                        'associated',
+                        'functioning',
+                        'relationships',
+                        'substances',
+                        'treatments',
+                        'ASD',
+                        'ADHD',
+                        'Speech',
+                        'ID',
+                        'Language',
+                        'Fluency',
+                        'Communication',
+                        'Learning',
+                        'Movement',
+                        'Coordination',
+                        'risk',
+                        'notes',
+                      ]"
+                    >
+                      <template v-if="visit.present_illness[key]">
+                        {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+                        {{ visit.present_illness[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.consultations?.consultations">
+                    <span class="text-primary">Consultations:</span>
+                    <div
+                      v-for="consultation in visit.consultations.consultations"
+                      :key="consultation.branch"
+                    >
+                      <template v-for="key in ['branch', 'result']">
+                        <template v-if="consultation[key]">
+                          <span v-if="key !== 'result'">
+                            {{ consultation[key] }} -
+                          </span>
+                          <span v-else>
+                            {{ consultation[key] }}
+                          </span>
+                        </template>
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.examination">
+                    <span class="text-primary">Examination: </span>
+                    <div
+                      v-for="key in [
+                        'physical',
+                        'appearance',
+                        'behavior',
+                        'speech',
+                        'mood',
+                        'affect',
+                        'form',
+                        'content',
+                        'perception',
+                        'cognition',
+                        'insight',
+                      ]"
+                    >
+                      <template v-if="visit.examination[key]">
+                        {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+                        {{ visit.examination[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.ddx">
+                    <span class="text-primary">Differential Diagnosis: </span>
+                    <div v-for="key in ['differential']">
+                      <template v-if="visit.ddx[key]">
+                        {{ visit.ddx[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.ix?.investigations">
+                    <span class="text-primary">Investigations:</span>
+                    <div
+                      v-for="investigation in visit.ix.investigations"
+                      :key="investigation.name"
+                    >
+                      <template v-for="key in ['name', 'result']">
+                        <template v-if="investigation[key]">
+                          <span v-if="key !== 'result'">
+                            {{ investigation[key] }} -
+                          </span>
+                          <span v-else>
+                            {{ investigation[key] }}
+                          </span>
+                        </template>
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.management?.managements">
+                    <span class="text-primary">Managements:</span>
+                    <div
+                      v-for="management in visit.management?.managements"
+                      :key="management.name"
+                    >
+                      <template v-for="key in ['name', 'form', 'dose', 'use']">
+                        <template v-if="management[key]">
+                          <span v-if="key !== 'use'">
+                            {{ management[key] }} -
+                          </span>
+                          <span v-else>
+                            {{ management[key] }}
+                          </span>
+                        </template>
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.notes">
+                    <span class="text-primary">Notes: </span>
+                    <div v-for="key in ['notes']">
+                      <template v-if="visit.notes[key]">
+                        {{ visit.notes[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+                </VCol>
+
+                <VCol cols="6">
+                  <div v-if="visit.patient.family_hx">
+                    <span class="text-primary">Family History: </span>
+                    <div
+                      v-for="key in [
+                        'past psychiatric',
+                        'different',
+                        'medical',
+                        'other',
+                      ]"
+                    >
+                      <template v-if="visit.patient.family_hx[key]">
+                        {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+                        {{ visit.patient.family_hx[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.patient.past_hx">
+                    <span class="text-primary">Past History: </span>
+                    <div
+                      v-for="key in [
+                        'past_psychiatric',
+                        'past_medical',
+                        'past_surgical',
+                        'past_substance',
+                      ]"
+                    >
+                      <template v-if="visit.patient.past_hx[key]">
+                        {{
+                          key
+                            .split('_')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(' ')
+                        }}:
+                        {{ visit.patient.past_hx[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.patient.personal_hx">
+                    <span class="text-primary">Personal History: </span>
+                    <div
+                      v-for="key in [
+                        'family_background',
+                        'family_atmosphere',
+                        'childhood',
+                        'school',
+                        'adolescence',
+                      ]"
+                    >
+                      <template v-if="visit.patient.personal_hx[key]">
+                        {{
+                          key
+                            .split('_')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(' ')
+                        }}: {{ visit.patient.personal_hx[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.patient.social_hx">
+                    <span class="text-primary">Social History: </span>
+                    <div
+                      v-for="key in [
+                        'accommodation',
+                        'finances',
+                        'indoor',
+                        'outdoor',
+                        'caregivers',
+                      ]"
+                    >
+                      <template v-if="visit.patient.social_hx[key]">
+                        {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+                        {{ visit.patient.social_hx[key] }}
+                      </template>
+                    </div>
+                  </div>
+                  <br />
+
+                  <div v-if="visit.patient.occupation_hx && !childBoolean">
+                    <span class="text-primary">Occupation History: </span>
+                    <div v-for="key in ['jobs', 'unemployment']">
+                      <template v-if="visit.patient.occupation_hx[key]">
+                        {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
+                        {{ visit.patient.occupation_hx[key] }}
+                      </template>
+                    </div>
+                    <br />
+                  </div>
+
+                  <div v-if="visit.patient.forensic_hx && !childBoolean">
+                    <span class="text-primary">Forensic History: </span>
+                    <div
+                      v-for="key in [
+                        'offense_type',
+                        'offense_date',
+                        'attitude_to_offense',
+                        'attitude_to_punishment',
+                        'prison',
+                      ]"
+                    >
+                      <template v-if="visit.patient.forensic_hx[key]">
+                        {{
+                          key
+                            .split('_')
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(' ')
+                        }}:
+                        {{ visit.patient.forensic_hx[key] }}
+                      </template>
+                    </div>
+                    <br />
+                  </div>
+
+                  <div v-if="visit.patient?.development && childBoolean">
+                    <span class="text-primary">Development - Peripartum:</span>
+                    <div
+                      v-for="selected in visit.patient.development
+                        .selectedPeripartum"
+                      :key="selected"
+                    >
+                      <template v-if="selected">
+                        <span>
+                          {{ selected }}
+                        </span>
+                      </template>
+                    </div>
+                    <br />
+
+                    <span class="text-primary">Development - Years:</span>
+                    <div
+                      v-for="selected in visit.patient.development.selectedYear"
+                      :key="selected"
+                    >
+                      <template v-if="selected">
+                        <span>
+                          {{ selected }}
+                        </span>
+                      </template>
+                    </div>
+                  </div>
+                </VCol>
+              </VRow>
+            </VCardText>
+          </VCard>
         </VCardText>
       </VCol>
     </VRow>
   </VCard>
-  <!-- <VTabs v-model="tab">
-    <VTab value="personal-info"> Personal Info </VTab>
-    <VTab value="account-details"> Account Details </VTab>
-    <VTab value="social-links"> Social Links </VTab>
-  </VTabs> -->
-
-  <!-- <VCard flat>
-    <VCardText>
-      <VWindow v-model="tab" class="disable-tab-transition">
-        <VWindowItem value="personal-info">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol md="6" cols="12">
-                <AppTextField
-                  v-model="chief_complaint"
-                  label="First name"
-                  placeholder="John"
-                />
-              </VCol>
-
-              <VCol md="6" cols="12">
-                <AppTextField
-                  v-model="present_illness"
-                  label="Last name"
-                  placeholder="Doe"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppSelect
-                  v-model="country"
-                  :items="countryList"
-                  label="Country"
-                  placeholder="Select Country"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppSelect
-                  v-model="languages"
-                  :items="languageList"
-                  multiple
-                  chips
-                  clearable
-                  label="Language"
-                  placeholder="Select Language"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppDateTimePicker
-                  v-model="birthDate"
-                  label="Birth Date"
-                  placeholder="Select Birth Date"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="phoneNo"
-                  type="number"
-                  label="Phone No."
-                  placeholder="+1 123 456 7890"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-
-        <VWindowItem value="account-details">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="username"
-                  label="Username"
-                  placeholder="Johndoe"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="email"
-                  label="Email"
-                  suffix="@example.com"
-                  placeholder="johndoe@email.com"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="password"
-                  label="Password"
-                  placeholder="············"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="
-                    isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-                  "
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="cPassword"
-                  label="Confirm Password"
-                  placeholder="············"
-                  :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="
-                    isCPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-                  "
-                  @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-
-        <VWindowItem value="social-links">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="twitterLink"
-                  label="Twitter"
-                  placeholder="https://twitter.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="facebookLink"
-                  label="Facebook"
-                  placeholder="https://facebook.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="googlePlusLink"
-                  label="Google+"
-                  placeholder="https://plus.google.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="linkedInLink"
-                  label="LinkedIn"
-                  placeholder="https://linkedin.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="instagramLink"
-                  label="Instagram"
-                  placeholder="https://instagram.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="quoraLink"
-                  label="Quora"
-                  placeholder="https://quora.com/username"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-      </VWindow>
-    </VCardText>
-
-    <VDivider />
-
-    <VCardText class="d-flex gap-4">
-      <VBtn>Submit</VBtn>
-      <VBtn color="secondary" variant="tonal"> Cancel </VBtn>
-    </VCardText>
-  </VCard> -->
 </template>
+
+<style lang="scss">
+  .patient-info {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .patient-info__field {
+    margin-right: 20px; // Adjust as needed for spacing between fields
+  }
+</style>

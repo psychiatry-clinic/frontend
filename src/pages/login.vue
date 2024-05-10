@@ -15,7 +15,7 @@
   })
 
   const isPasswordVisible = ref(false)
-
+  const isLoading = ref(false)
   // const route = useRoute()
   const router = useRouter()
 
@@ -35,6 +35,7 @@
   const rememberMe = ref(false)
 
   const login = async () => {
+    isLoading.value = true
     try {
       const res = await $api('/login', {
         method: 'POST',
@@ -55,13 +56,14 @@
       useCookie('userData').value = userData
       useCookie('accessToken').value = accessToken
 
-      // Redirect to `to` query if exist or redirect to index route
-      // ❗ nextTick is required to wait for DOM updates and later redirect
       await nextTick(() => {
         router.push('/patients')
       })
+
+      isLoading.value = false
     } catch (err) {
       console.error(err)
+      isLoading.value = false
     }
   }
 
@@ -151,7 +153,12 @@
                 </div>
 
                 <!-- login button -->
-                <VBtn block type="submit"> Login </VBtn>
+                <VBtn block type="submit" :disabled="isLoading">
+                  <span v-if="isLoading">
+                    <VProgressCircular indeterminate color="success" />
+                  </span v-else > 
+                  <span> Login </span>
+                </VBtn>
               </VCol>
 
               <!-- create account -->
