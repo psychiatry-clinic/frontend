@@ -1,75 +1,75 @@
 <script setup lang="ts">
-import { VForm } from "vuetify/components/VForm";
-import authV1BottomShape from "@images/svg/auth-v1-bottom-shape.svg?raw";
-import authV1TopShape from "@images/svg/auth-v1-top-shape.svg?raw";
-import { VNodeRenderer } from "@layouts/components/VNodeRenderer";
-import { themeConfig } from "@themeConfig";
+  import { VForm } from 'vuetify/components/VForm'
+  import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?raw'
+  import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
+  import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+  import { themeConfig } from '@themeConfig'
 
-// import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
+  // import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 
-definePage({
-  meta: {
-    layout: "blank",
-    unauthenticatedOnly: true,
-  },
-});
+  definePage({
+    meta: {
+      layout: 'blank',
+      unauthenticatedOnly: true,
+    },
+  })
 
-const isPasswordVisible = ref(false);
+  const isPasswordVisible = ref(false)
 
-// const route = useRoute()
-const router = useRouter();
+  // const route = useRoute()
+  const router = useRouter()
 
-const ability = useAbility();
+  const ability = useAbility()
 
-const errors = ref<Record<string, string | undefined>>({
-  message: undefined,
-});
+  const errors = ref<Record<string, string | undefined>>({
+    message: undefined,
+  })
 
-const refVForm = ref<VForm>();
+  const refVForm = ref<VForm>()
 
-const credentials = ref({
-  username: "",
-  password: "",
-});
+  const credentials = ref({
+    username: '',
+    password: '',
+  })
 
-const rememberMe = ref(false);
+  const rememberMe = ref(false)
 
-const login = async () => {
-  try {
-    const res = await $api("/login", {
-      method: "POST",
-      body: {
-        username: credentials.value.username,
-        password: credentials.value.password,
-      },
-      onResponseError({ response }) {
-        errors.value.message = response._data;
-      },
-    });
+  const login = async () => {
+    try {
+      const res = await $api('/login', {
+        method: 'POST',
+        body: {
+          username: credentials.value.username,
+          password: credentials.value.password,
+        },
+        onResponseError({ response }) {
+          errors.value.message = response._data
+          console.log(response._data)
+        },
+      })
+      const { accessToken, userData, userAbilityRules } = res
 
-    const { accessToken, userData, userAbilityRules } = res;
+      useCookie('userAbilityRules').value = userAbilityRules
+      ability.update(userAbilityRules)
 
-    useCookie("userAbilityRules").value = userAbilityRules;
-    ability.update(userAbilityRules);
+      useCookie('userData').value = userData
+      useCookie('accessToken').value = accessToken
 
-    useCookie("userData").value = userData;
-    useCookie("accessToken").value = accessToken;
-
-    // Redirect to `to` query if exist or redirect to index route
-    // ❗ nextTick is required to wait for DOM updates and later redirect
-    await nextTick(() => {
-      router.push("/patients");
-    });
-  } catch (err) {
-    console.error(err);
+      // Redirect to `to` query if exist or redirect to index route
+      // ❗ nextTick is required to wait for DOM updates and later redirect
+      await nextTick(() => {
+        router.push('/patients')
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
-};
 
-const onSubmit = () => {
-  refVForm.value?.validate().then(({ valid: isValid }) => {
-    if (isValid) login();
-  });
-};
+  const onSubmit = () => {
+    refVForm.value?.validate().then(({ valid: isValid }) => {
+      if (isValid) login()
+    })
+  }
 </script>
 
 <template>
@@ -88,11 +88,7 @@ const onSubmit = () => {
       />
 
       <!-- 👉 Auth Card -->
-      <VCard
-        class="auth-card"
-        max-width="460"
-        :class="$vuetify.display.smAndUp ? 'pa-6' : 'pa-0'"
-      >
+      <VCard class="auth-card" max-width="460" :class="'pa-6'">
         <VCardItem class="justify-center">
           <VCardTitle>
             <div class="app-logo">
@@ -205,5 +201,5 @@ const onSubmit = () => {
 </template>
 
 <style lang="scss">
-@use "@core/scss/template/pages/page-auth.scss";
+  @use '@core/scss/template/pages/page-auth.scss';
 </style>

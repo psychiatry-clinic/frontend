@@ -1,36 +1,36 @@
 <script lang="ts" setup>
   import {
-    Patient,
-    User,
-    Present_illness,
     Chief_complaint,
-    FamilyHX,
-    PastHX,
-    PersonalHX,
-    SocialHX,
     Consultations,
     Examination,
+    FamilyHX,
     ForensicHX,
+    Ix,
     Managements,
     OccupationHX,
-    Ix,
+    PastHX,
+    Patient,
+    PersonalHX,
+    Present_illness,
+    SocialHX,
+    User,
   } from '@/utils/types'
-  import chiefComplaint from '../chiefComplaint.vue'
-  import consultationsVue from '../consultationsVue.vue'
-  import ddxVue from '../ddxVue.vue'
-  import examinationVue from '../examination.vue'
-  import familyHx from '../familyHx.vue'
-  import forensicHx from '../forensicHx.vue'
-  import ixVue from '../ixVue.vue'
-  import managementVue from '../managementVue.vue'
-  import notesVue from '../notesVue.vue'
-  import occupationHx from '../occupationHx.vue'
-  import pastHx from '../pastHx.vue'
-  import personalHx from '../personalHx.vue'
-  import presentIllnessChild from '../presentIllnessChild.vue'
-  import socialHx from '../socialHx.vue'
-  import developmentVue from '../developmentVue.vue'
   import { differenceInYears } from 'date-fns'
+  import chiefComplaint from '../components/chiefComplaint.vue'
+  import ixVue from '../components/ixVue.vue'
+  import managementVue from '../components/managementVue.vue'
+  import consultationsVue from '../components/consultationsVue.vue'
+  import ddxVue from '../components/ddxVue.vue'
+  import developmentVue from '../components/developmentVue.vue'
+  import examinationVue from '../components/examination.vue'
+  import familyHx from '../components/familyHx.vue'
+  import forensicHx from '../components/forensicHx.vue'
+  import notesVue from '../components/notesVue.vue'
+  import occupationHx from '../components/occupationHx.vue'
+  import pastHx from '../components/pastHx.vue'
+  import personalHx from '../components/personalHx.vue'
+  import presentIllnessChild from '../components/presentIllnessChild.vue'
+  import socialHx from '../components/socialHx.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
