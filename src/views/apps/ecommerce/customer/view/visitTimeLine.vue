@@ -17,8 +17,6 @@
 
   let isNewVisit = false
 
-  const visitsList = patientData.visits?.slice().reverse()
-
   watchEffect(() => {
     if (patientData.visits?.slice().reverse()[0]) {
       const difference = differenceInHours(

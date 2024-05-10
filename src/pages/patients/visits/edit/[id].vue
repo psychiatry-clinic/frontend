@@ -8,20 +8,21 @@
   } from '@/utils/types'
   import { differenceInYears } from 'date-fns'
   import chiefComplaint from '../components/chiefComplaint.vue'
-  import ixVue from '../components/ixVue.vue'
-  import managementVue from '../components/managementVue.vue'
   import consultationsVue from '../components/consultationsVue.vue'
   import ddxVue from '../components/ddxVue.vue'
   import developmentVue from '../components/developmentVue.vue'
   import examinationVue from '../components/examination.vue'
   import familyHx from '../components/familyHx.vue'
   import forensicHx from '../components/forensicHx.vue'
+  import ixVue from '../components/ixVue.vue'
+  import managementVue from '../components/managementVue.vue'
   import notesVue from '../components/notesVue.vue'
   import occupationHx from '../components/occupationHx.vue'
   import pastHx from '../components/pastHx.vue'
   import personalHx from '../components/personalHx.vue'
   import presentIllnessChild from '../components/presentIllnessChild.vue'
   import socialHx from '../components/socialHx.vue'
+  import therapyVue from '../components/therapyVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -92,6 +93,10 @@
       title: 'Notes',
       subtitle: '',
     },
+    {
+      title: 'Therapy',
+      subtitle: '',
+    },
   ]
 
   const numberedStepsChild = [
@@ -143,6 +148,10 @@
       title: 'Notes',
       subtitle: '',
     },
+    {
+      title: 'Therapy',
+      subtitle: '',
+    },
   ]
 
   const numberedSteps = childBoolean ? numberedStepsChild : numberedStepsAdult
@@ -179,6 +188,7 @@
   const management = ref(visit.management)
   const ddx = ref(visit.ddx)
   const notes = ref(visit.notes)
+  const therapy = ref(visit.therapy)
 
   const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}/${visit.patient.id}`
 
@@ -268,10 +278,16 @@
   </div>
   <VCard>
     <VRow>
-      <VCol cols="12" md="3" class="border-e">
+      <VCol
+        cols="12"
+        md="3"
+        class="border-e"
+        v-if="numberedSteps && storedUserData?.role !== 'PSYCHOLOGIST'"
+      >
         <VCardText>
           <!-- 👉 Stepper -->
           <AppStepper
+            v-if="numberedSteps && storedUserData?.role !== 'PSYCHOLOGIST'"
             v-model:current-step="currentStep"
             direction="vertical"
             :items="numberedSteps"
@@ -279,10 +295,14 @@
         </VCardText>
       </VCol>
       <!-- 👉 stepper content -->
-      <VCol cols="12" md="9">
+      <VCol
+        cols="12"
+        md="9"
+        v-if="numberedSteps && storedUserData?.role !== 'PSYCHOLOGIST'"
+      >
         <VCardText>
           <VForm>
-            <div v-if="numberedSteps">
+            <div>
               <VWindow v-model="currentStep" class="disable-tab-transition">
                 <chiefComplaint v-model="chief_complaint" />
                 <presentIllnessChild
@@ -302,10 +322,12 @@
                 <ixVue v-model="ix" />
                 <managementVue v-model="management" />
                 <notesVue v-model="notes" />
+                <therapyVue :visit="visit" :psychologist="false" />
               </VWindow>
             </div>
 
             <div
+              v-if="currentStep !== numberedSteps.length - 1"
               class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
             >
               <VBtn
@@ -328,6 +350,18 @@
 
                 <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
               </VBtn>
+            </div>
+          </VForm>
+        </VCardText>
+      </VCol>
+
+      <VCol v-else>
+        <VCardText>
+          <VForm>
+            <div>
+              <VWindow>
+                <therapyVue :visit="visit" :psychologist="true" />
+              </VWindow>
             </div>
           </VForm>
         </VCardText>

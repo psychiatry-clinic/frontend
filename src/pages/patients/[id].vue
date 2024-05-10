@@ -23,12 +23,14 @@
   const tabs = [
     { title: 'Visits', icon: 'tabler-file' },
     { title: 'Tests', icon: 'tabler-flask' },
-    { title: 'Therapy', icon: 'tabler-user' },
+    // { title: 'Therapy', icon: 'tabler-user' },
   ]
 
   const { data } = await useApi<any>(
     `/patients/${storedUserData?.id}/${routeParams.id}`
   )
+
+  console.log(data)
 
   const deletePatient = async () => {
     if (!storedUserData) return
@@ -102,9 +104,9 @@
           <VWindowItem>
             <CustomerTabTests :patientData="patientData" />
           </VWindowItem>
-          <VWindowItem>
-            <CustomerTabTherapy />
-          </VWindowItem>
+          <!-- <VWindowItem>
+            <CustomerTabTherapy :patientData="patientData" />
+          </VWindowItem> -->
         </VWindow>
       </VCol>
     </VRow>

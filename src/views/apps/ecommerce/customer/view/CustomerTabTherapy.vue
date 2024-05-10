@@ -1,31 +1,92 @@
 <script setup lang="ts">
-import { Patient } from "@/utils/types";
+  import { Patient, User } from '@/utils/types'
 
-interface Props {
-  patientData: Patient;
-}
+  const storedUserData: User | undefined = useCookie('userData').value as
+    | User
+    | undefined
 
-// interface Model {
-//   therapyNotes: string | undefined;
-// }
+  const router = useRouter()
+  const route = useRoute()
 
-// const { patientData } = defineProps<Props>();
+  interface Props {
+    patientData: Patient
+  }
 
-// const model = defineModel<Model>();
+  const { patientData } = defineProps<Props>()
 
-// const therapyNotes = ref(model.value?.therapyNotes);
+  const requested = ref(false)
 
-// function update() {
-//   model.value = {
-//     therapyNotes: therapyNotes.value,
-//   };
-// }
+  // interface Model {
+  //   therapyNotes: string | undefined;
+  // }
 
-const therapy = ref();
+  // const { patientData } = defineProps<Props>();
 
-function update(e: any) {
-  therapy.value = e.target.value;
-}
+  // const model = defineModel<Model>();
+
+  // const therapyNotes = ref(model.value?.therapyNotes);
+
+  // function update() {
+  //   model.value = {
+  //     therapyNotes: therapyNotes.value,
+  //   };
+  // }
+
+  const therapy = ref(
+    patientData?.visits?.[patientData.visits?.length - 1].therapy?.notes
+  )
+
+  function update(e: any) {
+    therapy.value = e.target.value
+  }
+
+  const activeVisit = patientData.visits?.find((visit) => visit.active === true)
+
+  const requestTherapy = async (x: boolean) => {
+    if (!activeVisit) return
+    const link = `/visits-edit/${storedUserData?.id}/${activeVisit?.id}/${patientData.id}`
+    try {
+      const res = await $api(link, {
+        method: 'POST',
+        body: {
+          therapyRequest: x,
+        },
+        onResponseError({ response }) {
+          console.log(response._data)
+        },
+      })
+      if (res === 'OK') {
+        console.log(res)
+        requested.value = x
+      }
+      // router.push(`/patients/${route.params.id}`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const save = async () => {
+    if (!activeVisit) return
+    const link = `/therapy/${storedUserData?.id}/${activeVisit?.id}`
+    try {
+      const res = await $api(link, {
+        method: 'POST',
+        body: {
+          notes: therapy.value,
+          clinic: storedUserData?.clinic,
+        },
+        onResponseError({ response }) {
+          console.log(response._data)
+        },
+      })
+      if (res === 'OK') {
+        console.log(res)
+      }
+      // router.push(`/patients/${route.params.id}`)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 </script>
 
 <template>
@@ -45,7 +106,13 @@ function update(e: any) {
         <VDivider />
 
         <VCardText class="d-flex gap-4">
-          <VBtn>Save</VBtn>
+          <VBtn @click="requestTherapy(true)" v-if="!requested"
+            >Request Therapy</VBtn
+          >
+          <VBtn @click="requestTherapy(false)" color="success" v-else
+            >Requested</VBtn
+          >
+          <VBtn @click="save">Save</VBtn>
           <VBtn color="secondary" variant="tonal"> Discard </VBtn>
         </VCardText>
       </VCard>

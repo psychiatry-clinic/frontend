@@ -92,6 +92,7 @@ export interface Visit {
   ddx?: { differential: string }
   management?: { managements: ManagementItem[] }
   ix?: Ix
+  therapyRequest?: boolean
   consultations?: Consultations
   prescription?: Prescription
   prescriptionId?: number
@@ -120,7 +121,7 @@ export interface Doctor {
   name: string
   phone: string
   avatar?: string
-  visits: Visit[]
+  visits?: Visit[]
   user: User[]
   prescriptions: Prescription[]
   patients: Patient[]
@@ -273,4 +274,15 @@ interface Management {
 
 export interface Managements {
   managements: Management[]
+}
+
+export interface Therapy {
+  id: number
+  notes: string
+  clinic: Clinic
+  psychologist?: Psychologist
+  psychologistId?: number
+  createdAt: string
+  updatedAt: string
+  visits?: Visit[]
 }
