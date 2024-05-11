@@ -3,7 +3,11 @@ import type { App } from 'vue'
 import { setupLayouts } from 'virtual:generated-layouts'
 import type { RouteRecordRaw } from 'vue-router/auto'
 
-import { createRouter, createWebHistory } from 'vue-router/auto'
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from 'vue-router/auto'
 
 import { redirects, routes } from './additional-routes'
 import { setupGuards } from './guards'
@@ -20,19 +24,15 @@ function recursiveLayouts(route: RouteRecordRaw): RouteRecordRaw {
 }
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   scrollBehavior(to) {
-    if (to.hash)
-      return { el: to.hash, behavior: 'smooth', top: 60 }
+    if (to.hash) return { el: to.hash, behavior: 'smooth', top: 60 }
 
     return { top: 0 }
   },
-  extendRoutes: pages => [
+  extendRoutes: (pages) => [
     ...redirects,
-    ...[
-      ...pages,
-      ...routes,
-    ].map(route => recursiveLayouts(route)),
+    ...[...pages, ...routes].map((route) => recursiveLayouts(route)),
   ],
 })
 

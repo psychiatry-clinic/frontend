@@ -9,15 +9,17 @@ export const redirects: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'index',
-    redirect: to => {
+    redirect: (to) => {
       // TODO: Get type from backend
-      const userData = useCookie<Record<string, unknown> | null | undefined>('userData')
+      const userData = useCookie<Record<string, unknown> | null | undefined>(
+        'userData'
+      )
       const userRole = userData.value?.role
 
-      if (userRole === 'admin')
-        return { name: 'dashboards-crm' }
-      if (userRole === 'client')
-        return { name: 'access-control' }
+      if (userRole === 'DOCTOR') return { name: 'patients' }
+      if (userRole === 'PSYCHOLOGIST') return { name: 'patients' }
+
+      if (userRole === 'ADMIN') return { name: 'patients' }
 
       return { name: 'login', query: to.query }
     },
@@ -25,12 +27,18 @@ export const redirects: RouteRecordRaw[] = [
   {
     path: '/pages/user-profile',
     name: 'pages-user-profile',
-    redirect: () => ({ name: 'pages-user-profile-tab', params: { tab: 'profile' } }),
+    redirect: () => ({
+      name: 'pages-user-profile-tab',
+      params: { tab: 'profile' },
+    }),
   },
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',
-    redirect: () => ({ name: 'pages-account-settings-tab', params: { tab: 'account' } }),
+    redirect: () => ({
+      name: 'pages-account-settings-tab',
+      params: { tab: 'account' },
+    }),
   },
 ]
 
