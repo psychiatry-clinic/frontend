@@ -84,6 +84,7 @@ export interface Visit {
   doctorId?: number
   active: boolean
   clinic: Clinic
+  follow_up: boolean
   duration?: number
   chief_complaint?: Chief_complaint
   present_illness?: Present_illness

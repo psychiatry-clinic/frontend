@@ -34,10 +34,6 @@
   // }
 
   const therapy = ref(visit.therapy?.notes)
-  console.log('therapy')
-  console.log(therapy)
-  console.log('visit')
-  console.log(visit)
 
   function update(e: any) {
     therapy.value = e.target.value
@@ -59,7 +55,6 @@
         },
       })
       if (res === 'OK') {
-        console.log(res)
         requested.value = x
       }
       // router.push(`/patients/${route.params.id}`)
@@ -83,9 +78,6 @@
           console.log(response._data)
         },
       })
-      if (res === 'OK') {
-        console.log(res)
-      }
       // router.push(`/patients/${route.params.id}`)
     } catch (error) {
       console.error(error)

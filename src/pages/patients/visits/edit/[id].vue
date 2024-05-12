@@ -37,6 +37,8 @@
 
   const visit = data.value as Visit
 
+  const short = ref(visit.follow_up)
+
   const childBoolean =
     differenceInYears(new Date(), new Date(visit.patient.dob)) < 14
 
@@ -86,11 +88,11 @@
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: 'Notes',
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: 'Management',
       subtitle: '',
     },
     {
@@ -98,7 +100,16 @@
       subtitle: '',
     },
   ]
-
+  const numberedStepsAdultShort = [
+    {
+      title: 'Follow up Notes',
+      subtitle: '',
+    },
+    {
+      title: 'Management',
+      subtitle: '',
+    },
+  ]
   const numberedStepsChild = [
     {
       title: 'Chief Complaint',
@@ -141,11 +152,11 @@
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: 'Notes',
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: 'Management',
       subtitle: '',
     },
     {
@@ -154,7 +165,20 @@
     },
   ]
 
-  const numberedSteps = childBoolean ? numberedStepsChild : numberedStepsAdult
+  let numberedSteps = ref<any>()
+  numberedSteps.value = childBoolean
+    ? numberedStepsChild
+    : short.value
+    ? numberedStepsAdultShort
+    : numberedStepsAdult
+
+  watch(short, (newValue) => {
+    numberedSteps.value = childBoolean
+      ? numberedStepsChild
+      : short.value
+      ? numberedStepsAdultShort
+      : numberedStepsAdult
+  })
 
   const currentStep = ref(0)
 
@@ -188,14 +212,11 @@
   const management = ref(visit.management)
   const ddx = ref(visit.ddx)
   const notes = ref(visit.notes)
-  const therapy = ref(visit.therapy)
 
   const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}/${visit.patient.id}`
 
   const saveVisit = async () => {
     if (!storedUserData) return
-
-    // submit()
 
     try {
       const res = await $api(link, {
@@ -217,6 +238,7 @@
           occupation_hx: occupation_hx.value,
           past_hx: past_hx.value,
           development: development.value,
+          follow_up: short.value,
         },
         onResponseError({ response }) {
           console.log(response._data)
@@ -226,39 +248,6 @@
     } catch (error) {
       console.error(error)
     }
-  }
-
-  const submit = () => {
-    console.log('chief_complaint')
-    console.log(chief_complaint.value)
-    console.log('present_illness')
-    console.log(present_illness.value)
-    console.log('family_hx')
-    console.log(family_hx.value)
-    console.log('development')
-    console.log(development.value)
-    console.log('past_hx')
-    console.log(past_hx.value)
-    console.log('social_hx')
-    console.log(social_hx.value)
-    console.log('personal_hx')
-    console.log(personal_hx.value)
-    console.log('occupation_hx')
-    console.log(occupation_hx.value)
-    console.log('forensic_hx')
-    console.log(forensic_hx.value)
-    console.log('examination')
-    console.log(examination.value)
-    console.log('ddx')
-    console.log(ddx.value)
-    console.log('ix')
-    console.log(ix.value)
-    console.log('management')
-    console.log(management.value)
-    console.log('consultations')
-    console.log(consultations.value)
-    console.log('notes')
-    console.log(notes.value)
   }
 </script>
 
@@ -285,6 +274,12 @@
         v-if="numberedSteps && storedUserData?.role !== 'PSYCHOLOGIST'"
       >
         <VCardText>
+          <VRadioGroup v-model="short" inline>
+            <VRadio label="Classic" :value="false" />
+            <VRadio label="Follow Up" :value="true" />
+          </VRadioGroup>
+        </VCardText>
+        <VCardText>
           <!-- 👉 Stepper -->
           <AppStepper
             v-if="numberedSteps && storedUserData?.role !== 'PSYCHOLOGIST'"
@@ -304,30 +299,46 @@
           <VForm>
             <div>
               <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
+                <chiefComplaint v-model="chief_complaint" v-if="!short" />
                 <presentIllnessChild
                   v-model="present_illness"
                   :child="childBoolean"
+                  v-if="!short"
                 />
-                <developmentVue v-model="development" v-if="childBoolean" />
-                <familyHx v-model="family_hx" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <personalHx v-model="personal_hx" v-if="!childBoolean" />
-                <occupationHx v-model="occupation_hx" v-if="!childBoolean" />
-                <forensicHx v-model="forensic_hx" v-if="!childBoolean" />
-                <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" v-if="childBoolean" />
-                <ddxVue v-model="ddx" :child="childBoolean" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
+                <developmentVue
+                  v-model="development"
+                  v-if="childBoolean && !short"
+                />
+                <familyHx v-model="family_hx" v-if="!short" />
+                <pastHx v-model="past_hx" v-if="!short" />
+                <socialHx v-model="social_hx" v-if="!short" />
+                <personalHx
+                  v-model="personal_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <occupationHx
+                  v-model="occupation_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <forensicHx
+                  v-model="forensic_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <examinationVue v-model="examination" v-if="!short" />
+                <consultationsVue
+                  v-model="consultations"
+                  v-if="childBoolean && !short"
+                />
+                <ddxVue v-model="ddx" :child="childBoolean" v-if="!short" />
+                <ixVue v-model="ix" v-if="!short" />
                 <notesVue v-model="notes" />
+                <managementVue v-model="management" />
                 <therapyVue :visit="visit" :psychologist="false" />
               </VWindow>
             </div>
 
             <div
-              v-if="currentStep !== numberedSteps.length - 1"
+              v-if="currentStep !== numberedSteps.length - 1 || short"
               class="d-flex flex-wrap gap-4 justify-sm-space-between justify-center mt-8"
             >
               <VBtn

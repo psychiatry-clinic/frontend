@@ -38,6 +38,7 @@
 
   const router = useRouter()
   const route = useRoute('patients-visits-new-id')
+  const short = ref(false)
 
   const numberedStepsAdult = [
     {
@@ -85,11 +86,22 @@
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: 'Notes',
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: 'Management',
+      subtitle: '',
+    },
+  ]
+
+  const numberedStepsAdultShort = [
+    {
+      title: 'Follow up Notes',
+      subtitle: '',
+    },
+    {
+      title: 'Management',
       subtitle: '',
     },
   ]
@@ -136,11 +148,11 @@
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: 'Notes',
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: 'Management',
       subtitle: '',
     },
   ]
@@ -156,7 +168,20 @@
     `/patients/${storedUserData?.id}/${route.params.id}`
   )
 
-  const numberedSteps = childBoolean ? numberedStepsChild : numberedStepsAdult
+  let numberedSteps = ref<any>()
+  numberedSteps.value = childBoolean
+    ? numberedStepsChild
+    : short.value
+    ? numberedStepsAdultShort
+    : numberedStepsAdult
+
+  watch(short, (newValue) => {
+    numberedSteps.value = childBoolean
+      ? numberedStepsChild
+      : short.value
+      ? numberedStepsAdultShort
+      : numberedStepsAdult
+  })
 
   const currentStep = ref(0)
 
@@ -230,6 +255,7 @@
           occupation_hx: occupation_hx.value,
           past_hx: past_hx.value,
           development: development.value,
+          follow_up: short.value,
         },
         onResponseError({ response }) {
           errors.value = response._data
@@ -286,6 +312,12 @@
     <VRow>
       <VCol cols="12" md="3" class="border-e">
         <VCardText>
+          <VRadioGroup v-model="short" inline>
+            <VRadio label="Classic" :value="false" />
+            <VRadio label="Follow Up" :value="true" />
+          </VRadioGroup>
+        </VCardText>
+        <VCardText>
           <!-- 👉 Stepper -->
           <AppStepper
             v-model:current-step="currentStep"
@@ -300,24 +332,40 @@
           <VForm>
             <div v-if="numberedSteps">
               <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" />
+                <chiefComplaint v-model="chief_complaint" v-if="!short" />
                 <presentIllnessChild
                   v-model="present_illness"
                   :child="childBoolean"
+                  v-if="!short"
                 />
-                <developmentVue v-model="development" v-if="childBoolean" />
-                <familyHx v-model="family_hx" />
-                <pastHx v-model="past_hx" />
-                <socialHx v-model="social_hx" />
-                <personalHx v-model="personal_hx" v-if="!childBoolean" />
-                <occupationHx v-model="occupation_hx" v-if="!childBoolean" />
-                <forensicHx v-model="forensic_hx" v-if="!childBoolean" />
-                <examinationVue v-model="examination" />
-                <consultationsVue v-model="consultations" v-if="childBoolean" />
-                <ddxVue v-model="ddx" :child="childBoolean" />
-                <ixVue v-model="ix" />
-                <managementVue v-model="management" />
+                <developmentVue
+                  v-model="development"
+                  v-if="childBoolean && !short"
+                />
+                <familyHx v-model="family_hx" v-if="!short" />
+                <pastHx v-model="past_hx" v-if="!short" />
+                <socialHx v-model="social_hx" v-if="!short" />
+                <personalHx
+                  v-model="personal_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <occupationHx
+                  v-model="occupation_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <forensicHx
+                  v-model="forensic_hx"
+                  v-if="!childBoolean && !short"
+                />
+                <examinationVue v-model="examination" v-if="!short" />
+                <consultationsVue
+                  v-model="consultations"
+                  v-if="childBoolean && !short"
+                />
+                <ddxVue v-model="ddx" :child="childBoolean" v-if="!short" />
+                <ixVue v-model="ix" v-if="!short" />
                 <notesVue v-model="notes" />
+                <managementVue v-model="management" />
               </VWindow>
             </div>
 
@@ -350,178 +398,4 @@
       </VCol>
     </VRow>
   </VCard>
-  <!-- <VTabs v-model="tab">
-    <VTab value="personal-info"> Personal Info </VTab>
-    <VTab value="account-details"> Account Details </VTab>
-    <VTab value="social-links"> Social Links </VTab>
-  </VTabs> -->
-
-  <!-- <VCard flat>
-    <VCardText>
-      <VWindow v-model="tab" class="disable-tab-transition">
-        <VWindowItem value="personal-info">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol md="6" cols="12">
-                <AppTextField
-                  v-model="chief_complaint"
-                  label="First name"
-                  placeholder="John"
-                />
-              </VCol>
-
-              <VCol md="6" cols="12">
-                <AppTextField
-                  v-model="present_illness"
-                  label="Last name"
-                  placeholder="Doe"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppSelect
-                  v-model="country"
-                  :items="countryList"
-                  label="Country"
-                  placeholder="Select Country"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppSelect
-                  v-model="languages"
-                  :items="languageList"
-                  multiple
-                  chips
-                  clearable
-                  label="Language"
-                  placeholder="Select Language"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppDateTimePicker
-                  v-model="birthDate"
-                  label="Birth Date"
-                  placeholder="Select Birth Date"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="phoneNo"
-                  type="number"
-                  label="Phone No."
-                  placeholder="+1 123 456 7890"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-
-        <VWindowItem value="account-details">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="username"
-                  label="Username"
-                  placeholder="Johndoe"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="email"
-                  label="Email"
-                  suffix="@example.com"
-                  placeholder="johndoe@email.com"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="password"
-                  label="Password"
-                  placeholder="············"
-                  :type="isPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="
-                    isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-                  "
-                  @click:append-inner="isPasswordVisible = !isPasswordVisible"
-                />
-              </VCol>
-
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="cPassword"
-                  label="Confirm Password"
-                  placeholder="············"
-                  :type="isCPasswordVisible ? 'text' : 'password'"
-                  :append-inner-icon="
-                    isCPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'
-                  "
-                  @click:append-inner="isCPasswordVisible = !isCPasswordVisible"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-
-        <VWindowItem value="social-links">
-          <VForm class="mt-2">
-            <VRow>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="twitterLink"
-                  label="Twitter"
-                  placeholder="https://twitter.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="facebookLink"
-                  label="Facebook"
-                  placeholder="https://facebook.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="googlePlusLink"
-                  label="Google+"
-                  placeholder="https://plus.google.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="linkedInLink"
-                  label="LinkedIn"
-                  placeholder="https://linkedin.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="instagramLink"
-                  label="Instagram"
-                  placeholder="https://instagram.com/username"
-                />
-              </VCol>
-              <VCol cols="12" md="6">
-                <AppTextField
-                  v-model="quoraLink"
-                  label="Quora"
-                  placeholder="https://quora.com/username"
-                />
-              </VCol>
-            </VRow>
-          </VForm>
-        </VWindowItem>
-      </VWindow>
-    </VCardText>
-
-    <VDivider />
-
-    <VCardText class="d-flex gap-4">
-      <VBtn>Submit</VBtn>
-      <VBtn color="secondary" variant="tonal"> Cancel </VBtn>
-    </VCardText>
-  </VCard> -->
 </template>

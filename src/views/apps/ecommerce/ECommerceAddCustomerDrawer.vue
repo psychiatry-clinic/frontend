@@ -69,7 +69,7 @@
   const selectedRadio = ref('')
   if (storedUserData?.clinic === 'Kadhimiya') {
     selectedRadio.value = 'adult'
-  }else{
+  } else {
     selectedRadio.value = 'child'
   }
 
@@ -77,9 +77,10 @@
   const avatar = ref()
   const name = ref()
   const dob = ref<string>('2024-01-01')
+  const dobAdult = ref<number>()
   const age = ref<string>()
 
-  const gender = ref()
+  const gender = ref('Male')
   const phone = ref()
   const father_dob = ref()
   const father_edu = ref()
@@ -117,7 +118,9 @@
         body: {
           doctor: storedUserData.id,
           name: name.value,
-          dob: addTimeToDateString(dob.value),
+          dob: dobAdult.value
+            ? addTimeToDateString(convertDob(dobAdult.value))
+            : addTimeToDateString(dob.value),
           gender: gender.value,
           phone: phone.value,
           avatar: avatar.value,
@@ -154,26 +157,38 @@
     }
   }
 
-  watch(dob, (newValue, oldValue) => {
+  watch(dob, (newValue) => {
     if (newValue) {
       age.value = calculateAge(newValue) as string
-      console.log(newValue)
     }
   })
 
-  watch(father_dob, (newValue, oldValue) => {
+  watch(dobAdult, (newValue) => {
+    if (newValue && newValue.toString().length === 4) {
+      age.value = calculateAge(new Date(newValue).toString()) as string
+    }
+  })
+
+  watch(father_dob, (newValue) => {
     if (newValue.length === 4) {
       const date = new Date(father_dob.value, 0, 1)
       father_age.value = differenceInCalendarYears(dob.value, date)
     }
   })
 
-  watch(mother_dob, (newValue, oldValue) => {
+  watch(mother_dob, (newValue) => {
     if (newValue.length === 4) {
       const date = new Date(mother_dob.value, 0, 1)
       mother_age.value = differenceInCalendarYears(dob.value, date)
     }
   })
+
+  const convertDob = (dob: number) => {
+    const date = new Date(dob)
+    date.setMonth(0)
+    date.setDate(1)
+    return date.toISOString().slice(0, 10)
+  }
 </script>
 
 <template>
@@ -250,11 +265,21 @@
                 />
               </VCol>
 
-              <VCol cols="12">
+              <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppDateTimePicker
                   v-model="dob"
                   label="Birth Date*"
                   placeholder="Select date"
+                />
+              </VCol>
+
+              <VCol cols="12">
+                <AppTextField
+                  v-model="dobAdult"
+                  label="Birth Date*"
+                  placeholder=""
+                  maxlength="4"
+                  :rules="[dateOfBirthValidator]"
                 />
               </VCol>
 

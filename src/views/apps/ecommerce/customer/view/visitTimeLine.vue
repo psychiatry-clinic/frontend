@@ -49,6 +49,7 @@
       >
         New Visit
       </VBtn>
+
       <VTimeline
         side="end"
         align="start"
@@ -80,6 +81,7 @@
 
           <!-- 👉 Content -->
           <div
+            v-if="!visit.follow_up"
             class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
           >
             <div class="app-timeline-text mt-1">
@@ -93,10 +95,16 @@
               {{ formatDate(visit.createdAt) }}
             </span>
           </div>
-          <div class="app-timeline-text mt-1">
+          <div v-if="!visit.follow_up" class="app-timeline-text mt-1">
             <span class="text-warning"> Diagnosis: </span>
             <li>
               {{ visit.ddx?.differential }}
+            </li>
+          </div>
+          <div v-else class="app-timeline-text mt-1">
+            <span class="text-warning"> Follow up notes: </span>
+            <li>
+              {{ visit.notes?.notes }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">
