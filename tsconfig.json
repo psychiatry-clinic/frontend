@@ -71,7 +71,7 @@
     "./components.d.ts"
   ],
   "exclude": [
-    "./dist",
+    "docs",
     "./node_modules"
   ]
 }
