@@ -1,1 +1,0 @@
-import{au as i,r as o,w as r}from"./index-CJpjWKD8.js";const c=(t=void 0)=>{const{mdAndDown:s,name:n}=i(),a=t||s,e=o(!0);return(()=>{e.value=!a.value})(),r(n,()=>{e.value=!a.value}),{isLeftSidebarOpen:e}};export{c as u};
