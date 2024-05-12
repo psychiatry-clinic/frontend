@@ -1,0 +1,1 @@
+const t=""+new URL("auth-v2-forgot-password-illustration-dark-CvJNzmSW.png",import.meta.url).href,o=""+new URL("auth-v2-forgot-password-illustration-light-BAgKvSuW.png",import.meta.url).href;export{t as a,o as b};
