@@ -3,6 +3,7 @@
   "version": "9.1.1",
   "private": true,
   "type": "module",
+  "main": "./dist/mockServiceWorker.js",
   "scripts": {
     "deploy": "vite build && echo psychiatry.dakakean.com > ./dist/CNAME && gh-pages -d dist",
     "dev": "vite",
