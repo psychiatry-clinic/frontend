@@ -1,7 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router/auto'
-
-const emailRouteComponent = () => import('@/pages/apps/email/index.vue')
-
 // 👉 Redirects
 export const redirects: RouteRecordRaw[] = [
   // ℹ️ We are redirecting to different pages based on role.
@@ -18,7 +15,6 @@ export const redirects: RouteRecordRaw[] = [
 
       if (userRole === 'DOCTOR') return { name: 'patients' }
       if (userRole === 'PSYCHOLOGIST') return { name: 'patients' }
-
       if (userRole === 'ADMIN') return { name: 'patients' }
 
       return { name: 'login', query: to.query }
@@ -47,7 +43,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/apps/email/filter/:filter',
     name: 'apps-email-filter',
-    component: emailRouteComponent,
+    component: () => import('@/pages/apps/email/index.vue'),
     meta: {
       navActiveLink: 'apps-email',
       layoutWrapperClasses: 'layout-content-height-fixed',
@@ -58,7 +54,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/apps/email/label/:label',
     name: 'apps-email-label',
-    component: emailRouteComponent,
+    component: () => import('@/pages/apps/email/index.vue'),
     meta: {
       // contentClass: 'email-application',
       navActiveLink: 'apps-email',

@@ -135,7 +135,7 @@ export default defineConfig({
   },
   build: {
     chunkSizeWarningLimit: 5000,
-    outDir: './docs',
+    outDir: './dist',
   },
   optimizeDeps: {
     exclude: ['vuetify'],
@@ -145,5 +145,5 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000,
   },
-  base: '/frontend/',
+  base: '/',
 })

@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "deploy": "vite build && echo psychiatry.dakakean.com > ./dist/CNAME && gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 5050",
@@ -95,6 +96,7 @@
     "eslint-plugin-sonarjs": "0.23.0",
     "eslint-plugin-unicorn": "50.0.1",
     "eslint-plugin-vue": "9.22.0",
+    "gh-pages": "^6.1.1",
     "msw": "2.2.2",
     "postcss-html": "1.6.0",
     "postcss-scss": "4.0.9",
