@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+  const { t } = useI18n()
   import {
     Chief_complaint,
     Development,
@@ -82,7 +83,7 @@
 <template>
   <div class="d-flex justify-space-between">
     <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
-      Back
+      {{ t('Back') }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
       Patient :
@@ -455,6 +456,6 @@
   }
 
   .patient-info__field {
-    margin-right: 20px; // Adjust as needed for spacing between fields
+    margin-inline-end: 20px; // Adjust as needed for spacing between fields
   }
 </style>
