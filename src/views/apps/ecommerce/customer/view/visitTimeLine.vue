@@ -15,20 +15,6 @@
 
   const { patientData } = defineProps<Props>()
 
-  let isNewVisit = false
-
-  watchEffect(() => {
-    if (patientData.visits?.slice().reverse()[0]) {
-      const difference = differenceInHours(
-        new Date(),
-        patientData.visits?.slice().reverse()[0].createdAt
-      )
-      isNewVisit = difference >= 8
-    } else {
-      isNewVisit = true
-    }
-  })
-
   console.log(patientData.visits)
 </script>
 
@@ -36,7 +22,10 @@
   <VCard title="Visits Timeline">
     <VCardText>
       <VBtn
-        v-if="isNewVisit && storedUserData?.role === 'DOCTOR'"
+        v-if="
+          !patientData.visits?.[patientData.visits.length - 1].active &&
+          storedUserData?.role === 'DOCTOR'
+        "
         variant="outlined"
         class="mb-5"
         @click="
@@ -121,8 +110,8 @@
           </div>
           <VBtn
             variant="tonal"
-            class="d-inline-flex align-center mt-4"
-            v-if="!isNewVisit && visit.active"
+            class="d-inline-flex align-center mt-4 me-2"
+            v-if="visit.active || storedUserData?.id === visit.doctor?.id"
             @click="
               router.push({
                 name: 'patients-visits-edit-id',
@@ -137,8 +126,7 @@
           </VBtn>
           <VBtn
             variant="tonal"
-            class="d-inline-flex align-center mt-4"
-            v-else
+            class="d-inline-flex align-center mt-4 me-2"
             @click="
               router.push({
                 name: 'patients-visits-open-id',

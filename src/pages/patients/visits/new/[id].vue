@@ -95,7 +95,7 @@
     },
   ]
 
-  const numberedStepsAdultShort = [
+  const numberedStepsShort = [
     {
       title: 'Follow up Notes',
       subtitle: '',
@@ -169,17 +169,17 @@
   )
 
   let numberedSteps = ref<any>()
-  numberedSteps.value = childBoolean
+  numberedSteps.value = short.value
+    ? numberedStepsShort
+    : childBoolean
     ? numberedStepsChild
-    : short.value
-    ? numberedStepsAdultShort
     : numberedStepsAdult
 
   watch(short, (newValue) => {
-    numberedSteps.value = childBoolean
+    numberedSteps.value = short.value
+      ? numberedStepsShort
+      : childBoolean
       ? numberedStepsChild
-      : short.value
-      ? numberedStepsAdultShort
       : numberedStepsAdult
   })
 
@@ -302,7 +302,9 @@
 
 <template>
   <div class="d-flex justify-space-between">
-    <VBtn variant="outlined" class="mb-5" @click="router.back"> Back </VBtn>
+    <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
+      Back
+    </VBtn>
     <VBtn variant="outlined" color="secondary">
       Patient :
       {{ route.query.name }}

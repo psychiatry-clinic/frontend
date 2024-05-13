@@ -24,116 +24,6 @@
   const childBoolean =
     differenceInYears(new Date(), new Date(visit.patient.dob)) < 14
 
-  const numberedStepsAdult = [
-    {
-      title: 'Chief Complaint',
-      subtitle: '',
-    },
-    {
-      title: 'Present Illness',
-      subtitle: '',
-    },
-    {
-      title: 'Family History',
-      subtitle: '',
-    },
-    {
-      title: 'Past History',
-      subtitle: '',
-    },
-    {
-      title: 'Social History',
-      subtitle: '',
-    },
-    {
-      title: 'Personal History',
-      subtitle: '',
-    },
-    {
-      title: 'Occupational History',
-      subtitle: '',
-    },
-    {
-      title: 'Forensic History',
-      subtitle: '',
-    },
-    {
-      title: 'Examination',
-      subtitle: '',
-    },
-    {
-      title: 'Differential Diagnosis',
-      subtitle: '',
-    },
-    {
-      title: 'Investigation',
-      subtitle: '',
-    },
-    {
-      title: 'Management',
-      subtitle: '',
-    },
-    {
-      title: 'Notes',
-      subtitle: '',
-    },
-  ]
-
-  const numberedStepsChild = [
-    {
-      title: 'Chief Complaint',
-      subtitle: '',
-    },
-    {
-      title: 'Present Illness',
-      subtitle: '',
-    },
-    {
-      title: 'Development History',
-      subtitle: '',
-    },
-    {
-      title: 'Family History',
-      subtitle: '',
-    },
-    {
-      title: 'Past History',
-      subtitle: '',
-    },
-    {
-      title: 'Social History',
-      subtitle: '',
-    },
-    {
-      title: 'Examination',
-      subtitle: '',
-    },
-    {
-      title: 'Consultations',
-      subtitle: '',
-    },
-    {
-      title: 'Differential Diagnosis',
-      subtitle: '',
-    },
-    {
-      title: 'Investigations',
-      subtitle: '',
-    },
-    {
-      title: 'Management',
-      subtitle: '',
-    },
-    {
-      title: 'Notes',
-      subtitle: '',
-    },
-  ]
-
-  const numberedSteps = childBoolean ? numberedStepsChild : numberedStepsAdult
-
-  const currentStep = ref(0)
-
   const patient = ref(route.params.id)
   const doctor = ref(visit.doctor?.name)
   const prescription = ref()
@@ -152,54 +42,6 @@
       selectedPeripartum: [''],
     }
   )
-  const family_hx = ref(visit.patient.family_hx)
-  const past_hx = ref(visit.patient.past_hx)
-  const social_hx = ref(visit.patient.social_hx)
-  const personal_hx = ref(visit.patient.personal_hx)
-  const occupation_hx = ref(visit.patient.occupation_hx)
-  const forensic_hx = ref(visit.patient.forensic_hx)
-  const ix = ref(visit.ix)
-  const examination = ref(visit.examination)
-  const consultations = ref(visit.consultations)
-  const management = ref(visit.management)
-  const ddx = ref(visit.ddx)
-  const notes = ref(visit.notes)
-
-  const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}/${visit.patient.id}`
-
-  const saveVisit = async () => {
-    if (!storedUserData) return
-
-    try {
-      const res = await $api(link, {
-        method: 'POST',
-        body: {
-          patient_id: visit.patient.id,
-          chief_complaint: chief_complaint.value,
-          examination: examination.value,
-          ddx: ddx.value,
-          present_illness: present_illness.value,
-          consultations: consultations.value,
-          ix: ix.value,
-          management: management.value,
-          notes: notes.value,
-          social_hx: social_hx.value,
-          family_hx: family_hx.value,
-          personal_hx: personal_hx.value,
-          forensic_hx: forensic_hx.value,
-          occupation_hx: occupation_hx.value,
-          past_hx: past_hx.value,
-          development: development.value,
-        },
-        onResponseError({ response }) {
-          console.log(response._data)
-        },
-      })
-      router.push(`/patients/${route.params.id}`)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
   const patientFields = [
     { key: 'name', label: 'Patient', value: visit.patient.name },
@@ -242,11 +84,11 @@
     <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
       Back
     </VBtn>
-    <VBtn variant="plain" color="secondary">
+    <VBtn variant="outlined" color="secondary">
       Patient :
       {{ visit.patient.name }}
     </VBtn>
-    <VBtn variant="plain" color="secondary">
+    <VBtn variant="outlined" color="secondary">
       Dr.
       {{ visit.doctor?.name }}
     </VBtn>

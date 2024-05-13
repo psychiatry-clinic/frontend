@@ -42,6 +42,9 @@
       { name: 'Forensic History', data: patientData.value.forensic_hx },
     ]
   }
+
+  console.log('items')
+  console.log(items)
 </script>
 
 <template>
@@ -369,7 +372,7 @@
 
           <br />
 
-          <VExpansionPanels multiple v-if="items && items[0].data">
+          <VExpansionPanels multiple v-if="items">
             <VExpansionPanel v-for="item in items">
               <VExpansionPanelTitle> {{ item.name }} </VExpansionPanelTitle>
               <VExpansionPanelText v-for="(value, key) in item.data">

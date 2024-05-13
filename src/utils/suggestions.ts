@@ -509,7 +509,6 @@ export const childDdx = [
 ]
 
 export const occupationSuggestions = [
-  'housewife',
   'unemployed',
   'government employee',
   'private employee',
@@ -519,6 +518,7 @@ export const occupationSuggestions = [
   'pharmacist',
   'college',
   'student',
+  'house wife',
 ]
 
 export const Year1List = {

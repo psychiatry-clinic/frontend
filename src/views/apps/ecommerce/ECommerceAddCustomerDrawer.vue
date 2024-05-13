@@ -173,6 +173,8 @@
     if (newValue.length === 4) {
       const date = new Date(father_dob.value, 0, 1)
       father_age.value = differenceInCalendarYears(dob.value, date)
+    } else {
+      father_age.value = null
     }
   })
 
@@ -180,6 +182,8 @@
     if (newValue.length === 4) {
       const date = new Date(mother_dob.value, 0, 1)
       mother_age.value = differenceInCalendarYears(dob.value, date)
+    } else {
+      mother_age.value = null
     }
   })
 
@@ -273,7 +277,7 @@
                 />
               </VCol>
 
-              <VCol cols="12">
+              <VCol cols="12" v-if="selectedRadio === 'Adult'">
                 <AppTextField
                   v-model="dobAdult"
                   label="Birth Date*"
@@ -522,14 +526,28 @@
                   maxlength="4"
                 />
               </VCol>
-              <VCol cols="12" v-if="selectedRadio === 'child'">
-                <AppTextField
-                  v-model="father_age"
-                  label="Age at Birth"
-                  placeholder=""
-                  disabled
-                />
+
+              <VCol cols="12" v-if="selectedRadio === 'child' && father_age">
+                <span
+                  style="
+                    line-height: 15px;
+                    color: rgba(
+                      var(--v-theme-on-surface),
+                      var(--v-high-emphasis-opacity)
+                    );
+                  "
+                  class="v-label mb-1 text-body-2 text-black"
+                  >Father Age at Birth of Child</span
+                >
+                <VAlert
+                  density="compact"
+                  :color="father_age > 35 ? 'error' : 'success'"
+                  variant="tonal"
+                >
+                  {{ father_age ? father_age : '0' }}
+                </VAlert>
               </VCol>
+
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="father_edu"
@@ -597,14 +615,28 @@
                   maxlength="4"
                 />
               </VCol>
-              <VCol cols="12" v-if="selectedRadio === 'child'">
-                <AppTextField
-                  v-model="mother_age"
-                  label="Age at Birth"
-                  placeholder=""
-                  disabled
-                />
+
+              <VCol cols="12" v-if="selectedRadio === 'child' && mother_age">
+                <span
+                  style="
+                    line-height: 15px;
+                    color: rgba(
+                      var(--v-theme-on-surface),
+                      var(--v-high-emphasis-opacity)
+                    );
+                  "
+                  class="v-label mb-1 text-body-2 text-black"
+                  >Mother Age at Birth of Child</span
+                >
+                <VAlert
+                  density="compact"
+                  :color="mother_age > 35 ? 'error' : 'success'"
+                  variant="tonal"
+                >
+                  {{ mother_age ? mother_age : '0' }}
+                </VAlert>
               </VCol>
+
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="mother_edu"

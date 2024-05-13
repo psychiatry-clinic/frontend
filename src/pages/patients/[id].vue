@@ -55,6 +55,11 @@
 </script>
 
 <template>
+  <div class="d-flex justify-space-between">
+    <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
+      Back
+    </VBtn>
+  </div>
   <div>
     <!-- 👉 Header  -->
     <div
