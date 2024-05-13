@@ -273,7 +273,7 @@
                 />
               </VCol>
 
-              <VCol cols="12">
+              <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppTextField
                   v-model="dobAdult"
                   label="Birth Date*"

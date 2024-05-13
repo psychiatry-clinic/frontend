@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/mockServiceWorker.js",
   "scripts": {
-    "deploy": "vite build && echo psychiatry.dakakean.com > ./dist/CNAME && touch ./dist/.nojekyll && gh-pages -d dist",
+    "deploy": "vite build && echo psychiatry.dakakean.com > ./dist/CNAME && echo.> ./dist/.nojekyll && gh-pages -d dist",
     "dev": "vite",
     "serve": "gh-pages -d dist",
     "build": "vite build",
