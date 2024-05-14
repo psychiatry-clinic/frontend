@@ -197,6 +197,8 @@ declare global {
   const toRef: typeof import('vue')['toRef']
   const toRefs: typeof import('vue')['toRefs']
   const toValue: typeof import('vue')['toValue']
+  const toggle: typeof import('./src/utils/toggle')['default']
+  const toggleSuggestion: typeof import('./src/utils/toggleSuggestion')['default']
   const treatmentsSuggestions: typeof import('./src/utils/suggestions')['treatmentsSuggestions']
   const triggerRef: typeof import('vue')['triggerRef']
   const tryOnBeforeMount: typeof import('@vueuse/core')['tryOnBeforeMount']

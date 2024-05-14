@@ -66,7 +66,7 @@
     },
   ]
 
-  const selectedRadio = ref('')
+  const selectedRadio = ref('child')
   if (storedUserData?.clinic === 'Kadhimiya') {
     selectedRadio.value = 'adult'
   } else {
@@ -102,6 +102,8 @@
   const occupation = ref()
   const education = ref()
 
+  const saving = ref(false)
+
   const resetForm = () => {
     refVForm.value?.reset()
     emit('update:isDrawerOpen', false)
@@ -111,6 +113,7 @@
 
   const addPatient = async () => {
     if (!storedUserData) return
+    saving.value = true
 
     try {
       const res = await $api(link, {
@@ -149,10 +152,11 @@
           errors.value = response._data
         },
       })
-
       console.log(res.id)
       router.push(`/patients/${res.id}`)
+      saving.value = false
     } catch (error) {
+      saving.value = false
       console.error(error)
     }
   }
@@ -191,7 +195,34 @@
     const date = new Date(dob)
     date.setMonth(0)
     date.setDate(1)
+    console.log('date')
+    console.log(date)
     return date.toISOString().slice(0, 10)
+  }
+
+  const toggleSuggestion = (modelName: string, suggestion: any) => {
+    const model = eval(modelName)
+
+    if (
+      model.value === undefined ||
+      model.value === null ||
+      model.value === ''
+    ) {
+      console.log('1')
+      model.value = suggestion
+    } else {
+      console.log('2')
+      const suggestions = model.value.split(', ').filter((s: any) => s)
+      const index = suggestions.indexOf(suggestion)
+      if (index === -1) {
+        console.log('3')
+        suggestions.push(suggestion)
+      } else {
+        console.log('4')
+        suggestions.splice(index, 1)
+      }
+      model.value = suggestions.join(', ')
+    }
   }
 </script>
 
@@ -277,7 +308,7 @@
                 />
               </VCol>
 
-              <VCol cols="12" v-if="selectedRadio === 'Adult'">
+              <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppTextField
                   v-model="dobAdult"
                   label="Birth Date*"
@@ -299,19 +330,17 @@
 
               <VCol cols="12">
                 <VRadioGroup v-model="gender" inline>
-                  <template #label>
-                    <span
-                      style="
-                        line-height: 15px;
-                        color: rgba(
-                          var(--v-theme-on-surface),
-                          var(--v-high-emphasis-opacity)
-                        );
-                      "
-                      class="v-label mb-1 text-body-2 text-black"
-                      >Gender*</span
-                    >
-                  </template>
+                  <span
+                    style="
+                      color: rgba(
+                        var(--v-theme-on-surface),
+                        var(--v-high-emphasis-opacity)
+                      );
+                      line-height: 15px;
+                    "
+                    class="v-label mb-1 text-body-2 text-black"
+                    >Gender*</span
+                  >
                   <VRadio label="Male" value="Male" />
                   <VRadio label="Female" value="Female" />
                 </VRadioGroup>
@@ -530,18 +559,18 @@
               <VCol cols="12" v-if="selectedRadio === 'child' && father_age">
                 <span
                   style="
-                    line-height: 15px;
                     color: rgba(
                       var(--v-theme-on-surface),
                       var(--v-high-emphasis-opacity)
                     );
+                    line-height: 15px;
                   "
                   class="v-label mb-1 text-body-2 text-black"
                   >Father Age at Birth of Child</span
                 >
                 <VAlert
                   density="compact"
-                  :color="father_age > 35 ? 'error' : 'success'"
+                  :color="father_age > 40 ? 'error' : 'success'"
                   variant="tonal"
                 >
                   {{ father_age ? father_age : '0' }}
@@ -559,14 +588,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in adultEducation"
                     size="x-small"
-                    @click="
-                      () => {
-                        father_edu =
-                          father_edu === '' || father_edu === undefined
-                            ? suggestion
-                            : `${father_edu}, ${suggestion}`
-                      }
-                    "
+                    @click="toggleSuggestion('father_edu', suggestion)"
                   >
                     {{ suggestion }}
                   </VChip>
@@ -583,14 +605,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in occupationSuggestions"
                     size="x-small"
-                    @click="
-                      () => {
-                        father_work =
-                          father_work === '' || father_work === undefined
-                            ? suggestion
-                            : `${father_work}, ${suggestion}`
-                      }
-                    "
+                    @click="toggleSuggestion('father_work', suggestion)"
                   >
                     {{ suggestion }}
                   </VChip>
@@ -619,11 +634,12 @@
               <VCol cols="12" v-if="selectedRadio === 'child' && mother_age">
                 <span
                   style="
-                    line-height: 15px;
+                    /* stylelint-disable-next-line @stylistic/declaration-colon-newline-after */
                     color: rgba(
                       var(--v-theme-on-surface),
                       var(--v-high-emphasis-opacity)
                     );
+                    line-height: 15px;
                   "
                   class="v-label mb-1 text-body-2 text-black"
                   >Mother Age at Birth of Child</span
@@ -648,14 +664,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in adultEducation"
                     size="x-small"
-                    @click="
-                      () => {
-                        mother_edu =
-                          mother_edu === '' || mother_edu === undefined
-                            ? suggestion
-                            : `${mother_edu}, ${suggestion}`
-                      }
-                    "
+                    @click="toggleSuggestion('mother_edu', suggestion)"
                   >
                     {{ suggestion }}
                   </VChip>
@@ -672,14 +681,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in occupationSuggestions"
                     size="x-small"
-                    @click="
-                      () => {
-                        mother_work =
-                          mother_work === '' || mother_work === undefined
-                            ? suggestion
-                            : `${mother_work}, ${suggestion}`
-                      }
-                    "
+                    @click="toggleSuggestion('mother_work', suggestion)"
                   >
                     {{ suggestion }}
                   </VChip>
@@ -703,13 +705,21 @@
               <VCol cols="12">
                 <div class="d-flex gap-4 justify-start pb-10">
                   <VBtn
+                    v-if="!saving"
                     type="submit"
                     color="primary"
                     :disabled="!name || !dob"
-                    @click="addPatient"
+                    @click.once="addPatient"
                   >
                     Add
                   </VBtn>
+                  <VProgressCircular
+                    v-else
+                    :size="30"
+                    width="3"
+                    color="primary"
+                    indeterminate
+                  />
                   <VBtn color="error" variant="tonal" @click="resetForm">
                     Discard
                   </VBtn>

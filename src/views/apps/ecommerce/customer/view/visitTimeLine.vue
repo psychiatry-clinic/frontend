@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { Patient, User } from '@/utils/types'
-  import { differenceInHours, formatDistanceToNow } from 'date-fns'
+  import { formatDistanceToNow } from 'date-fns'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -23,8 +23,10 @@
     <VCardText>
       <VBtn
         v-if="
-          !patientData.visits?.[patientData.visits.length - 1].active &&
-          storedUserData?.role === 'DOCTOR'
+          (storedUserData?.role === 'DOCTOR' &&
+            patientData?.visits?.[patientData.visits.length - 1] &&
+            !patientData.visits[patientData.visits.length - 1].active) ||
+          patientData.visits?.length === 0
         "
         variant="outlined"
         class="mb-5"

@@ -233,9 +233,11 @@
 
   const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
 
+  const saving = ref(false)
+
   const addVisit = async () => {
     if (!storedUserData) return
-
+    saving.value = true
     try {
       const res = await $api(link, {
         method: 'POST',
@@ -263,7 +265,9 @@
       })
       console.log(res)
       router.push(`/patients/${route.params.id}`)
+      saving.value = false
     } catch (error) {
+      saving.value = false
       console.error(error)
     }
   }
@@ -384,7 +388,18 @@
                 Previous
               </VBtn>
 
-              <VBtn color="success" @click="addVisit"> Submit </VBtn>
+              <div>
+                <VBtn v-if="!saving" color="success" @click="addVisit">
+                  Submit
+                </VBtn>
+                <VProgressCircular
+                  v-else
+                  :size="30"
+                  width="3"
+                  color="primary"
+                  indeterminate
+                />
+              </div>
 
               <VBtn
                 v-if="currentStep !== numberedSteps.length - 1"

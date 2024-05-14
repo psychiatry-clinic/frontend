@@ -510,6 +510,8 @@ export const childDdx = [
 
 export const occupationSuggestions = [
   'unemployed',
+  'polica',
+  'military',
   'government employee',
   'private employee',
   'worker',
