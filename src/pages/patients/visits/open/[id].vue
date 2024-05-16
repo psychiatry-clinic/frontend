@@ -197,7 +197,7 @@
       <VRow>
         <VCol cols="12">
           <div class="patient-info">
-            <span class="text-info">Dr. {{ visit.doctor?.name }}</span>
+            <span class="text-info">Dr. {{ visit.doctor?.fullName }}</span>
           </div>
         </VCol>
       </VRow>
@@ -220,7 +220,9 @@
       <VRow>
         <VCol>
           <div class="patient-info">
-            <span class="me-4 text-info"> Father: </span>
+            <span class="me-4 text-info" v-if="patientFather[0].value">
+              Father:
+            </span>
             <template v-for="field in patientFather" :key="field.key">
               <div v-if="field.value">
                 <div class="patient-info__field">
@@ -237,7 +239,9 @@
       <VRow>
         <VCol>
           <div class="patient-info">
-            <span class="me-4 text-info"> Mother: </span>
+            <span class="me-4 text-info" v-if="patientMother[0].value">
+              Mother:
+            </span>
             <template v-for="field in patientMother" :key="field.key">
               <div v-if="field.value">
                 <div class="patient-info__field">
@@ -260,23 +264,42 @@
     <VCardText>
       <VRow>
         <VCol cols="6">
-          <div>
-            <span class="text-primary"> Chief complaint: </span>
-            {{ visit.chief_complaint?.complaint
-            }}<span v-if="visit.chief_complaint?.duration">
-              for {{ visit.chief_complaint?.duration }}
-            </span>
+          <!-- chief complaint -->
+          <div
+            v-if="
+              visit.chief_complaint?.complaint ||
+              visit.chief_complaint?.duration ||
+              visit.chief_complaint?.referral ||
+              visit.chief_complaint?.source
+            "
+          >
+            <div>
+              <span class="text-primary"> Chief complaint: </span>
+              {{ visit.chief_complaint?.complaint
+              }}<span v-if="visit.chief_complaint?.duration">
+                for {{ visit.chief_complaint?.duration }}
+              </span>
+            </div>
+
+            <div v-if="visit.chief_complaint?.source">
+              Source of information: {{ visit.chief_complaint?.source }}
+            </div>
+            <div v-if="visit.chief_complaint?.referral">
+              Referral: {{ visit.chief_complaint?.referral }}
+            </div>
+            <br />
           </div>
 
-          <div v-if="visit.chief_complaint?.source">
-            Source of information: {{ visit.chief_complaint?.source }}
-          </div>
-          <div v-if="visit.chief_complaint?.referral">
-            Referral: {{ visit.chief_complaint?.referral }}
-          </div>
-          <br />
-
-          <div v-if="visit.present_illness">
+          <!-- present illness -->
+          <div
+            v-if="
+              Object.values(
+                visit.present_illness ? visit.present_illness : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Present Illness: </span>
             <div
               v-for="key in [
@@ -310,10 +333,17 @@
           </div>
           <br />
 
-          <div v-if="visit.consultations?.consultations">
+          <!-- consultation -->
+          <div
+            v-if="
+              visit.consultations?.consultations?.some((obj) =>
+                Object.values(obj).some((value) => value !== '')
+              )
+            "
+          >
             <span class="text-primary">Consultations:</span>
             <div
-              v-for="consultation in visit.consultations.consultations"
+              v-for="consultation in visit.consultations?.consultations"
               :key="consultation.branch"
             >
               <template v-for="key in ['branch', 'result']">
@@ -330,7 +360,13 @@
           </div>
           <br />
 
-          <div v-if="visit.examination">
+          <div
+            v-if="
+              Object.values(visit.examination ? visit.examination : {}).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Examination: </span>
             <div
               v-for="key in [
@@ -355,7 +391,13 @@
           </div>
           <br />
 
-          <div v-if="visit.ddx">
+          <div
+            v-if="
+              Object.values(visit.ddx ? visit.ddx : {}).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Differential Diagnosis: </span>
             <div v-for="key in ['differential']">
               <template v-if="visit.ddx[key]">
@@ -365,7 +407,13 @@
           </div>
           <br />
 
-          <div v-if="visit.ix?.investigations">
+          <div
+            v-if="
+              visit.ix?.investigations?.some((obj) =>
+                Object.values(obj).some((value) => value !== '')
+              )
+            "
+          >
             <span class="text-primary">Investigations:</span>
             <div
               v-for="investigation in visit.ix.investigations"
@@ -385,7 +433,13 @@
           </div>
           <br />
 
-          <div v-if="visit.management?.managements">
+          <div
+            v-if="
+              visit.management?.managements?.some((obj) =>
+                Object.values(obj).some((value) => value !== '')
+              )
+            "
+          >
             <span class="text-primary">Managements:</span>
             <div
               v-for="management in visit.management?.managements"
@@ -403,7 +457,13 @@
           </div>
           <br />
 
-          <div v-if="visit.notes">
+          <div
+            v-if="
+              Object.values(visit.notes ? visit.notes : {}).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Notes: </span>
             <div v-for="key in ['notes']">
               <template v-if="visit.notes[key]">
@@ -415,7 +475,15 @@
         </VCol>
 
         <VCol cols="6">
-          <div v-if="visit.patient.family_hx">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.family_hx ? visit.patient.family_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Family History: </span>
             <div
               v-for="key in [
@@ -433,7 +501,15 @@
           </div>
           <br />
 
-          <div v-if="visit.patient.past_hx">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.past_hx ? visit.patient.past_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Past History: </span>
             <div
               v-for="key in [
@@ -456,7 +532,15 @@
           </div>
           <br />
 
-          <div v-if="visit.patient.personal_hx">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.personal_hx ? visit.patient.personal_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Personal History: </span>
             <div
               v-for="key in [
@@ -479,7 +563,15 @@
           </div>
           <br />
 
-          <div v-if="visit.patient.social_hx">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.social_hx ? visit.patient.social_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Social History: </span>
             <div
               v-for="key in [
@@ -498,7 +590,15 @@
           </div>
           <br />
 
-          <div v-if="visit.patient.occupation_hx && !childBoolean">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.occupation_hx ? visit.patient.occupation_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Occupation History: </span>
             <div v-for="key in ['jobs', 'unemployment']">
               <template v-if="visit.patient.occupation_hx[key]">
@@ -509,7 +609,15 @@
             <br />
           </div>
 
-          <div v-if="visit.patient.forensic_hx && !childBoolean">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.forensic_hx ? visit.patient.forensic_hx : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              )
+            "
+          >
             <span class="text-primary">Forensic History: </span>
             <div
               v-for="key in [
@@ -533,7 +641,17 @@
             <br />
           </div>
 
-          <div v-if="visit.patient?.development && childBoolean">
+          <div
+            v-if="
+              Object.values(
+                visit.patient.development?.selectedPeripartum
+                  ? visit.patient.development?.selectedPeripartum
+                  : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              ) && childBoolean
+            "
+          >
             <span class="text-primary">Peripartum:</span>
             <div
               v-for="selected in visit.patient.development.selectedPeripartum"
@@ -545,8 +663,19 @@
                 </span>
               </template>
             </div>
-            <br />
-
+          </div>
+          <br />
+          <div
+            v-if="
+              Object.values(
+                visit.patient.development?.selectedYear
+                  ? visit.patient.development?.selectedYear
+                  : {}
+              ).some(
+                (value) => value !== undefined && value !== null && value !== ''
+              ) && childBoolean
+            "
+          >
             <span class="text-primary">Development - Years:</span>
             <div
               v-for="selected in visit.patient.development.selectedYear"

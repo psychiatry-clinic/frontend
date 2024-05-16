@@ -26,7 +26,7 @@
   ]
 
   const { data } = await useApi<any>(
-    `/patients/${storedUserData?.id}/${routeParams.id}`
+    `/patient/${storedUserData?.id}/${routeParams.id}`
   )
 
   console.log(data)

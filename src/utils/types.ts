@@ -38,8 +38,14 @@ export interface User {
   username: string
   password: string
   role: string
-  clinic: string
+  clinic: Clinic
 }
+
+interface Clinic {
+  name: string
+  id: number
+}
+
 export interface Prescription {
   id: number
   patientId: number
@@ -119,7 +125,8 @@ interface differ {
 
 export interface Doctor {
   id: number
-  name: string
+  username: string
+  fullName: string
   phone: string
   avatar?: string
   visits?: Visit[]
@@ -128,12 +135,6 @@ export interface Doctor {
   patients: Patient[]
   createdAt: string
   updatedAt: string
-}
-
-enum Clinic {
-  Kadhimiya = 'Kadhimiya',
-  BaghdadTeachingHospital = 'BaghdadTeachingHospital',
-  AutismCenter = 'AutismCenter',
 }
 
 export interface Therapy {

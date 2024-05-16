@@ -49,7 +49,6 @@
         },
       })
       const { accessToken, userData, userAbilityRules } = res
-
       useCookie('userAbilityRules').value = userAbilityRules
       ability.update(userAbilityRules)
 

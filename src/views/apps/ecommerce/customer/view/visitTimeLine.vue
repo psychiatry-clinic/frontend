@@ -107,7 +107,8 @@
           <div class="app-timeline-text mt-1">
             <span class="text-warning"> Doctor: </span>
             <li>
-              {{ visit.doctor?.name }}
+              {{ visit.doctor?.fullName }}
+              {{ visit.clinic?.name === 'autism' ? 'in NCA' : '' }}
             </li>
           </div>
           <VBtn
@@ -140,7 +141,7 @@
                 },
               })
             "
-            >Open Visit
+            >Summary
           </VBtn>
         </VTimelineItem>
         <!-- !SECTION -->

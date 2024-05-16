@@ -238,11 +238,13 @@
   const addVisit = async () => {
     if (!storedUserData) return
     saving.value = true
+
     try {
       const res = await $api(link, {
         method: 'POST',
         body: {
           chief_complaint: chief_complaint.value,
+          clinicId: storedUserData.clinic.id,
           present_illness: present_illness.value,
           examination: examination.value,
           ddx: ddx.value,
