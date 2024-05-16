@@ -155,9 +155,9 @@
                 <!-- login button -->
                 <VBtn block type="submit" :disabled="isLoading">
                   <span v-if="isLoading">
-                    <VProgressCircular indeterminate color="success" />
-                  </span v-else > 
-                  <span> Login </span>
+                    <VProgressCircular indeterminate color="info" />
+                  </span>
+                  <span v-else> Login </span>
                 </VBtn>
               </VCol>
 

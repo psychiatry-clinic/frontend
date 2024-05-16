@@ -152,12 +152,11 @@
           errors.value = response._data
         },
       })
-      console.log(res.id)
       router.push(`/patients/${res.id}`)
       saving.value = false
     } catch (error) {
-      saving.value = false
       console.error(error)
+      saving.value = false
     }
   }
 

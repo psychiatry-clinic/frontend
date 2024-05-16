@@ -49,6 +49,7 @@
   )
 
   const patients = computed((): Patient[] => {
+    if (!data.value) return []
     return data.value.patients.map((patient: Patient) => ({
       ...patient,
       createdAt: removeTimeFromDate(patient.createdAt), // Format createdAt date
@@ -57,7 +58,7 @@
     }))
   })
 
-  const totalPatients = computed(() => data.value.total)
+  const totalPatients = computed(() => data.value?.total)
 </script>
 
 <template>

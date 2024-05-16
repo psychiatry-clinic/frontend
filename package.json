@@ -1,5 +1,5 @@
 {
-  "name": "vuexy-vuejs-admin-template",
+  "name": "psychiatry",
   "version": "9.1.1",
   "private": true,
   "type": "module",
@@ -7,7 +7,6 @@
   "scripts": {
     "deploy": "vite build && echo psychiatry.dakakean.com > ./dist/CNAME && gh-pages -d dist --nojekyll",
     "dev": "vite",
-    "test": "echo> ./dist/.nojekyll",
     "serve": "gh-pages -d dist",
     "build": "vite build",
     "preview": "vite preview --port 5050",
