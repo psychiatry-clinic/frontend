@@ -156,6 +156,7 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-components-consultations-vue': RouteRecordInfo<'patients-visits-components-consultations-vue', '/patients/visits/components/consultationsVue', Record<never, never>, Record<never, never>>,
     'patients-visits-components-ddx-vue': RouteRecordInfo<'patients-visits-components-ddx-vue', '/patients/visits/components/ddxVue', Record<never, never>, Record<never, never>>,
     'patients-visits-components-development-vue': RouteRecordInfo<'patients-visits-components-development-vue', '/patients/visits/components/developmentVue', Record<never, never>, Record<never, never>>,
+    'patients-visits-components-drawing': RouteRecordInfo<'patients-visits-components-drawing', '/patients/visits/components/drawing', Record<never, never>, Record<never, never>>,
     'patients-visits-components-examination': RouteRecordInfo<'patients-visits-components-examination', '/patients/visits/components/examination', Record<never, never>, Record<never, never>>,
     'patients-visits-components-family-hx': RouteRecordInfo<'patients-visits-components-family-hx', '/patients/visits/components/familyHx', Record<never, never>, Record<never, never>>,
     'patients-visits-components-forensic-hx': RouteRecordInfo<'patients-visits-components-forensic-hx', '/patients/visits/components/forensicHx', Record<never, never>, Record<never, never>>,

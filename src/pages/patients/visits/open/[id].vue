@@ -9,6 +9,8 @@
   } from '@/utils/types'
   import { differenceInYears } from 'date-fns'
 
+  import drawing from '../components/drawing.vue'
+
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
@@ -477,22 +479,14 @@
         <VCol cols="6">
           <div
             v-if="
-              Object.values(
-                visit.patient.family_hx ? visit.patient.family_hx : {}
-              ).some(
-                (value) => value !== undefined && value !== null && value !== ''
-              )
+              visit.patient.family_hx?.similar ||
+              visit.patient.family_hx?.different ||
+              visit.patient.family_hx?.medical ||
+              visit.patient.family_hx?.other
             "
           >
             <span class="text-primary">Family History: </span>
-            <div
-              v-for="key in [
-                'past psychiatric',
-                'different',
-                'medical',
-                'other',
-              ]"
-            >
+            <div v-for="key in ['similar', 'different', 'medical', 'other']">
               <template v-if="visit.patient.family_hx[key]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
                 {{ visit.patient.family_hx[key] }}
@@ -691,6 +685,9 @@
         </VCol>
       </VRow>
     </VCardText>
+  </VCard>
+  <VCard>
+    <drawing></drawing>
   </VCard>
 </template>
 
