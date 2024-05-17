@@ -183,7 +183,6 @@
   const currentStep = ref(0)
 
   const patient = ref(route.params.id)
-  const doctor = ref(visit.doctor?.name)
   const prescription = ref()
   const clinic = ref(visit.clinic)
   const duration = ref()
@@ -263,7 +262,7 @@
     </VBtn>
     <VBtn variant="outlined" color="secondary">
       Dr.
-      {{ visit.doctor?.name }}
+      {{ visit.doctor?.fullName }}
     </VBtn>
   </div>
   <VCard>

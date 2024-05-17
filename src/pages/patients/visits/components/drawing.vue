@@ -6,12 +6,15 @@
       return {
         canvas: null,
         isDrawingMode: false,
-        drawingColor: '#000000',
+        drawingColor: '#03a900',
         drawingShadowColor: '#000000',
-        drawingLineWidth: 1,
+        drawingLineWidth: 4,
         drawingShadowWidth: 0,
         drawingShadowOffset: 0,
-        selectedBrush: 'Pencil',
+        selectedBrush: 'square',
+        canvasWidth: 800, // Default width, will be updated with image size
+        canvasHeight: 600, // Default height, will be updated with image size
+        imageUrl: '/denver2.png', // URL of the uploaded image
       }
     },
     methods: {
@@ -123,6 +126,39 @@
       clearCanvas() {
         this.canvas.clear()
       },
+      loadImage(event) {
+        const file = event.target.files[0]
+        if (file) {
+          const reader = new FileReader()
+          reader.onload = (e) => {
+            this.imageUrl = e.target.result
+          }
+          reader.readAsDataURL(file)
+        }
+      },
+      adjustCanvasSize() {
+        const img = this.$refs.image
+        if (!img) return
+        this.canvasWidth = img.width
+        this.canvasHeight = img.height
+        this.canvas.setWidth(this.canvasWidth)
+        this.canvas.setHeight(this.canvasHeight)
+        this.canvas.renderAll()
+      },
+      saveCanvas() {
+        const dataUrl = this.canvas.toDataURL()
+        localStorage.setItem('savedCanvas', dataUrl)
+      },
+      loadCanvas() {
+        const dataUrl = localStorage.getItem('savedCanvas')
+        if (dataUrl) {
+          fabric.Image.fromURL(dataUrl, (img) => {
+            this.canvas.clear()
+            this.canvas.add(img)
+            this.canvas.renderAll()
+          })
+        }
+      },
     },
     mounted() {
       this.$nextTick(() => {
@@ -134,6 +170,10 @@
 
 <template>
   <div>
+    <input type="file" @change="loadImage" />
+
+    <button @click="loadCanvas" class="btn btn-primary mx-2">load</button>
+    <button @click="saveCanvas" class="btn btn-primary mx-2">save</button>
     <button id="drawing-mode" @click="toggleDrawingMode">
       Enter drawing mode
     </button>
@@ -201,12 +241,23 @@
       </select>
     </div>
     <button id="clear-canvas" @click="clearCanvas">Clear</button>
-    <canvas id="c"></canvas>
+
+    <div v-if="imageUrl">
+      <img :src="imageUrl" @load="adjustCanvasSize" ref="image" />
+    </div>
+    <canvas id="c" :width="canvasWidth" :height="canvasHeight"></canvas>
   </div>
 </template>
 
-<style>
+<style scoped>
   #c {
-    border: 1px solid #000;
+    border: 1px solid #03a900;
+  }
+
+  img {
+    position: absolute;
+    top: 10;
+    left: 0;
+    max-width: 100%;
   }
 </style>
