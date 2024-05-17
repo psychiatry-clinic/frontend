@@ -163,13 +163,7 @@
 
   watch(dob, (newValue) => {
     if (newValue) {
-      try {
-        age.value = calculateAge(newValue) as string
-      } catch (error) {
-        console.log('====================================')
-        console.log(error)
-        console.log('====================================')
-      }
+      age.value = calculateAge(newValue) as string
     }
   })
 
@@ -263,7 +257,7 @@
               </VCol>
 
               <VCol cols="12">
-                <h6 class="text-h6 text-primary">Image</h6>
+                <h6 class="text-h6 text-primary">{{ t('Image') }}</h6>
               </VCol>
 
               <VCol cols="12">
@@ -280,9 +274,7 @@
                 </VAvatar>
               </VCol>
               <VCol cols="12">
-                <label for="picture"
-                  >Take a picture using back facing camera:</label
-                >
+                <label for="picture"></label>
                 <input
                   type="file"
                   id="picture"
@@ -294,13 +286,15 @@
               </VCol>
 
               <VCol cols="12">
-                <h6 class="text-h6 text-primary">Basic Information</h6>
+                <h6 class="text-h6 text-primary">
+                  {{ t('Basic Information') }}
+                </h6>
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
                   v-model="name"
-                  label="Name*"
+                  :label="t('Name') + '*'"
                   :rules="[requiredValidator]"
                   placeholder=""
                 />
@@ -309,15 +303,15 @@
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppDateTimePicker
                   v-model="dob"
-                  label="Birth Date*"
-                  placeholder="Select date"
+                  :label="t('Birth Date') + '*'"
+                  :placeholder="t('Select date')"
                 />
               </VCol>
 
               <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppTextField
                   v-model="dobAdult"
-                  label="Birth Date*"
+                  :label="t('Birth Date') + '*'"
                   placeholder=""
                   maxlength="4"
                   :rules="[dateOfBirthValidator]"
@@ -328,7 +322,7 @@
                 <AppTextField
                   disabled
                   v-model="age"
-                  label="Age (Automatic)"
+                  :label="t('Age') + `(${t('Automatic')})`"
                   placeholder=""
                   maxlength="4"
                 />

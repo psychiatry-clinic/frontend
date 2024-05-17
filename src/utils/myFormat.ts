@@ -1,12 +1,20 @@
+import { getI18n } from '@/plugins/i18n/index'
+import { messages } from './../plugins/i18n/index'
 import { differenceInMonths, differenceInYears, isValid } from 'date-fns'
+import { createI18n } from 'vue-i18n'
+import { cookieRef } from '@layouts/stores/config'
+import { themeConfig } from '@themeConfig'
+
+let i18n: any = null
+
+i18n = getI18n()
+const t = i18n.global.t
 
 export const calculateAge = (
   dob: string,
   justYears: boolean = false
 ): string | number => {
-  const { t } = useI18n()
   const dobDate = new Date(dob)
-
   if (!isValid(dobDate)) {
     return 'Invalid Date of Birth'
   }
@@ -19,14 +27,14 @@ export const calculateAge = (
     if (months > 0 && !justYears) {
       return `${years} ${t('years')} ${t('&')} ${months} ${t('months')}`
     } else {
-      return `${years}` + t(years)
+      return `${years}` + t('years') // Use translated 'years'
     }
   } else if (months > 0 && !justYears) {
-    return `${months} ` + t('months')
+    return `${months} ` + t('months') // Use translated 'months'
   } else if (justYears) {
     return years
   } else {
-    return 'less than a month'
+    return t('lessThanAMonth') // Use translated 'lessThanAMonth'
   }
 }
 
