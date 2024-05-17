@@ -5,6 +5,7 @@
   import { differenceInCalendarYears } from 'date-fns'
   import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
   import { VForm } from 'vuetify/components/VForm'
+  const { t } = useI18n()
 
   const blobSasUrl =
     'https://dakakean.blob.core.windows.net/psychiatry?sp=racwl&st=2024-05-02T06:46:34Z&se=2024-05-10T14:46:34Z&spr=https&sv=2022-11-02&sr=c&sig=oTStvDHsKPQiKZ4%2Bniqpd7Dt9w514Y52T6kIQlC5490%3D'
@@ -57,11 +58,11 @@
 
   const radioContent: CustomInputContent[] = [
     {
-      title: 'Child',
+      title: t('Child'),
       value: 'child',
     },
     {
-      title: 'Adult',
+      title: t('Adult'),
       value: 'adult',
     },
   ]
@@ -162,7 +163,13 @@
 
   watch(dob, (newValue) => {
     if (newValue) {
-      age.value = calculateAge(newValue) as string
+      try {
+        age.value = calculateAge(newValue) as string
+      } catch (error) {
+        console.log('====================================')
+        console.log(error)
+        console.log('====================================')
+      }
     }
   })
 

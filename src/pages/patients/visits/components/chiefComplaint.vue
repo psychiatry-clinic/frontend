@@ -24,7 +24,10 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Chief Complaint</h6>
+        <h6 class="text-h6 font-weight-medium">
+          {{}}
+          'Chief Complaint'
+        </h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>

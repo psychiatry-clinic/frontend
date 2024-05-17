@@ -7,6 +7,7 @@
     User,
     Visit,
   } from '@/utils/types'
+
   import { differenceInYears } from 'date-fns'
 
   import drawing from '../components/drawing.vue'

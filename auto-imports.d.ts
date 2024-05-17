@@ -172,6 +172,7 @@ declare global {
   const registerPlugins: typeof import('./src/@core/utils/plugins')['registerPlugins']
   const registerPlugins_: typeof import('./src/@core/utils/plugins')['registerPlugins_']
   const relationshipsSuggestions: typeof import('./src/utils/suggestions')['relationshipsSuggestions']
+  const removeTimeAndDate: typeof import('./src/utils/myFormat')['removeTimeAndDate']
   const removeTimeFromDate: typeof import('./src/utils/myFormat')['removeTimeFromDate']
   const requiredValidator: typeof import('./src/@core/utils/validators')['requiredValidator']
   const resolveComponent: typeof import('vue')['resolveComponent']
@@ -581,6 +582,7 @@ declare module 'vue' {
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
     readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
+    readonly removeTimeAndDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeAndDate']>
     readonly removeTimeFromDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeFromDate']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>
@@ -970,6 +972,7 @@ declare module '@vue/runtime-core' {
     readonly regexValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['regexValidator']>
     readonly registerPlugins: UnwrapRef<typeof import('./src/@core/utils/plugins')['registerPlugins']>
     readonly relationshipsSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['relationshipsSuggestions']>
+    readonly removeTimeAndDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeAndDate']>
     readonly removeTimeFromDate: UnwrapRef<typeof import('./src/utils/myFormat')['removeTimeFromDate']>
     readonly requiredValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['requiredValidator']>
     readonly resolveComponent: UnwrapRef<typeof import('vue')['resolveComponent']>

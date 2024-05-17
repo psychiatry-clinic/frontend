@@ -29,8 +29,6 @@
     `/patient/${storedUserData?.id}/${routeParams.id}`
   )
 
-  console.log(data)
-
   const deletePatient = async () => {
     if (!storedUserData) return
 
@@ -44,7 +42,6 @@
           },
         }
       )
-      console.log(res)
       router.push(`/patients`)
     } catch (error) {
       console.error(error)

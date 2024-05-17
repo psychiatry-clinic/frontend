@@ -1,9 +1,10 @@
-import { differenceInYears, differenceInMonths, isValid } from 'date-fns'
+import { differenceInMonths, differenceInYears, isValid } from 'date-fns'
 
 export const calculateAge = (
   dob: string,
   justYears: boolean = false
 ): string | number => {
+  const { t } = useI18n()
   const dobDate = new Date(dob)
 
   if (!isValid(dobDate)) {
@@ -16,12 +17,12 @@ export const calculateAge = (
 
   if (years > 0 && !justYears) {
     if (months > 0 && !justYears) {
-      return `${years} years & ${months} months`
+      return `${years} ${t('years')} ${t('&')} ${months} ${t('months')}`
     } else {
-      return `${years} years`
+      return `${years}` + t(years)
     }
   } else if (months > 0 && !justYears) {
-    return `${months} months`
+    return `${months} ` + t('months')
   } else if (justYears) {
     return years
   } else {
@@ -71,4 +72,9 @@ export const addTimeToDateString = (dateString: string): string => {
 export const removeTimeFromDate = (dateTimeString: string | null): string => {
   if (!dateTimeString) return ''
   return dateTimeString.split('T')[0]
+}
+
+export const removeTimeAndDate = (dateTimeString: string | null): string => {
+  if (!dateTimeString) return ''
+  return dateTimeString.split('-')[0]
 }

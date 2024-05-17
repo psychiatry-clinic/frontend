@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { Placeholder } from '@tiptap/extension-placeholder'
-import { TextAlign } from '@tiptap/extension-text-align'
-import { Underline } from '@tiptap/extension-underline'
-import { StarterKit } from '@tiptap/starter-kit'
-import { EditorContent, useEditor } from '@tiptap/vue-3'
+  import { Placeholder } from '@tiptap/extension-placeholder'
+  import { TextAlign } from '@tiptap/extension-text-align'
+  import { Underline } from '@tiptap/extension-underline'
+  import { StarterKit } from '@tiptap/starter-kit'
+  import { EditorContent, useEditor } from '@tiptap/vue-3'
 
-const editor = useEditor({
-  content: `
+  const editor = useEditor({
+    content: `
         <h2>
           Hi there,
         </h2>
@@ -36,25 +36,22 @@ const editor = useEditor({
           — Mom
         </blockquote>
       `,
-  extensions: [
-    StarterKit,
-    TextAlign.configure({
-      types: ['heading', 'paragraph'],
-    }),
-    Placeholder.configure({
-      placeholder: 'Write something here...',
-    }),
-    Underline,
-  ],
-})
+    extensions: [
+      StarterKit,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      Placeholder.configure({
+        placeholder: 'Write something here...',
+      }),
+      Underline,
+    ],
+  })
 </script>
 
 <template>
   <div class="border pa-2 rounded custom-editor">
-    <div
-      v-if="editor"
-      class="d-flex flex-wrap gap-x-4 gap-y-2 mb-2"
-    >
+    <div v-if="editor" class="d-flex flex-wrap gap-x-4 gap-y-2 mb-2">
       <VChip
         :disabled="!editor.can().chain().focus().toggleBold().run()"
         :color="editor.isActive('bold') ? 'primary' : ''"
@@ -200,70 +197,70 @@ const editor = useEditor({
 </template>
 
 <style lang="scss">
-/* Basic editor styles */
+  /* Basic editor styles */
 
-.custom-editor {
-  .ProseMirror {
-    > * + * {
-      margin-block-start: 0.75em;
-    }
+  .custom-editor {
+    .ProseMirror {
+      > * + * {
+        margin-block-start: 0.75em;
+      }
 
-    outline: none;
-    overflow-y: auto;
-    padding-inline: 0.5rem;
+      outline: none;
+      overflow-y: auto;
+      padding-inline: 0.5rem;
 
-    ul,
-    ol {
-      padding-block: 0;
-      padding-inline: 1rem;
-    }
+      ul,
+      ol {
+        padding-block: 0;
+        padding-inline: 1rem;
+      }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      line-height: 1.1;
-    }
-
-    code {
-      background-color: rgba(#616161, 0.1);
-      color: #616161;
-    }
-
-    pre {
-      border-radius: 0.5rem;
-      background: #0d0d0d;
-      color: #fff;
-      font-family: JetBrainsMono, monospace;
-      padding-block: 0.75rem;
-      padding-inline: 1rem;
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        line-height: 1.1;
+      }
 
       code {
-        padding: 0;
-        background: none;
-        color: inherit;
-        font-size: 0.8rem;
+        background-color: rgba(#616161, 0.1);
+        color: #616161;
+      }
+
+      pre {
+        border-radius: 0.5rem;
+        background: #0d0d0d;
+        color: #fff;
+        font-family: JetBrainsMono, monospace;
+        padding-block: 0.75rem;
+        padding-inline: 1rem;
+
+        code {
+          padding: 0;
+          background: none;
+          color: inherit;
+          font-size: 0.8rem;
+        }
+      }
+
+      img {
+        block-size: auto;
+        max-inline-size: 100%;
+      }
+
+      blockquote {
+        border-inline-start: 2px solid rgba(#0d0d0d, 0.1);
+        padding-inline-start: 1rem;
+      }
+
+      hr {
+        border: none;
+        border-block-start: 2px solid rgba(#0d0d0d, 0.1);
+        margin-block: 2rem;
+        margin-inline: 0;
       }
     }
-
-    img {
-      block-size: auto;
-      max-inline-size: 100%;
-    }
-
-    blockquote {
-      border-inline-start: 2px solid rgba(#0d0d0d, 0.1);
-      padding-inline-start: 1rem;
-    }
-
-    hr {
-      border: none;
-      border-block-start: 2px solid rgba(#0d0d0d, 0.1);
-      margin-block: 2rem;
-      margin-inline: 0;
-    }
   }
-}
 </style>

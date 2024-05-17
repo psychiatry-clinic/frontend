@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { Patient, User } from '@/utils/types'
   import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
+  const { t } = useI18n()
 
   const router = useRouter()
 
@@ -15,13 +16,13 @@
 
   // Data table Headers
   const headers = [
-    { title: 'Patient', key: 'name' },
-    { title: 'Gender', key: 'gender' },
-    { title: 'Date of Birth', key: 'dob' },
-    { title: 'Age', key: 'age' },
-    { title: 'Visits', key: 'visits.length' },
-    { title: 'Registration', key: 'createdAt' },
-    { title: 'ACTIONS', key: 'actions' },
+    { title: t('Patient'), key: 'name' },
+    { title: t('Gender'), key: 'gender' },
+    { title: t('Date of Birth'), key: 'dob' },
+    { title: t('Age'), key: 'age' },
+    { title: t('Visits'), key: 'visits.length' },
+    { title: t('Registration'), key: 'createdAt' },
+    { title: t('ACTIONS'), key: 'actions' },
   ]
 
   // Update data table options
@@ -53,8 +54,8 @@
     return data.value.patients.map((patient: Patient) => ({
       ...patient,
       createdAt: removeTimeFromDate(patient.createdAt), // Format createdAt date
-      age: calculateAge(patient.dob.toString()), // Calculate age
-      dob: removeTimeFromDate(patient.dob),
+      age: calculateAge(patient.dob.toString()),
+      dob: removeTimeAndDate(patient.dob),
     }))
   })
 
@@ -69,7 +70,7 @@
           <AppTextField
             v-model="searchQuery"
             style="max-inline-size: 280px; min-inline-size: 280px"
-            placeholder="Search Name"
+            :placeholder="t('Search Name')"
           />
           <div class="d-flex flex-row gap-4 align-center flex-wrap">
             <AppSelect v-model="itemsPerPage" :items="[5, 10, 20, 50, 100]" />
@@ -78,7 +79,7 @@
               prepend-icon="tabler-plus"
               @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen"
             >
-              Add Patient
+              {{ t('Add Patient') }}
             </VBtn>
           </div>
         </div>

@@ -12,8 +12,8 @@
         drawingShadowWidth: 0,
         drawingShadowOffset: 0,
         selectedBrush: 'square',
-        canvasWidth: 800, // Default width, will be updated with image size
-        canvasHeight: 600, // Default height, will be updated with image size
+        canvasWidth: 0, // Default width, will be updated with image size
+        canvasHeight: 0, // Default height, will be updated with image size
         imageUrl: '/denver2.png', // URL of the uploaded image
       }
     },
@@ -242,10 +242,12 @@
     </div>
     <button id="clear-canvas" @click="clearCanvas">Clear</button>
 
-    <div v-if="imageUrl">
-      <img :src="imageUrl" @load="adjustCanvasSize" ref="image" />
+    <div id="wrapper">
+      <div v-if="imageUrl">
+        <img :src="imageUrl" @load="adjustCanvasSize" ref="image" />
+      </div>
+      <canvas id="c" :width="canvasWidth" :height="canvasHeight"></canvas>
     </div>
-    <canvas id="c" :width="canvasWidth" :height="canvasHeight"></canvas>
   </div>
 </template>
 
@@ -254,10 +256,15 @@
     border: 1px solid #03a900;
   }
 
+  #wrapper {
+    max-width: 1000px;
+    min-width: 1000px;
+  }
+
   img {
     position: absolute;
     top: 10;
     left: 0;
-    max-width: 100%;
+    width: 1000px;
   }
 </style>
