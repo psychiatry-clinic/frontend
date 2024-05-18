@@ -17,25 +17,27 @@
   } from '@/utils/types'
   import { differenceInYears } from 'date-fns'
   import chiefComplaint from '../components/chiefComplaint.vue'
+  import presentIllnessChild from '../components/presentIllnessChild.vue'
+  import developmentVue from '../components/developmentVue.vue'
+  import familyHx from '../components/familyHx.vue'
+  import socialHx from '../components/socialHx.vue'
+  import personalHx from '../components/personalHx.vue'
   import ixVue from '../components/ixVue.vue'
   import managementVue from '../components/managementVue.vue'
   import consultationsVue from '../components/consultationsVue.vue'
   import ddxVue from '../components/ddxVue.vue'
-  import developmentVue from '../components/developmentVue.vue'
   import examinationVue from '../components/examination.vue'
-  import familyHx from '../components/familyHx.vue'
   import forensicHx from '../components/forensicHx.vue'
   import notesVue from '../components/notesVue.vue'
   import occupationHx from '../components/occupationHx.vue'
   import pastHx from '../components/pastHx.vue'
-  import personalHx from '../components/personalHx.vue'
-  import presentIllnessChild from '../components/presentIllnessChild.vue'
-  import socialHx from '../components/socialHx.vue'
   import therapyVue from '../components/therapyVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
+
+  const { t } = useI18n()
 
   const router = useRouter()
   const route = useRoute('patients-visits-new-id')
@@ -43,129 +45,129 @@
 
   const numberedStepsAdult = [
     {
-      title: 'Chief Complaint',
+      title: t('Chief Complaint'),
       subtitle: '',
     },
     {
-      title: 'Present Illness',
+      title: t('Present Illness'),
       subtitle: '',
     },
     {
-      title: 'Family History',
+      title: t('Family History'),
       subtitle: '',
     },
     {
-      title: 'Past History',
+      title: t('Past History'),
       subtitle: '',
     },
     {
-      title: 'Social History',
+      title: t('Social History'),
       subtitle: '',
     },
     {
-      title: 'Personal History',
+      title: t('Personal History'),
       subtitle: '',
     },
     {
-      title: 'Occupational History',
+      title: t('Occupational History'),
       subtitle: '',
     },
     {
-      title: 'Forensic History',
+      title: t('Forensic History'),
       subtitle: '',
     },
     {
-      title: 'Examination',
+      title: t('Examination'),
       subtitle: '',
     },
     {
-      title: 'Differential Diagnosis',
+      title: t('Differential Diagnosis'),
       subtitle: '',
     },
     {
-      title: 'Investigation',
+      title: t('Investigation'),
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: t('Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
     {
-      title: 'Therapy',
+      title: t('Therapy'),
       subtitle: '',
     },
   ]
 
   const numberedStepsShort = [
     {
-      title: 'Follow up Notes',
+      title: t('Follow up Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
     {
-      title: 'Therapy',
+      title: t('Therapy'),
       subtitle: '',
     },
   ]
 
   const numberedStepsChild = [
     {
-      title: 'Chief Complaint',
+      title: t('Chief Complaint'),
       subtitle: '',
     },
     {
-      title: 'Present Illness',
+      title: t('Present Illness'),
       subtitle: '',
     },
     {
-      title: 'Development History',
+      title: t('Development History'),
       subtitle: '',
     },
     {
-      title: 'Family History',
+      title: t('Family History'),
       subtitle: '',
     },
     {
-      title: 'Past History',
+      title: t('Past History'),
       subtitle: '',
     },
     {
-      title: 'Social History',
+      title: t('Social History'),
       subtitle: '',
     },
     {
-      title: 'Examination',
+      title: t('Examination'),
       subtitle: '',
     },
     {
-      title: 'Consultations',
+      title: t('Consultations'),
       subtitle: '',
     },
     {
-      title: 'Differential Diagnosis',
+      title: t('Differential Diagnosis'),
       subtitle: '',
     },
     {
-      title: 'Investigations',
+      title: t('Investigations'),
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: t('Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
     {
-      title: 'Therapy',
+      title: t('Therapy'),
       subtitle: '',
     },
   ]
@@ -304,17 +306,17 @@
     console.log(occupation_hx.value)
     console.log('forensic_hx')
     console.log(forensic_hx.value)
-    console.log('examination')
+    console.log(t('examination'))
     console.log(examination.value)
     console.log('ddx')
     console.log(ddx.value)
     console.log('ix')
     console.log(ix.value)
-    console.log('management')
+    console.log(t('management'))
     console.log(management.value)
-    console.log('consultations')
+    console.log(t('consultations'))
     console.log(consultations.value)
-    console.log('notes')
+    console.log(t('notes'))
     console.log(notes.value)
   }
 </script>
@@ -322,10 +324,10 @@
 <template>
   <div class="d-flex justify-space-between">
     <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
-      Back
+      {{ t('Back') }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
-      Patient :
+      {{ t('Patient') }} :
       {{ route.query.name }}
     </VBtn>
   </div>
@@ -334,8 +336,8 @@
       <VCol cols="12" md="3" class="border-e">
         <VCardText>
           <VRadioGroup v-model="short" inline>
-            <VRadio label="Classic" :value="false" />
-            <VRadio label="Follow Up" :value="true" />
+            <VRadio :label="t('Classic')" :value="false" />
+            <VRadio :label="t('Follow Up')" :value="true" />
           </VRadioGroup>
         </VCardText>
         <VCardText>

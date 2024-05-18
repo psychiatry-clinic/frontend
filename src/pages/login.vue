@@ -5,6 +5,8 @@
   import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
   import { themeConfig } from '@themeConfig'
 
+  const { t } = useI18n()
+
   // import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
 
   definePage({
@@ -104,10 +106,10 @@
         <VCardText>
           <h4 class="text-h4 mb-1">
             <span class="text-capitalize"
-              >{{ themeConfig.app.title }} Clinic Application</span
+              >{{ themeConfig.app.title }} {{ t('Clinic Application') }}</span
             >
           </h4>
-          <p class="mb-0">Please sign-in to your account</p>
+          <p class="mb-0">{{ t('Please sign-in to your account') }}</p>
         </VCardText>
 
         <VCardText>
@@ -121,7 +123,7 @@
                 <AppTextField
                   v-model="credentials.username"
                   autofocus
-                  label="Username"
+                  :label="t('Username')"
                   type="text"
                   placeholder=""
                 />
@@ -131,7 +133,7 @@
               <VCol cols="12">
                 <AppTextField
                   v-model="credentials.password"
-                  label="Password"
+                  :label="t('Password')"
                   placeholder=""
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="
@@ -141,7 +143,7 @@
                 />
 
                 <!-- remember me checkbox -->
-                <div
+                <!-- <div
                   class="d-flex align-center justify-space-between flex-wrap my-6"
                 >
                   <VCheckbox v-model="rememberMe" label="Remember me" />
@@ -149,14 +151,16 @@
                   <a class="text-primary" href="https://wa.me/+9647812135916">
                     Forgot Password?
                   </a>
-                </div>
+                </div> -->
+
+                <h1 class="my-6"></h1>
 
                 <!-- login button -->
                 <VBtn block type="submit" :disabled="isLoading">
                   <span v-if="isLoading">
                     <VProgressCircular indeterminate color="info" />
                   </span>
-                  <span v-else> Login </span>
+                  <span v-else> {{ t('Login') }} </span>
                 </VBtn>
               </VCol>
 

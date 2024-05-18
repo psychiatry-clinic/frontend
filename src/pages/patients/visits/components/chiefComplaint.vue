@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { chief_complains, durations, sourceOfInfo } from '@/utils/suggestions'
+  const { t } = useI18n()
 
   const suggestions: { [key: string]: string[] } = {
     complaint: chief_complains,
@@ -25,8 +26,7 @@
     <VRow>
       <VCol cols="12">
         <h6 class="text-h6 font-weight-medium">
-          {{}}
-          'Chief Complaint'
+          {{ t('Chief Complaint') }}
         </h6>
         <p class="mb-0"></p>
       </VCol>
@@ -36,7 +36,7 @@
       <VCol cols="6" md="6" v-if="model">
         <AppTextarea
           v-model="model[field]"
-          :label="field.charAt(0).toUpperCase() + field.slice(1)"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
         />

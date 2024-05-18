@@ -23,6 +23,8 @@
     Coordination: [],
   }
 
+  const { t } = useI18n()
+
   const props = defineProps<Props>()
 
   interface Props {
@@ -84,7 +86,7 @@
   <VWindowItem>
     <VRow>
       <VCol cols="6">
-        <h6 class="text-h6 font-weight-medium">Present Illness</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Present Illness') }}</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
@@ -93,7 +95,7 @@
       <VCol cols="6" md="6" v-if="model">
         <AppTextarea
           v-model="model[field]"
-          :label="field.charAt(0).toUpperCase() + field.slice(1)"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
         />
