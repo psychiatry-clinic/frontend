@@ -553,7 +553,7 @@
                     line-height: 15px;
                   "
                   class="v-label mb-1 text-body-2 text-black"
-                  >{{ t('Father Age at Birth of Child') }}</span
+                  >{{ t('Age at Birth of Child') }}</span
                 >
                 <VAlert
                   density="compact"
@@ -629,7 +629,7 @@
                     line-height: 15px;
                   "
                   class="v-label mb-1 text-body-2 text-black"
-                  >{{ t('Mother Age at Birth of Child') }}</span
+                  >{{ t('Age at Birth of Child') }}</span
                 >
                 <VAlert
                   density="compact"

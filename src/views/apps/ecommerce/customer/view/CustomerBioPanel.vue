@@ -4,6 +4,8 @@
   import type { Patient } from '@/utils/types'
   import { differenceInCalendarYears, differenceInYears } from 'date-fns'
 
+  const { t } = useI18n()
+
   const isUserInfoEditDialogVisible = ref(false)
   const isAddPatientDrawerOpen = ref(false)
 
@@ -30,21 +32,18 @@
 
   if (child) {
     items = [
-      { name: 'Family History', data: patientData.value.family_hx },
-      { name: 'Social History', data: patientData.value.social_hx },
+      { name: t('Family History'), data: patientData.value.family_hx },
+      { name: t('Social History'), data: patientData.value.social_hx },
     ]
   } else {
     items = [
-      { name: 'Family History', data: patientData.value.family_hx },
-      { name: 'Social History', data: patientData.value.social_hx },
-      { name: 'Personal History', data: patientData.value.personal_hx },
-      { name: 'Occupation History', data: patientData.value.occupation_hx },
-      { name: 'Forensic History', data: patientData.value.forensic_hx },
+      { name: t('Family History'), data: patientData.value.family_hx },
+      { name: t('Social History'), data: patientData.value.social_hx },
+      { name: t('Personal History'), data: patientData.value.personal_hx },
+      { name: t('Occupation History'), data: patientData.value.occupation_hx },
+      { name: t('Forensic History'), data: patientData.value.forensic_hx },
     ]
   }
-
-  console.log('items')
-  console.log(items)
 </script>
 
 <template>
@@ -91,9 +90,9 @@
             <!-- 👉 Gender -->
             <VListItem>
               <h6 class="text-h6">
-                Gender:
+                {{ t('Gender') }}:
                 <span class="text-body-1 d-inline-block">
-                  {{ props.patientData.gender }}
+                  {{ t(props.patientData.gender) }}
                 </span>
               </h6>
             </VListItem>
@@ -101,7 +100,7 @@
             <!-- 👉 BirthDate -->
             <VListItem>
               <h6 class="text-h6">
-                Birth Date :
+                {{ t('Birth Date') }} :
                 <span class="text-body-1 d-inline-block">
                   {{ removeTimeFromDate(props.patientData.dob) }}
                 </span>
@@ -111,7 +110,7 @@
             <!-- 👉 Age -->
             <VListItem>
               <h6 class="text-h6">
-                Age :
+                {{ t('Age') }} :
                 <span class="text-body-1 d-inline-block">
                   {{ calculateAge(props.patientData.dob) }}
                 </span>
@@ -121,20 +120,22 @@
             <!-- 👉 Phone -->
             <VListItem>
               <h6 class="text-h6">
-                Phone :
+                {{ t('Phone') }} :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.phone }}
                 </span>
               </h6>
             </VListItem>
 
-            <p class="d-block mt-4 mb-2 text-primary">Demographics</p>
+            <!-- <p class="d-block mt-4 mb-2 text-primary">
+              {{ t('Demographics') }}
+            </p> -->
 
             <!-- 👉 Marital Status -->
             <div v-if="props.patientData.demographics">
               <VListItem v-if="child">
                 <h6 class="text-h6">
-                  Marital Status :
+                  {{ t('Marital Status') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.demographics[0]?.marital_status }}
                   </span>
@@ -144,7 +145,7 @@
               <!-- 👉 Children -->
               <VListItem v-if="child">
                 <h6 class="text-h6">
-                  Children :
+                  {{ t('Children') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.demographics[0]?.children }}
                   </span>
@@ -154,7 +155,7 @@
               <!-- 👉 Residence -->
               <VListItem>
                 <h6 class="text-h6">
-                  Residence :
+                  {{ t('Residence') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.demographics[0]?.residence }}
                   </span>
@@ -164,7 +165,7 @@
               <!-- 👉 Education -->
               <VListItem>
                 <h6 class="text-h6">
-                  Education :
+                  {{ t('Education') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.demographics[0]?.education }}
                   </span>
@@ -174,7 +175,7 @@
               <!-- 👉 Work -->
               <VListItem v-if="child">
                 <h6 class="text-h6">
-                  Work :
+                  {{ t('Work') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.demographics[0]?.occupation }}
                   </span>
@@ -189,20 +190,27 @@
               <VListItem>
                 <h6 class="text-h6">
                   <span
-                    :class="props.patientData.related ? 'text-primary' : ''"
+                    :class="
+                      props.patientData.related ? 'text-error' : 'text-success'
+                    "
                   >
-                    {{ props.patientData.related ? 'Related' : 'Not Related' }}
+                    {{
+                      props.patientData.related
+                        ? t('Parents') + ' ' + t('Related')
+                        : t('Parents') + ' ' + t('Not Related')
+                    }}
                   </span>
-                  Parents
                 </h6>
               </VListItem>
 
               <!-- 👉 Father -->
-              <p class="d-block mt-4 mb-2 text-primary">Father</p>
+              <h6 class="d-block mt-4 mb-2 text-primary text-h6">
+                {{ t('Father Information') }}
+              </h6>
 
               <VListItem>
                 <h6 class="text-h6">
-                  Birth Date :
+                  {{ t('Birth Date') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.father_dob
@@ -217,7 +225,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Age at Birth :
+                  {{ t('Age at Birth of Child') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.father_dob
@@ -233,7 +241,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Age Now :
+                  {{ t('Age Now') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.father_dob
@@ -250,7 +258,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Education :
+                  {{ t('Education') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.father_edu }}
                   </span>
@@ -259,7 +267,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Work :
+                  {{ t('Work') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.father_work }}
                   </span>
@@ -267,11 +275,13 @@
               </VListItem>
 
               <!-- 👉 Mother -->
-              <p class="d-block mt-4 mb-2 text-primary">Mother</p>
+              <h6 class="d-block mt-4 mb-2 text-primary text-h6">
+                {{ t('Mother Information') }}
+              </h6>
 
               <VListItem>
                 <h6 class="text-h6">
-                  Birth Date :
+                  {{ t('Birth Date') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.mother_dob
@@ -286,7 +296,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Age at Birth :
+                  {{ t('Age at Birth of Child') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.mother_dob
@@ -302,7 +312,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Age Now :
+                  {{ t('Age Now') }} :
                   <span class="text-body-1 d-inline-block">
                     {{
                       props.patientData.mother_dob
@@ -319,7 +329,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Education :
+                  {{ t('Education') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.mother_edu }}
                   </span>
@@ -328,7 +338,7 @@
 
               <VListItem>
                 <h6 class="text-h6">
-                  Work :
+                  {{ t('Work') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.mother_work }}
                   </span>
@@ -340,7 +350,7 @@
               <!-- 👉 Siblings -->
               <VListItem>
                 <h6 class="text-h6 text-primary">
-                  Siblings :
+                  {{ t('Siblings') }} :
                   <span class="text-body-1 d-inline-block">
                     {{ props.patientData.siblings }}
                   </span>
@@ -350,9 +360,14 @@
               <!-- 👉 Order -->
               <VListItem>
                 <h6 class="text-h6 text-primary">
-                  Order in Siblings :
+                  {{ t('Order in Siblings') }} :
                   <span class="text-body-1 d-inline-block">
-                    {{ formatSiblingOrder(props.patientData.order as number) }}
+                    {{
+                      formatSiblingOrder(props.patientData.order as number) !==
+                      'nullth'
+                        ? formatSiblingOrder(props.patientData.order as number)
+                        : ''
+                    }}
                   </span>
                 </h6>
               </VListItem>
@@ -362,7 +377,7 @@
 
             <VListItem>
               <h6 class="text-h6 text-primary">
-                Notes :
+                {{ t('Notes') }} :
                 <span class="text-body-1 d-inline-block">
                   {{ props.patientData.notes as string }}
                 </span>
