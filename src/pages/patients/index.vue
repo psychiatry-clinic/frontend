@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Patient, User } from '@/utils/types'
-  import ECommerceAddCustomerDrawer from '@/views/apps/ecommerce/ECommerceAddCustomerDrawer.vue'
+  import addPatient from 'addPatient.vue'
   const { t } = useI18n()
 
   const router = useRouter()
@@ -115,9 +115,7 @@
       </VDataTableServer>
     </VCard>
 
-    <ECommerceAddCustomerDrawer
-      v-model:is-drawer-open="isAddPatientDrawerOpen"
-    />
+    <addPatient v-model:is-drawer-open="isAddPatientDrawerOpen" />
   </div>
 </template>
 

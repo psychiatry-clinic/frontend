@@ -457,27 +457,28 @@ export const baghdadRegions = [
 ]
 
 export const childEducation = [
-  'Preschool',
-  "Didn't Attend School",
-  '1st grade',
-  '2nd grade',
-  '3rd grade',
-  '4th grade',
-  '5th grade',
-  '6th grade',
-  'Primary School',
-  'Secondary School',
-  'School Dropout',
+  'مرحلة ما قبل المدرسة',
+  'لم يذهب إلى المدرسة',
+  'اول',
+  'ثاني',
+  'ثالث',
+  'رابع',
+  'خامس',
+  'سادس',
+  'ابتدائي',
+  'ثانوي',
+  'تسرب من المدرسة',
 ]
 
 export const adultEducation = [
-  'Illiterate',
-  'Primary School',
-  'Secondary School',
-  'Diploma',
-  'Bachelor',
-  'Master',
-  'Doctorate',
+  'امي',
+  'ابتدائية',
+  'متوسطة',
+  'اعدادية',
+  'دبلوم',
+  'بكالوريوس',
+  'ماستر',
+  'دكتوراه',
 ]
 
 export const childFamilyHx = [
@@ -509,18 +510,15 @@ export const childDdx = [
 ]
 
 export const occupationSuggestions = [
-  'unemployed',
-  'polica',
-  'military',
-  'government employee',
-  'private employee',
-  'worker',
-  'nurse',
-  'engineer',
-  'pharmacist',
-  'college',
-  'student',
-  'house wife',
+  'عامل',
+  'موظف حكومي',
+  'موظف اهلي',
+  'ممرض',
+  'مهندس',
+  'صيدلاني',
+  'كلية',
+  'طالب',
+  'ربة منزل',
 ]
 
 export const Year1List = {

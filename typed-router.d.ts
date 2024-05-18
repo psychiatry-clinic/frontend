@@ -150,6 +150,7 @@ declare module 'vue-router/auto/routes' {
     'pages-user-profile-tab': RouteRecordInfo<'pages-user-profile-tab', '/pages/user-profile/:tab', { tab: ParamValue<true> }, { tab: ParamValue<false> }>,
     'patients': RouteRecordInfo<'patients', '/patients', Record<never, never>, Record<never, never>>,
     'patients-id': RouteRecordInfo<'patients-id', '/patients/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'patients-add-patient': RouteRecordInfo<'patients-add-patient', '/patients/addPatient', Record<never, never>, Record<never, never>>,
     'patients-edit-patient': RouteRecordInfo<'patients-edit-patient', '/patients/editPatient', Record<never, never>, Record<never, never>>,
     'patients-visits-components-chief-complaint': RouteRecordInfo<'patients-visits-components-chief-complaint', '/patients/visits/components/chiefComplaint', Record<never, never>, Record<never, never>>,
     'patients-visits-components-consult': RouteRecordInfo<'patients-visits-components-consult', '/patients/visits/components/consult', Record<never, never>, Record<never, never>>,
