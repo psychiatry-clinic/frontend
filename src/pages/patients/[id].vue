@@ -8,6 +8,8 @@
   const route = useRoute()
   const router = useRouter()
 
+  const { t } = useI18n()
+
   const routeParams = route.params as RouteParams
 
   const storedUserData: User | undefined = useCookie('userData').value as
@@ -20,8 +22,8 @@
   const userTab = ref(null)
 
   const tabs = [
-    { title: 'Visits', icon: 'tabler-file' },
-    { title: 'Tests', icon: 'tabler-flask' },
+    { title: t('Visits'), icon: 'tabler-file' },
+    // { title: t('Tests'), icon: 'tabler-flask' },
     // { title: 'Therapy', icon: 'tabler-user' },
   ]
 
@@ -54,7 +56,7 @@
 <template>
   <div class="d-flex justify-space-between">
     <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
-      Back
+      {{ t('Back') }}
     </VBtn>
   </div>
   <div>
@@ -65,17 +67,17 @@
       <div>
         <h4 class="text-h4 mb-1">Patient ID #{{ routeParams.id }}</h4>
         <div class="text-body-1">
-          Added At:
+          {{ t('Added At') }}:
           {{
             patientData?.createdAt
               ? new Date(patientData?.createdAt).toLocaleString()
-              : 'Cannot Display Date'
+              : t('Cannot Display Date')
           }}
         </div>
       </div>
       <div class="d-flex gap-4" v-if="storedUserData?.role === 'ADMIN'">
         <VBtn @click="deletePatient" variant="tonal" color="error">
-          Delete Patient
+          {{ t('Delete Patient') }}
         </VBtn>
       </div>
     </div>
@@ -102,9 +104,9 @@
           <VWindowItem>
             <CustomerTabVisits :patientData="patientData" />
           </VWindowItem>
-          <VWindowItem>
+          <!-- <VWindowItem>
             <CustomerTabTests :patientData="patientData" />
-          </VWindowItem>
+          </VWindowItem> -->
           <!-- <VWindowItem>
             <CustomerTabTherapy :patientData="patientData" />
           </VWindowItem> -->
@@ -113,7 +115,7 @@
     </VRow>
     <div v-else>
       <VAlert type="error" variant="tonal">
-        patient with ID {{ routeParams.id }} not found!
+        {{ `${t('patient with ID')} ${routeParams.id} ${t('not found!')}` }}
       </VAlert>
     </div>
   </div>

@@ -1,43 +1,38 @@
 <script setup lang="ts">
-import type { I18nLanguage } from '@layouts/types'
+  import type { I18nLanguage } from '@layouts/types'
+  const router = useRouter()
 
-interface Props {
-  languages: I18nLanguage[]
-  location?: any
-}
+  interface Props {
+    languages: I18nLanguage[]
+    location?: any
+  }
 
-const props = withDefaults(defineProps<Props>(), {
-  location: 'bottom end',
-})
+  const props = withDefaults(defineProps<Props>(), {
+    location: 'bottom end',
+  })
 
-const { locale } = useI18n({ useScope: 'global' })
+  const { locale } = useI18n({ useScope: 'global' })
 </script>
 
 <template>
   <IconBtn>
-    <VIcon
-      size="24"
-      icon="tabler-language"
-    />
+    <VIcon size="24" icon="tabler-language" />
 
     <!-- Menu -->
-    <VMenu
-      activator="parent"
-      :location="props.location"
-      offset="12px"
-    >
+    <VMenu activator="parent" :location="props.location" offset="12px">
       <!-- List -->
-      <VList
-        :selected="[locale]"
-        color="primary"
-        min-width="175px"
-      >
+      <VList :selected="[locale]" color="primary" min-width="175px">
         <!-- List item -->
         <VListItem
           v-for="lang in props.languages"
           :key="lang.i18nLang"
           :value="lang.i18nLang"
-          @click="locale = lang.i18nLang"
+          @click="
+            () => {
+              locale = lang.i18nLang
+              router.go(0)
+            }
+          "
         >
           <!-- Language label -->
           <VListItemTitle>{{ lang.label }}</VListItemTitle>

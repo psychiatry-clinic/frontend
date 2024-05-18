@@ -1,3 +1,10 @@
+<script setup lang="ts">
+  import { cookieRef } from '@layouts/stores/config'
+  import { themeConfig } from '@themeConfig'
+
+  const locale = cookieRef('language', themeConfig.app.i18n.defaultLocale).value
+</script>
+
 <template>
   <div
     class="h-100 d-flex align-center justify-md-space-between justify-center"
@@ -6,14 +13,15 @@
     <span class="d-flex align-center text-medium-emphasis">
       &copy;
       {{ new Date().getFullYear() }}
-      Made By
       <a
         href="https://wa.me/+9647812135916"
         target="_blank"
         rel="noopener noreferrer"
-        class="text-primary ms-1"
-        >Dr. Mustafa Alnoori</a
+        class="ms-1"
       >
+        Made By
+        <span class="text-primary ms-1"> Dr. Mustafa Alnoori </span>
+      </a>
     </span>
     <!-- 👉 Footer: right content -->
     <!-- <span class="d-md-flex gap-x-4 text-primary d-none">

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Patient, User } from '@/utils/types'
-  import addPatient from 'addPatient.vue'
+  import addPatient from './addPatient.vue'
   const { t } = useI18n()
 
   const router = useRouter()
@@ -56,6 +56,7 @@
       createdAt: removeTimeFromDate(patient.createdAt), // Format createdAt date
       age: calculateAge(patient.dob.toString()),
       dob: removeTimeAndDate(patient.dob),
+      gender: t(patient.gender),
     }))
   })
 

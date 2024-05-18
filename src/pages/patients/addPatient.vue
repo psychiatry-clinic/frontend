@@ -233,7 +233,7 @@
   >
     <!-- 👉 Header -->
     <AppDrawerHeaderSection
-      title="Add a Patient"
+      :title="t('Add a Patient')"
       @cancel="$emit('update:isDrawerOpen', false)"
     />
 
