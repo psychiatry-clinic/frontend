@@ -1,53 +1,57 @@
 <script setup lang="ts">
   import {} from '@/utils/suggestions'
+  const { t } = useI18n()
+
+  const suggestions: { [key: string]: string[] } = {
+    Physical: [],
+    Appearance: [],
+    Behavior: [],
+    Speech: [],
+    Mood: [],
+    Affect: [],
+    Form: [],
+    Content: [],
+    Perception: [],
+    Cognition: [],
+    Insight: [],
+  }
+
+  const fields1 = ['Physical']
+
+  const fields2 = [
+    'Appearance',
+    'Behavior',
+    'Speech',
+    'Mood',
+    'Affect',
+    'Form',
+    'Content',
+    'Perception',
+    'Cognition',
+    'Insight',
+  ]
 
   interface Model {
-    physical?: string
-    appearance?: string
-    behavior?: string
-    speech?: string
-    mood?: string
-    affect?: string
-    form?: string
-    content?: string
-    perception?: string
-    cognition?: string
-    insight?: string
+    [key: string | number]: string
   }
 
   const model = defineModel<Model>()
 
-  const physical = ref(model.value?.physical)
-  const appearance = ref(model.value?.appearance)
-  const behavior = ref(model.value?.behavior)
-  const speech = ref(model.value?.speech)
-  const mood = ref(model.value?.mood)
-  const affect = ref(model.value?.affect)
-  const form = ref(model.value?.form)
-  const content = ref(model.value?.content)
-  const perception = ref(model.value?.perception)
-  const cognition = ref(model.value?.cognition)
-  const insight = ref(model.value?.insight)
-
-  function update() {
-    model.value = {
-      physical: physical.value,
-      appearance: appearance.value,
-      behavior: behavior.value,
-      speech: speech.value,
-      mood: mood.value,
-      affect: affect.value,
-      form: form.value,
-      content: content.value,
-      perception: perception.value,
-      cognition: cognition.value,
-      insight: insight.value,
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
     }
-  }
-
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 </script>
 
@@ -55,29 +59,30 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Physical Examination</h6>
+        <h6 class="text-h6 font-weight-medium">
+          {{ t('Physical Examination') }}
+        </h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- physical -->
-    <VRow>
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields1" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="physical"
-          label="Physical Examination"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
         />
       </VCol>
       <VCol>
-        <div class="my-5">
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in []"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="physical = appendTo(physical, suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>
@@ -92,249 +97,23 @@
       </VCol>
     </VRow>
 
-    <!-- appearance -->
-    <VRow>
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields2" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="appearance"
-          label="Appearance"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
         />
       </VCol>
       <VCol>
-        <div class="my-5">
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in []"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- behavior -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="behavior"
-          label="Behavior"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- speech -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="speech"
-          label="Speech"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- mood -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="mood"
-          label="Mood"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- affect -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="affect"
-          label="Affect"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- form -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="form"
-          label="Thought Form"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- content -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="content"
-          label="Thought Content"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- perception -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="perception"
-          label="Perceptual Abnormalities"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- cognition -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="cognition"
-          label="Cognitive State"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- insight -->
-    <VRow>
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="insight"
-          label="Insight"
-          auto-grow
-          rows="2"
-          @keyup="update"
-        />
-      </VCol>
-      <VCol>
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

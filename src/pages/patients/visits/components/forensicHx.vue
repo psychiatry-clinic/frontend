@@ -3,36 +3,44 @@
     accommodationSuggestions,
     financeSuggestions,
   } from '@/utils/suggestions'
+  const { t } = useI18n()
+
+  const suggestions: { [key: string]: string[] } = {
+    'Past Psychiatric': pastPsychiatricHistorySuggestions,
+    'Past Medical': pastMedicalHistorySuggestions,
+    'Past Surgical': pastSurgicalHistorySuggestions,
+    'Past Substance': [],
+  }
 
   interface Model {
-    offense_type?: string
-    offense_date?: string
-    attitude_to_offense?: string
-    attitude_to_punishment?: string
-    prison?: string
+    [key: string | number]: string
   }
+
+  const fields = [
+    'Offense Type',
+    'Offense Date',
+    'Attitude To Offense',
+    'Attitude To Punishment',
+    'Prison',
+  ]
 
   const model = defineModel<Model>()
 
-  const offense_type = ref(model.value?.offense_type)
-  const offense_date = ref(model.value?.offense_date)
-  const attitude_to_offense = ref(model.value?.attitude_to_offense)
-  const attitude_to_punishment = ref(model.value?.attitude_to_punishment)
-  const prison = ref(model.value?.prison)
-
-  function update() {
-    model.value = {
-      offense_type: offense_type.value as string,
-      offense_date: offense_date.value as string,
-      attitude_to_offense: attitude_to_offense.value as string,
-      attitude_to_punishment: attitude_to_punishment.value as string,
-      prison: prison.value as string,
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
     }
-  }
-
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 </script>
 
@@ -40,141 +48,28 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Forensic History</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Forensic History') }}</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- offense_type -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="offense_type"
-          label="Offense Type"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
-          :rules="[requiredValidator]"
         />
       </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
+      <VCol>
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in []"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="offense_type = appendTo(offense_type, suggestion)"
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- offense_date -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="offense_date"
-          label="Offense Date"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="offense_date = appendTo(offense_date, suggestion)"
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- Attitude Offense -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="attitude_to_offense"
-          label="Attitude To Offense"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="
-              attitude_to_offense = appendTo(attitude_to_offense, suggestion)
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- attitude_to_punishment -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="attitude_to_punishment"
-          label="Attitude To Punishment"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="
-              attitude_to_punishment = appendTo(
-                attitude_to_punishment,
-                suggestion
-              )
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- prison -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="prison"
-          label="Prison Experience"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="prison = appendTo(prison, suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

@@ -159,17 +159,17 @@ export interface Psychologist {
 }
 
 export interface Chief_complaint {
-  complaint?: string
-  duration?: string
-  referral?: string
-  source?: string
+  Complaint?: string
+  Duration?: string
+  Referral?: string
+  Source?: string
 }
 
 export interface Present_illness {
-  course?: string
-  circumstances?: string
-  vegetative?: string
-  associated?: string
+  Course?: string
+  Circumstances?: string
+  Vegetative?: string
+  Associated?: string
   ASD?: string
   ADHD?: string
   Speech?: string
@@ -180,14 +180,14 @@ export interface Present_illness {
   Learning?: string
   Movement?: string
   Coordination?: string
-  notes?: string
+  Notes?: string
 }
 
 export interface FamilyHX {
-  similar?: string
-  different?: string
-  medical?: string
-  other?: string
+  Similar?: string
+  Different?: string
+  Medical?: string
+  Other?: string
 }
 
 export interface PastHX {
@@ -276,6 +276,14 @@ interface Management {
 
 export interface Managements {
   managements: Management[]
+}
+
+export interface DDX {
+  'Differential Diagnosis': string
+}
+
+export interface Notes {
+  Notes: string
 }
 
 export interface Therapy {

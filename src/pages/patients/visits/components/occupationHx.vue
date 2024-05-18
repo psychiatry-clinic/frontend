@@ -1,24 +1,34 @@
 <script setup lang="ts">
-  interface Model {
-    jobs?: string
-    unemployment?: string
+  const { t } = useI18n()
+
+  const suggestions: { [key: string]: string[] } = {
+    Jobs: [],
+    Unemployment: [],
   }
+
+  interface Model {
+    [key: string | number]: string
+  }
+
+  const fields = ['Jobs', 'Unemployment']
 
   const model = defineModel<Model>()
 
-  const jobs = ref(model.value?.jobs)
-  const unemployment = ref(model.value?.unemployment)
-
-  function update() {
-    model.value = {
-      jobs: jobs.value as string,
-      unemployment: unemployment.value as string,
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
     }
-  }
-
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 </script>
 
@@ -26,56 +36,30 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Occupational History</h6>
+        <h6 class="text-h6 font-weight-medium">
+          {{ t('Occupational History') }}
+        </h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- jobs -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="jobs"
-          label="Jobs"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
-          :rules="[requiredValidator]"
         />
       </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
+      <VCol>
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in []"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="jobs = appendTo(jobs, suggestion)"
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- unemployment -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="unemployment"
-          label="Unemployment"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="unemployment = appendTo(unemployment, suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

@@ -424,14 +424,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in occupationSuggestions"
                     size="x-small"
-                    @click="
-                      () => {
-                        occupation =
-                          occupation === '' || occupation === undefined
-                            ? suggestion
-                            : `${occupation}, ${suggestion}`
-                      }
-                    "
+                    @click="toggleSuggestion('occupation', suggestion)"
                   >
                     {{ suggestion }}
                   </VChip>

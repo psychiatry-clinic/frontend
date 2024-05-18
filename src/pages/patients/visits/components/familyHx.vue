@@ -1,23 +1,37 @@
 <script setup lang="ts">
   import { familyHistorySuggestions } from '@/utils/suggestions'
+  const { t } = useI18n()
 
   const suggestions: { [key: string]: string[] } = {
-    similar: familyHistorySuggestions,
-    different: familyHistorySuggestions,
-    medical: familyHistorySuggestions,
+    Similar: familyHistorySuggestions,
+    Different: familyHistorySuggestions,
+    Medical: familyHistorySuggestions,
+    Other: [],
   }
 
   interface Model {
     [key: string | number]: string
   }
 
-  const fields = ['similar', 'different', 'medical', 'other']
+  const fields = ['Similar', 'Different', 'Medical', 'Other']
 
   const model = defineModel<Model>()
 
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
+    }
   }
 </script>
 
@@ -25,7 +39,7 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Family History</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Family History') }}</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
@@ -34,7 +48,7 @@
       <VCol cols="6" md="6" v-if="model">
         <AppTextarea
           v-model="model[field]"
-          :label="field.charAt(0).toUpperCase() + field.slice(1)"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
         />
@@ -46,7 +60,7 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="model[field] = appendTo(model[field], suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

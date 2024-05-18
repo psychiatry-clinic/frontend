@@ -4,33 +4,43 @@
     pastMedicalHistorySuggestions,
     pastSurgicalHistorySuggestions,
   } from '@/utils/suggestions'
+  const { t } = useI18n()
+
+  const suggestions: { [key: string]: string[] } = {
+    'Past Psychiatric': pastPsychiatricHistorySuggestions,
+    'Past Medical': pastMedicalHistorySuggestions,
+    'Past Surgical': pastSurgicalHistorySuggestions,
+    'Past Substance': [],
+  }
 
   interface Model {
-    past_psychiatric?: string
-    past_medical?: string
-    past_surgical?: string
-    past_substance?: string
+    [key: string | number]: string
   }
+
+  const fields = [
+    'Past Psychiatric',
+    'Past Medical',
+    'Past Surgical',
+    'Past Substance',
+  ]
 
   const model = defineModel<Model>()
 
-  const past_psychiatric = ref(model.value?.past_psychiatric)
-  const past_medical = ref(model.value?.past_medical)
-  const past_surgical = ref(model.value?.past_surgical)
-  const past_substance = ref(model.value?.past_substance)
-
-  function update() {
-    model.value = {
-      past_psychiatric: past_psychiatric.value as string,
-      past_medical: past_medical.value as string,
-      past_surgical: past_surgical.value as string,
-      past_substance: past_substance.value as string,
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
     }
-  }
-
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 </script>
 
@@ -38,127 +48,28 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Past History</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Past History') }}</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- past psychiatric -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="past_psychiatric"
-          label="Past Psychiatric"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
         />
       </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
+      <VCol>
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in pastPsychiatricHistorySuggestions"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="
-              () => {
-                past_psychiatric = appendTo(past_psychiatric, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- past medical -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="past_medical"
-          label="Past Medical"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in pastMedicalHistorySuggestions"
-            size="x-small"
-            @click="
-              () => {
-                past_medical = appendTo(past_medical, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- past surgical -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="past_surgical"
-          label="Past Surgical"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in pastSurgicalHistorySuggestions"
-            size="x-small"
-            @click="
-              () => {
-                past_surgical = appendTo(past_surgical, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- past substance -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="past_substance"
-          label="Substance Use History"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click="
-              () => {
-                past_substance = appendTo(past_substance, suggestion)
-                update()
-              }
-            "
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>
@@ -167,9 +78,3 @@
     </VRow>
   </VWindowItem>
 </template>
-
-<style scoped>
-  VRow {
-    margin-bottom: 100px;
-  }
-</style>

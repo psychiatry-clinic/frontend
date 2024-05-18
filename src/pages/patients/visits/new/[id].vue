@@ -2,11 +2,13 @@
   import {
     Chief_complaint,
     Consultations,
+    DDX,
     Examination,
     FamilyHX,
     ForensicHX,
     Ix,
     Managements,
+    Notes,
     OccupationHX,
     PastHX,
     Patient,
@@ -15,22 +17,23 @@
     SocialHX,
     User,
   } from '@/utils/types'
+
   import { differenceInYears } from 'date-fns'
   import chiefComplaint from '../components/chiefComplaint.vue'
-  import presentIllnessChild from '../components/presentIllnessChild.vue'
-  import developmentVue from '../components/developmentVue.vue'
-  import familyHx from '../components/familyHx.vue'
-  import socialHx from '../components/socialHx.vue'
-  import personalHx from '../components/personalHx.vue'
-  import ixVue from '../components/ixVue.vue'
-  import managementVue from '../components/managementVue.vue'
   import consultationsVue from '../components/consultationsVue.vue'
   import ddxVue from '../components/ddxVue.vue'
+  import developmentVue from '../components/developmentVue.vue'
   import examinationVue from '../components/examination.vue'
+  import familyHx from '../components/familyHx.vue'
   import forensicHx from '../components/forensicHx.vue'
+  import ixVue from '../components/ixVue.vue'
+  import managementVue from '../components/managementVue.vue'
   import notesVue from '../components/notesVue.vue'
   import occupationHx from '../components/occupationHx.vue'
   import pastHx from '../components/pastHx.vue'
+  import personalHx from '../components/personalHx.vue'
+  import presentIllnessChild from '../components/presentIllnessChild.vue'
+  import socialHx from '../components/socialHx.vue'
   import therapyVue from '../components/therapyVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
@@ -207,8 +210,8 @@
   const clinic = ref()
   const duration = ref()
 
-  const chief_complaint = ref<Chief_complaint>({ complaint: '' })
-  const present_illness = ref<Present_illness>({ notes: '' })
+  const chief_complaint = ref<Chief_complaint>({ Complaint: '' })
+  const present_illness = ref<Present_illness>({ Notes: '' })
 
   const development = ref(
     data.value?.development || { selectedYear: [], selectedPeripartum: [] }
@@ -216,7 +219,7 @@
   const family_hx = ref<FamilyHX>(
     data.value?.family_hx
       ? data.value.family_hx
-      : { different: '', medical: '', other: '', similar: '' }
+      : { Different: '', Medical: '', Other: '', Similar: '' }
   )
   const past_hx = ref<PastHX>(data.value?.past_hx ? data.value.past_hx : {})
   const social_hx = ref<SocialHX>(
@@ -243,8 +246,8 @@
     managements: [{ name: '', form: '', dose: '' }],
   })
 
-  const ddx = ref()
-  const notes = ref()
+  const ddx = ref<DDX>({ 'Differential Diagnosis': '' })
+  const notes = ref<Notes>({ Notes: '' })
 
   const link = `/visits-new/${storedUserData?.id}/${route.params.id}`
 
@@ -287,37 +290,6 @@
       saving.value = false
       console.error(error)
     }
-  }
-
-  const submit = () => {
-    console.log('chief_complaint')
-    console.log(chief_complaint.value)
-    console.log('present_illness')
-    console.log(present_illness.value)
-    console.log('family_hx')
-    console.log(family_hx.value)
-    console.log('past_hx')
-    console.log(past_hx.value)
-    console.log('social_hx')
-    console.log(social_hx.value)
-    console.log('personal_hx')
-    console.log(personal_hx.value)
-    console.log('occupation_hx')
-    console.log(occupation_hx.value)
-    console.log('forensic_hx')
-    console.log(forensic_hx.value)
-    console.log(t('examination'))
-    console.log(examination.value)
-    console.log('ddx')
-    console.log(ddx.value)
-    console.log('ix')
-    console.log(ix.value)
-    console.log(t('management'))
-    console.log(management.value)
-    console.log(t('consultations'))
-    console.log(consultations.value)
-    console.log(t('notes'))
-    console.log(notes.value)
   }
 </script>
 

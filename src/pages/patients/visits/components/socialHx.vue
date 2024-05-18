@@ -3,36 +3,45 @@
     accommodationSuggestions,
     financeSuggestions,
   } from '@/utils/suggestions'
+  const { t } = useI18n()
+
+  const suggestions: { [key: string]: string[] } = {
+    Accommodation: accommodationSuggestions,
+    Finances: financeSuggestions,
+    Indoor: [],
+    Outdoor: [],
+    Caregivers: [],
+  }
 
   interface Model {
-    accommodation?: string
-    finances?: string
-    indoor?: string
-    outdoor?: string
-    caregivers?: string
+    [key: string | number]: string
   }
+
+  const fields = [
+    'Accommodation',
+    'Finances',
+    'Indoor',
+    'Outdoor',
+    'Caregivers',
+  ]
 
   const model = defineModel<Model>()
 
-  const accommodation = ref(model.value?.accommodation)
-  const finances = ref(model.value?.finances)
-  const indoor = ref(model.value?.indoor)
-  const outdoor = ref(model.value?.outdoor)
-  const caregivers = ref(model.value?.caregivers)
-
-  function update() {
-    model.value = {
-      accommodation: accommodation.value as string,
-      finances: finances.value as string,
-      indoor: indoor.value as string,
-      outdoor: outdoor.value as string,
-      caregivers: caregivers.value as string,
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
     }
-  }
-
-  const appendTo = (target: string | undefined, text: string) => {
-    // Append the text and return the new string
-    return target === '' || target === undefined ? text : `${target}, ${text}`
   }
 </script>
 
@@ -40,144 +49,28 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Social History</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Social History') }}</h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>
 
-    <!-- Accommodation -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
+    <VRow v-for="field in fields" :key="field">
+      <VCol cols="6" md="6" v-if="model">
         <AppTextarea
-          v-model="accommodation"
-          label="Accommodation"
+          v-model="model[field]"
+          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
           auto-grow
           rows="2"
-          @keyup="update"
-          :rules="[requiredValidator]"
         />
       </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
+      <VCol>
+        <div class="my-5" v-if="model">
           <VChip
             class="me-2 mb-2"
-            v-for="suggestion in accommodationSuggestions"
+            v-for="suggestion in suggestions[field]"
+            :key="suggestion"
             size="x-small"
-            @click="
-              () => {
-                accommodation = appendTo(accommodation, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- Finances -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="finances"
-          label="Finances"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in financeSuggestions"
-            size="x-small"
-            @click="
-              () => {
-                finances = appendTo(finances, suggestion)
-                update()
-              }
-            "
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- Indoor Activity -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="indoor"
-          label="Indoor Activity"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- Outdoor Activity -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="outdoor"
-          label="Outdoor Activity"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
-          >
-            {{ suggestion }}
-          </VChip>
-        </div>
-      </VCol>
-    </VRow>
-
-    <!-- Caregivers -->
-    <VRow class="mb-5">
-      <VCol cols="6" md="6">
-        <AppTextarea
-          v-model="caregivers"
-          label="Caregivers"
-          auto-grow
-          rows="2"
-          @keyup="update"
-          :rules="[]"
-        />
-      </VCol>
-      <VCol cols="6" md="6">
-        <div class="my-5">
-          <VChip
-            class="me-2 mb-2"
-            v-for="suggestion in []"
-            size="x-small"
-            @click=""
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

@@ -7,10 +7,11 @@
   } from '@/utils/suggestions'
 
   const suggestions: { [key: string]: string[] } = {
-    course: courseSuggestions,
-    circumstances: circumstancesSuggestions,
-    vegetative: vegetativeSymptomsSuggestions,
-    associated: associatedSymptomsSuggestions,
+    Course: courseSuggestions,
+    Circumstances: circumstancesSuggestions,
+    Vegetative: vegetativeSymptomsSuggestions,
+    Associated: associatedSymptomsSuggestions,
+    'Intellectual Disability': [],
     ASD: [],
     ADHD: [],
     Speech: [],
@@ -21,6 +22,11 @@
     Learning: [],
     Movement: [],
     Coordination: [],
+    Functioning: [],
+    Relationships: [],
+    Treatments: [],
+    Substances: [],
+    Risk: [],
   }
 
   const { t } = useI18n()
@@ -35,9 +41,9 @@
 
   if (props.child) {
     fields = [
-      'course',
-      'circumstances',
-      'vegetative',
+      'Course',
+      'Circumstances',
+      'Vegetative',
       'ASD',
       'ADHD',
       'Speech',
@@ -48,26 +54,26 @@
       'Learning',
       'Movement',
       'Coordination',
-      'associated',
-      'functioning',
-      'relationships',
-      'treatments',
-      'substances',
-      'risk',
-      'notes',
+      'Associated',
+      'Functioning',
+      'Relationships',
+      'Treatments',
+      'Substances',
+      'Risk',
+      'Notes',
     ]
   } else {
     fields = [
-      'course',
-      'circumstances',
-      'vegetative',
-      'associated',
-      'functioning',
-      'relationships',
-      'treatments',
-      'substances',
-      'risk',
-      'notes',
+      'Course',
+      'Circumstances',
+      'Vegetative',
+      'Associated',
+      'Functioning',
+      'Relationships',
+      'Treatments',
+      'Substances',
+      'Risk',
+      'Notes',
     ]
   }
 
@@ -77,8 +83,21 @@
 
   const model = defineModel<Model>()
 
-  const appendTo = (target: string | undefined, text: string) => {
-    return target ? target + ', ' + text : text
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
+    }
   }
 </script>
 
@@ -107,7 +126,7 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="model[field] = appendTo(model[field], suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>

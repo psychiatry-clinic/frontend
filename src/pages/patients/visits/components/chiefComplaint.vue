@@ -3,15 +3,32 @@
   const { t } = useI18n()
 
   const suggestions: { [key: string]: string[] } = {
-    complaint: chief_complains,
-    duration: durations,
-    source: sourceOfInfo,
+    Complaint: chief_complains,
+    Duration: durations,
+    Source: sourceOfInfo,
   }
 
-  const fields = ['complaint', 'duration', 'source', 'referral']
+  const fields = ['Complaint', 'Duration', 'Source', 'Referral']
 
   interface Model {
     [key: string | number]: string
+  }
+
+  const toggleSuggestion = (field: string, suggestion: string) => {
+    if (!model) return
+    if (!model.value) return
+    if (model.value?.[field] === undefined || model.value[field] === '') {
+      model.value[field] = suggestion
+    } else {
+      const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+      const index = suggestionsArray.indexOf(suggestion)
+      if (index === -1) {
+        suggestionsArray.push(suggestion)
+      } else {
+        suggestionsArray.splice(index, 1)
+      }
+      model.value[field] = suggestionsArray.join(', ')
+    }
   }
 
   const model = defineModel<Model>()
@@ -48,7 +65,7 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="model[field] = appendTo(model[field], suggestion)"
+            @click="toggleSuggestion(field, suggestion)"
           >
             {{ suggestion }}
           </VChip>
