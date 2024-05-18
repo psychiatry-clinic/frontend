@@ -400,7 +400,7 @@
         <!-- 👉 Edit Details -->
         <VCardText class="text-center">
           <VBtn block @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen">
-            Edit Patient Details
+            {{ t('Edit Patient Details') }}
           </VBtn>
         </VCardText>
       </VCard>

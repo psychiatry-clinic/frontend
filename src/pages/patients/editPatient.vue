@@ -7,6 +7,8 @@
   import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
   import { VForm } from 'vuetify/components/VForm'
 
+  const { t } = useI18n()
+
   const blobSasUrl =
     'https://dakakean.blob.core.windows.net/psychiatry?sp=racwl&st=2024-05-02T06:46:34Z&se=2024-05-10T14:46:34Z&spr=https&sv=2022-11-02&sr=c&sig=oTStvDHsKPQiKZ4%2Bniqpd7Dt9w514Y52T6kIQlC5490%3D'
   const blobServiceClient = new BlobServiceClient(blobSasUrl)
@@ -36,6 +38,8 @@
     patientData?: Patient
   }
 
+  const saving = ref(false)
+
   const props = defineProps<Props>()
 
   const patientData = ref<Patient>(props.patientData as Patient)
@@ -61,11 +65,11 @@
 
   const radioContent: CustomInputContent[] = [
     {
-      title: 'Child',
+      title: t('Child'),
       value: 'child',
     },
     {
-      title: 'Adult',
+      title: t('Adult'),
       value: 'adult',
     },
   ]
@@ -90,12 +94,15 @@
       patientData.value.dob,
       patientData.value.father_dob as string
     )
+  } else {
+    father_dob.value = null
   }
 
   const father_edu = ref(patientData.value.father_edu)
   const father_work = ref(patientData.value.father_work)
   const mother_dob = ref()
   const mother_age = ref()
+  const dobAdult = ref<number>()
 
   if (patientData.value.mother_dob) {
     mother_dob.value = new Date(patientData.value.mother_dob).getFullYear()
@@ -104,6 +111,8 @@
       patientData.value.dob,
       patientData.value.mother_age as string
     )
+  } else {
+    mother_dob.value = null
   }
 
   const mother_edu = ref(patientData.value.mother_edu)
@@ -151,15 +160,48 @@
 
   const link = `/patients-edit/${storedUserData?.id}/${patientData.value.id}`
 
+  const convertDob = (dob: number) => {
+    const date = new Date(dob)
+    date.setMonth(0)
+    date.setDate(1)
+    console.log('date')
+    console.log(date)
+    return date.toISOString().slice(0, 10)
+  }
+
+  const toggleSuggestion = (modelName: string, suggestion: any) => {
+    const model = eval(modelName)
+
+    if (
+      model.value === undefined ||
+      model.value === null ||
+      model.value === ''
+    ) {
+      model.value = suggestion
+    } else {
+      const suggestions = model.value.split(', ').filter((s: any) => s)
+      const index = suggestions.indexOf(suggestion)
+      if (index === -1) {
+        suggestions.push(suggestion)
+      } else {
+        suggestions.splice(index, 1)
+      }
+      model.value = suggestions.join(', ')
+    }
+  }
+
   const editPatient = async () => {
     if (!storedUserData) return
+    saving.value = true
 
     try {
       const res = await $api(link, {
         method: 'POST',
         body: {
           name: name.value,
-          dob: addTimeToDateString(dob.value),
+          dob: dobAdult.value
+            ? addTimeToDateString(convertDob(dobAdult.value))
+            : addTimeToDateString(dob.value),
           gender: gender.value,
           phone: phone.value,
           avatar: avatar.value,
@@ -187,12 +229,36 @@
           console.log(response._data)
         },
       })
+      router.go(0)
+      saving.value = false
     } catch (error) {
       console.error(error)
+      saving.value = false
     }
   }
 
   age.value = calculateAge(patientData.value.dob) as string
+
+  watch(dob, (newValue) => {
+    if (newValue) {
+      age.value = calculateAge(newValue) as string
+    }
+  })
+
+  watch(dobAdult, (newValue) => {
+    if (newValue && newValue.toString().length === 4) {
+      age.value = calculateAge(new Date(newValue).toString()) as string
+    }
+  })
+
+  watch(father_dob, (newValue) => {
+    if (newValue.length === 4) {
+      const date = new Date(father_dob.value, 0, 1)
+      father_age.value = differenceInCalendarYears(dob.value, date)
+    } else {
+      father_age.value = null
+    }
+  })
 </script>
 
 <template>
@@ -206,7 +272,7 @@
   >
     <!-- 👉 Header -->
     <AppDrawerHeaderSection
-      :title="'Edit ' + patientData.name"
+      :title="t('Edit') + ' ' + patientData.name"
       @cancel="$emit('update:isDrawerOpen', false)"
     />
 
@@ -226,7 +292,7 @@
               </VCol>
 
               <VCol cols="12">
-                <h6 class="text-h6 text-primary">Image</h6>
+                <h6 class="text-h6 text-primary">{{ t('Image') }}</h6>
               </VCol>
 
               <VCol cols="12">
@@ -257,23 +323,35 @@
               </VCol>
 
               <VCol cols="12">
-                <h6 class="text-h6 text-primary">Basic Information</h6>
+                <h6 class="text-h6 text-primary">
+                  {{ t('Basic Information') }}
+                </h6>
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
                   v-model="name"
-                  label="Name*"
+                  :label="t('Name') + '*'"
                   :rules="[requiredValidator]"
                   placeholder=""
                 />
               </VCol>
 
-              <VCol cols="12">
+              <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppDateTimePicker
                   v-model="dob"
-                  label="Birth Date*"
-                  placeholder="Select date"
+                  :label="t('Birth Date') + '*'"
+                  :placeholder="t('Select date')"
+                />
+              </VCol>
+
+              <VCol cols="12" v-if="selectedRadio === 'adult'">
+                <AppTextField
+                  v-model="dobAdult"
+                  :label="t('Birth Date') + '*'"
+                  placeholder=""
+                  maxlength="4"
+                  :rules="[dateOfBirthValidator]"
                 />
               </VCol>
 
@@ -281,7 +359,7 @@
                 <AppTextField
                   disabled
                   v-model="age"
-                  label="Age (Automatic)"
+                  :label="t('Age') + `(${t('Automatic')})`"
                   placeholder=""
                   maxlength="4"
                 />
@@ -299,18 +377,18 @@
                         );
                       "
                       class="v-label mb-1 text-body-2 text-black"
-                      >Gender*</span
+                      >{{ t('Gender') }}*</span
                     >
                   </template>
-                  <VRadio label="Male" value="Male" />
-                  <VRadio label="Female" value="Female" />
+                  <VRadio :label="t('Male')" value="Male" />
+                  <VRadio :label="t('Female')" value="Female" />
                 </VRadioGroup>
               </VCol>
 
               <VCol cols="12">
                 <AppTextField
                   v-model="phone"
-                  label="Phone"
+                  :label="t('Phone')"
                   placeholder=""
                   :rules="[phoneNumberValidator]"
                   maxlength="11"
@@ -321,15 +399,15 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Demographic Information
+                  {{ t('Demographic Information') }}
                 </div>
               </VCol>
 
               <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppAutocomplete
                   v-model="marital_status"
-                  label="Marital Status"
-                  placeholder="Select Status"
+                  :label="t('Marital Status')"
+                  :placeholder="t('Select Status')"
                   :items="
                     gender === 'Male'
                       ? ['متزوج', 'اعزب', 'ارمل', 'منفصل']
@@ -341,16 +419,16 @@
               <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppTextField
                   v-model="children"
-                  placeholder="Write a Number"
-                  label="Children"
+                  :placeholder="t('Write a Number')"
+                  :label="t('Children')"
                 />
               </VCol>
 
               <VCol cols="12">
                 <AppAutocomplete
                   v-model="residence"
-                  label="Residence"
-                  placeholder="Select Residence"
+                  :label="t('Residence')"
+                  :placeholder="t('Select Residence')"
                   :items="cities"
                 />
                 <div class="mt-5">
@@ -372,8 +450,8 @@
               <VCol cols="12" v-if="residence === 'بغداد'">
                 <AppAutocomplete
                   v-model="neighborhood"
-                  label="Neighborhood"
-                  placeholder="Select"
+                  :label="t('Neighborhood')"
+                  :placeholder="t('Select')"
                   :items="baghdadRegions"
                 />
               </VCol>
@@ -381,14 +459,14 @@
               <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppTextField
                   v-model="occupation"
-                  placeholder="Write an Occupation"
-                  label="Occupation"
+                  :placeholder="t('Write an Occupation')"
+                  :label="t('Occupation')"
                 />
               </VCol>
 
               <!-- child education -->
               <VCol cols="12" v-if="selectedRadio === 'child'">
-                <AppTextField v-model="education" label="Education" />
+                <AppTextField v-model="education" :label="t('Education')" />
                 <div class="mt-5">
                   <VChip
                     class="me-2 mb-2"
@@ -408,23 +486,28 @@
                 </div>
               </VCol>
 
+              <!-- child education -->
+              <VCol cols="12" v-if="selectedRadio === 'child'">
+                <AppTextField v-model="education" :label="t('Education')" />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in childEducation"
+                    size="x-small"
+                    @click="toggleSuggestion('education', suggestion)"
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
+              </VCol>
+
               <!-- adult education -->
               <VCol cols="12" v-if="selectedRadio === 'adult'">
                 <AppAutocomplete
                   v-model="education"
                   label="Education"
                   placeholder="Select Education"
-                  :items="[
-                    'أمي',
-                    'ابتدائية',
-                    'متوسطة',
-                    'اعدادية',
-                    'كلية',
-                    'دبلوم',
-                    'بكالوريوس',
-                    'ماجستير',
-                    'دكتوراه',
-                  ]"
+                  :items="adultEducation"
                 />
               </VCol>
 
@@ -433,13 +516,13 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Parents Relationship
+                  {{ t('Parents Relationship') }}
                 </div>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <VRadioGroup v-model="related" inline>
-                  <VRadio label="Related" :value="true" />
-                  <VRadio label="Not Related" :value="false" />
+                  <VRadio :label="t('Related')" :value="true" />
+                  <VRadio :label="t('Not Related')" :value="false" />
                 </VRadioGroup>
               </VCol>
               <!-- related -->
@@ -449,7 +532,7 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Siblings
+                  {{ t('Siblings') }}
                 </div>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
@@ -472,20 +555,20 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Order in Siblings
+                  {{ t('Order in Siblings') }}
                 </div>
               </VCol>
               <VCol cols="12">
                 <VRadioGroup v-model="order" inline>
-                  <VRadio label="1st" :value="1" v-if="siblings >= 1" />
-                  <VRadio label="2nd" :value="2" v-if="siblings >= 1" />
-                  <VRadio label="3rd" :value="3" v-if="siblings > 1" />
-                  <VRadio label="4th" :value="4" v-if="siblings > 2" />
-                  <VRadio label="5th" :value="5" v-if="siblings > 3" />
-                  <VRadio label="6th" :value="6" v-if="siblings > 4" />
-                  <VRadio label="7th" :value="7" v-if="siblings > 5" />
-                  <VRadio label="8th" :value="8" v-if="siblings > 6" />
-                  <VRadio label="9th" :value="8" v-if="siblings > 7" />
+                  <VRadio :label="t('1st')" :value="1" v-if="siblings >= 1" />
+                  <VRadio :label="t('2nd')" :value="2" v-if="siblings >= 1" />
+                  <VRadio :label="t('3rd')" :value="3" v-if="siblings > 1" />
+                  <VRadio :label="t('4th')" :value="4" v-if="siblings > 2" />
+                  <VRadio :label="t('5th')" :value="5" v-if="siblings > 3" />
+                  <VRadio :label="t('6th')" :value="6" v-if="siblings > 4" />
+                  <VRadio :label="t('7th')" :value="7" v-if="siblings > 5" />
+                  <VRadio :label="t('8th')" :value="8" v-if="siblings > 6" />
+                  <VRadio :label="t('9th')" :value="8" v-if="siblings > 7" />
                 </VRadioGroup>
               </VCol>
               <!-- Order -->
@@ -495,29 +578,41 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Father Information
+                  {{ t('Father Information') }}
                 </div>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="father_dob"
-                  label="Date of Birth"
+                  :label="t('Date of Birth')"
                   placeholder=""
                   maxlength="4"
                 />
               </VCol>
-              <VCol cols="12" v-if="selectedRadio === 'child'">
-                <AppTextField
-                  v-model="father_age"
-                  label="Age at Birth"
-                  placeholder=""
-                  disabled
-                />
+              <VCol cols="12" v-if="selectedRadio === 'child' && father_age">
+                <span
+                  style="
+                    color: rgba(
+                      var(--v-theme-on-surface),
+                      var(--v-high-emphasis-opacity)
+                    );
+                    line-height: 15px;
+                  "
+                  class="v-label mb-1 text-body-2 text-black"
+                  >{{ t('Age at Birth of Child') }}</span
+                >
+                <VAlert
+                  density="compact"
+                  :color="father_age > 40 ? 'error' : 'success'"
+                  variant="tonal"
+                >
+                  {{ father_age ? father_age : '0' }}
+                </VAlert>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="father_edu"
-                  label="Education"
+                  :label="t('Education')"
                   placeholder=""
                 />
                 <div class="mt-5">
@@ -541,7 +636,7 @@
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="father_work"
-                  label="Work"
+                  :label="t('Work')"
                   placeholder=""
                 />
               </VCol>
@@ -552,29 +647,43 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Mother Information
+                  {{ t('Mother Information') }}
                 </div>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="mother_dob"
-                  label="Date of Birth"
+                  :label="t('Date of Birth')"
                   placeholder=""
                   maxlength="4"
                 />
               </VCol>
-              <VCol cols="12" v-if="selectedRadio === 'child'">
-                <AppTextField
-                  v-model="mother_age"
-                  label="Age at Birth"
-                  placeholder=""
-                  disabled
-                />
+
+              <VCol cols="12" v-if="selectedRadio === 'child' && mother_age">
+                <span
+                  style="
+                    /* stylelint-disable-next-line @stylistic/declaration-colon-newline-after */
+                    color: rgba(
+                      var(--v-theme-on-surface),
+                      var(--v-high-emphasis-opacity)
+                    );
+                    line-height: 15px;
+                  "
+                  class="v-label mb-1 text-body-2 text-black"
+                  >{{ t('Age at Birth of Child') }}</span
+                >
+                <VAlert
+                  density="compact"
+                  :color="mother_age > 35 ? 'error' : 'success'"
+                  variant="tonal"
+                >
+                  {{ mother_age ? mother_age : '0' }}
+                </VAlert>
               </VCol>
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="mother_edu"
-                  label="Education"
+                  :label="t('Education')"
                   placeholder=""
                 />
                 <div class="mt-5">
@@ -598,7 +707,7 @@
               <VCol cols="12" v-if="selectedRadio === 'child'">
                 <AppTextField
                   v-model="mother_work"
-                  label="Work"
+                  :label="t('Work')"
                   placeholder=""
                 />
               </VCol>
@@ -609,7 +718,7 @@
                 <div
                   class="text-body-1 text-primary font-weight-medium text-high-emphasis"
                 >
-                  Notes
+                  {{ t('Notes') }}
                 </div>
               </VCol>
               <VCol cols="12">
@@ -620,15 +729,23 @@
               <VCol cols="12">
                 <div class="d-flex gap-4 justify-start pb-10">
                   <VBtn
+                    v-if="!saving"
                     type="submit"
                     color="primary"
                     :disabled="!name || !dob"
                     @click="editPatient"
                   >
-                    Save
+                    {{ t('Save') }}
                   </VBtn>
+                  <VProgressCircular
+                    v-else
+                    :size="30"
+                    width="3"
+                    color="primary"
+                    indeterminate
+                  />
                   <VBtn color="error" variant="tonal" @click="resetForm">
-                    Discard
+                    {{ t('Cancel') }}
                   </VBtn>
                 </div>
               </VCol>

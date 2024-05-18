@@ -31,6 +31,7 @@
   import personalHx from '../components/personalHx.vue'
   import presentIllnessChild from '../components/presentIllnessChild.vue'
   import socialHx from '../components/socialHx.vue'
+  import therapyVue from '../components/therapyVue.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -93,6 +94,10 @@
       title: 'Management',
       subtitle: '',
     },
+    {
+      title: 'Therapy',
+      subtitle: '',
+    },
   ]
 
   const numberedStepsShort = [
@@ -102,6 +107,10 @@
     },
     {
       title: 'Management',
+      subtitle: '',
+    },
+    {
+      title: 'Therapy',
       subtitle: '',
     },
   ]
@@ -155,6 +164,10 @@
       title: 'Management',
       subtitle: '',
     },
+    {
+      title: 'Therapy',
+      subtitle: '',
+    },
   ]
 
   const errors = ref<Record<string, string | undefined>>({
@@ -165,7 +178,7 @@
     differenceInYears(new Date(), new Date(route.query.dob as string)) < 14
 
   const { data } = await useApi<Patient>(
-    `/patients/${storedUserData?.id}/${route.params.id}`
+    `/patient/${storedUserData?.id}/${route.params.id}`
   )
 
   let numberedSteps = ref<any>()
@@ -374,6 +387,7 @@
                 <ixVue v-model="ix" v-if="!short" />
                 <notesVue v-model="notes" />
                 <managementVue v-model="management" />
+                <therapyVue :psychologist="false" />
               </VWindow>
             </div>
 

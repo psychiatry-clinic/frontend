@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Patient, User, Visit } from '@/utils/types'
+  import { User, Visit } from '@/utils/types'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -9,12 +9,14 @@
   const route = useRoute()
 
   interface Props {
-    visit: Visit
+    visit?: Visit
     psychologist: boolean
   }
 
-  const { visit } = defineProps<Props>()
+  const { visit, psychologist } = defineProps<Props>()
+
   const isSnackbarVisible = ref(false)
+  const isErrorSnackbarVisible = ref(false)
   const requested = ref(false)
 
   // interface Model {
@@ -33,16 +35,21 @@
   //   };
   // }
 
-  const therapy = ref(visit.therapy?.notes)
+  const therapy = ref(visit?.therapy?.notes)
 
   function update(e: any) {
     therapy.value = e.target.value
   }
 
-  const activeVisit = visit.active
+  const activeVisit = visit?.active
+
+  console.log('====================================')
+  console.log(visit)
+  console.log('====================================')
 
   const requestTherapy = async (x: boolean) => {
     if (!activeVisit) return
+    console.log('save 1')
     const link = `/visits-edit/${storedUserData?.id}/${visit.id}/${visit.patient.id}`
     try {
       const res = await $api(link, {
@@ -64,7 +71,6 @@
   }
 
   const save = async () => {
-    isSnackbarVisible.value = true
     if (!activeVisit) return
     const link = `/therapy/${storedUserData?.id}/${visit.id}`
     try {
@@ -72,12 +78,17 @@
         method: 'POST',
         body: {
           notes: therapy.value,
-          clinic: storedUserData?.clinic,
+          clinicId: storedUserData?.clinic.id,
         },
         onResponseError({ response }) {
           console.log(response._data)
         },
       })
+      if (res.success) {
+        isSnackbarVisible.value = true
+      } else {
+        isErrorSnackbarVisible.value = true
+      }
       // router.push(`/patients/${route.params.id}`)
     } catch (error) {
       console.error(error)
@@ -89,7 +100,14 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <VCard class="mb-6" title="Therapy Notes">
+        <VCard v-if="!visit">
+          <VCardText>
+            <h6 class="text-h6">
+              Save this visit and from 'Edit Visit' request a therapy session
+            </h6>
+          </VCardText>
+        </VCard>
+        <VCard class="mb-6" title="Therapy Notes" v-else-if="psychologist">
           <VCardText>
             <AppTextarea
               v-model="therapy"
@@ -99,28 +117,28 @@
               @keyup="update"
             />
           </VCardText>
-
+          <VCardText>
+            <VBtn @click="save">Save</VBtn>
+          </VCardText>
           <VDivider />
-
+        </VCard>
+        <VCard v-else>
           <VCardText class="d-flex gap-4">
-            <VBtn
-              @click="requestTherapy(true)"
-              v-if="!requested && !psychologist"
-              >Request Therapy</VBtn
+            <VBtn @click="requestTherapy(true)" v-if="!requested"
+              >Request Therapy Session</VBtn
             >
-            <VBtn
-              @click="requestTherapy(false)"
-              color="success"
-              v-else-if="!psychologist"
+            <VBtn @click="requestTherapy(false)" color="success" v-else
               >Requested</VBtn
             >
-            <VBtn @click="save">Save</VBtn>
           </VCardText>
         </VCard>
       </VCol>
     </VRow>
     <VSnackbar v-model="isSnackbarVisible" color="success">
       Therapy Notes Was Saved Successfully
+    </VSnackbar>
+    <VSnackbar v-model="isErrorSnackbarVisible" color="success">
+      Error Saving Therapy Notes
     </VSnackbar>
   </VWindowItem>
 </template>

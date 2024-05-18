@@ -65,7 +65,9 @@
       class="d-flex justify-space-between align-center flex-wrap gap-y-4 mb-6"
     >
       <div>
-        <h4 class="text-h4 mb-1">Patient ID #{{ routeParams.id }}</h4>
+        <h4 class="text-h4 mb-1">
+          {{ t('Patient ID') }} #{{ routeParams.id }}
+        </h4>
         <div class="text-body-1">
           {{ t('Added At') }}:
           {{

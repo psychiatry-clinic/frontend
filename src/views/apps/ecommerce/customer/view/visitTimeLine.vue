@@ -2,6 +2,8 @@
   import { Patient, User } from '@/utils/types'
   import { formatDistanceToNow } from 'date-fns'
 
+  const { t } = useI18n()
+
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
     | undefined
@@ -19,7 +21,7 @@
 </script>
 
 <template>
-  <VCard title="Visits Timeline">
+  <VCard :title="t('Visits Timeline')">
     <VCardText>
       <VBtn
         v-if="
@@ -38,7 +40,7 @@
           })
         "
       >
-        New Visit
+        {{ t('New Visit') }}
       </VBtn>
 
       <VTimeline
@@ -76,7 +78,7 @@
             class="d-flex justify-space-between align-center gap-2 flex-wrap mb-2"
           >
             <div class="app-timeline-text mt-1">
-              <span class="text-warning"> Chief Complaint: </span>
+              <span class="text-warning"> {{ t('Chief Complaint') }}: </span>
               <li>
                 {{ visit.chief_complaint?.complaint }} for
                 {{ visit.chief_complaint?.duration }}
@@ -87,28 +89,28 @@
             </span>
           </div>
           <div v-if="!visit.follow_up" class="app-timeline-text mt-1">
-            <span class="text-warning"> Diagnosis: </span>
+            <span class="text-warning"> {{ t('Diagnosis') }}: </span>
             <li>
               {{ visit.ddx?.differential }}
             </li>
           </div>
           <div v-else class="app-timeline-text mt-1">
-            <span class="text-warning"> Follow up notes: </span>
+            <span class="text-warning"> {{ t('Follow up notes') }}: </span>
             <li>
               {{ visit.notes?.notes }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">
-            <span class="text-warning"> Management: </span>
+            <span class="text-warning"> {{ t('Management') }}: </span>
             <li v-for="item in visit.management?.managements">
               {{ item.name }} {{ item.form }} {{ item.dose }} {{ item.use }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">
-            <span class="text-warning"> Doctor: </span>
+            <span class="text-warning"> {{ t('Doctor') }}: </span>
             <li>
               {{ visit.doctor?.fullName }}
-              {{ visit.clinic?.name === 'autism' ? 'in NCA' : '' }}
+              {{ visit.clinic?.name === 'autism' ? t('in NCA') : '' }}
             </li>
           </div>
           <VBtn
@@ -125,9 +127,14 @@
               })
             "
           >
-            Edit Visit
+            {{
+              storedUserData?.role === 'DOCTOR'
+                ? t('Edit Visit')
+                : t('Therapy Notes')
+            }}
           </VBtn>
           <VBtn
+            v-if="storedUserData?.role !== 'PSYCHOLOGIST'"
             variant="tonal"
             class="d-inline-flex align-center mt-4 me-2"
             @click="
@@ -141,7 +148,7 @@
                 },
               })
             "
-            >Summary
+            >{{ t('Summary') }}
           </VBtn>
         </VTimelineItem>
         <!-- !SECTION -->
