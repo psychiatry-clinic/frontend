@@ -80,8 +80,8 @@
             <div class="app-timeline-text mt-1">
               <span class="text-warning"> {{ t('Chief Complaint') }}: </span>
               <li>
-                {{ visit.chief_complaint?.complaint }} for
-                {{ visit.chief_complaint?.duration }}
+                {{ visit.chief_complaint?.Complaint }} for
+                {{ visit.chief_complaint?.Duration }}
               </li>
             </div>
             <span class="app-timeline-meta">
@@ -91,19 +91,19 @@
           <div v-if="!visit.follow_up" class="app-timeline-text mt-1">
             <span class="text-warning"> {{ t('Diagnosis') }}: </span>
             <li>
-              {{ visit.ddx?.differential }}
+              {{ visit.ddx?.['Differential Diagnosis'] }}
             </li>
           </div>
           <div v-else class="app-timeline-text mt-1">
             <span class="text-warning"> {{ t('Follow up notes') }}: </span>
             <li>
-              {{ visit.notes?.notes }}
+              {{ visit.notes?.Notes }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">
             <span class="text-warning"> {{ t('Management') }}: </span>
             <li v-for="item in visit.management?.managements">
-              {{ item.name }} {{ item.form }} {{ item.dose }} {{ item.use }}
+              {{ item.Name }} {{ item.Form }} {{ item.Dose }} {{ item.Use }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">

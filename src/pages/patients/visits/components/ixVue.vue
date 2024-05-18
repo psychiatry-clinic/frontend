@@ -1,4 +1,6 @@
 <script setup lang="ts">
+  const { t } = useI18n()
+
   interface Investigation {
     name?: string
     result?: string
@@ -43,7 +45,7 @@
   <VWindowItem>
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Investigation</h6>
+        <h6 class="text-h6 font-weight-medium">{{ t('Investigations') }}</h6>
       </VCol>
     </VRow>
 
@@ -54,7 +56,7 @@
         <VCol cols="6">
           <AppTextField
             :placeholder="
-              investigation.name ? '' : 'Type Name of Investigation'
+              investigation.name ? '' : t('Type Name of Investigation')
             "
             v-model="investigation.name"
             @input="saveNameUppercase(index)"
@@ -65,7 +67,7 @@
           <AppTextField
             v-if="enableSecondField(index)"
             :placeholder="
-              investigation.result ? '' : 'Type Result of Investigation'
+              investigation.result ? '' : t('Type Result of Investigation')
             "
             v-model="investigation.result"
           />
@@ -78,7 +80,7 @@
       <VCol cols="12">
         <VBtn variant="outlined" @click.prevent="addInvestigation">
           <VIcon icon="tabler-plus" end class="flip-in-rtl me-2" />
-          <span> Add New Investigation </span>
+          <span> {{ t('Add New Investigation') }} </span>
         </VBtn>
       </VCol>
     </VRow>

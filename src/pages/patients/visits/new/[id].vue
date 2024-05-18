@@ -88,7 +88,7 @@
       subtitle: '',
     },
     {
-      title: t('Investigation'),
+      title: t('Investigations'),
       subtitle: '',
     },
     {
@@ -175,6 +175,13 @@
     },
   ]
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
+
   const errors = ref<Record<string, string | undefined>>({
     message: undefined,
   })
@@ -243,7 +250,7 @@
   })
 
   const management = ref<Managements>({
-    managements: [{ name: '', form: '', dose: '' }],
+    managements: [{ Name: '', Form: '', Dose: '', Use: '' }],
   })
 
   const ddx = ref<DDX>({ 'Differential Diagnosis': '' })
@@ -318,6 +325,7 @@
             v-model:current-step="currentStep"
             direction="vertical"
             :items="numberedSteps"
+            @click="scrollToTop"
           />
         </VCardText>
       </VCol>
@@ -372,30 +380,40 @@
                 color="secondary"
                 variant="tonal"
                 :disabled="currentStep === 0"
-                @click="currentStep--"
+                @click="
+                  () => {
+                    currentStep--
+                    scrollToTop()
+                  }
+                "
               >
                 <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
-                Previous
+                {{ t('Previous') }}
               </VBtn>
 
               <div>
-                <VBtn v-if="!saving" color="success" @click="addVisit">
-                  Submit
+                <VBtn v-if="!saving" color="success" @click.once="addVisit">
+                  {{ t('Submit') }}
                 </VBtn>
                 <VProgressCircular
                   v-else
                   :size="30"
                   width="3"
-                  color="primary"
+                  color="success"
                   indeterminate
                 />
               </div>
 
               <VBtn
                 v-if="currentStep !== numberedSteps.length - 1"
-                @click="currentStep++"
+                @click="
+                  () => {
+                    currentStep++
+                    scrollToTop()
+                  }
+                "
               >
-                Next
+                {{ t('Next') }}
 
                 <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
               </VBtn>

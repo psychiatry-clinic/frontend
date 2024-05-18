@@ -96,7 +96,7 @@ export interface Visit {
   present_illness?: Present_illness
   suicide?: string
   examination?: Examination
-  ddx?: { differential: string }
+  ddx?: DDX
   management?: { managements: ManagementItem[] }
   ix?: Ix
   therapyRequest?: boolean
@@ -113,10 +113,10 @@ export interface Visit {
 }
 
 interface ManagementItem {
-  dose: string
-  form: string
-  name: string
-  use: string
+  Dose: string
+  Form: string
+  Name: string
+  Use: string
 }
 
 interface differ {
@@ -268,10 +268,10 @@ export interface Consultations {
 }
 
 interface Management {
-  name?: string
-  form?: string
-  dose?: string
-  use?: string
+  Name?: string
+  Form?: string
+  Dose?: string
+  Use?: string
 }
 
 export interface Managements {

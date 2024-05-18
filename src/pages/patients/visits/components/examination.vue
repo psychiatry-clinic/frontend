@@ -68,12 +68,7 @@
 
     <VRow v-for="field in fields1" :key="field">
       <VCol cols="6" md="6" v-if="model">
-        <AppTextarea
-          v-model="model[field]"
-          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
-          auto-grow
-          rows="2"
-        />
+        <AppTextarea v-model="model[field]" auto-grow rows="2" />
       </VCol>
       <VCol>
         <div class="my-5" v-if="model">
@@ -92,7 +87,9 @@
 
     <VRow>
       <VCol cols="12">
-        <h6 class="text-h6 font-weight-medium">Mental State Examination</h6>
+        <h6 class="text-h6 font-weight-medium">
+          {{ t('Mental State Examination') }}
+        </h6>
         <p class="mb-0"></p>
       </VCol>
     </VRow>

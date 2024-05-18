@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { User, Visit } from '@/utils/types'
+  const { t } = useI18n()
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -42,10 +43,6 @@
   }
 
   const activeVisit = visit?.active
-
-  console.log('====================================')
-  console.log(visit)
-  console.log('====================================')
 
   const requestTherapy = async (x: boolean) => {
     if (!activeVisit) return
@@ -103,7 +100,11 @@
         <VCard v-if="!visit">
           <VCardText>
             <h6 class="text-h6">
-              Save this visit and from 'Edit Visit' request a therapy session
+              {{
+                t(
+                  'Save this visit and from `Edit Visit` request a therapy session'
+                )
+              }}
             </h6>
           </VCardText>
         </VCard>
@@ -118,27 +119,27 @@
             />
           </VCardText>
           <VCardText>
-            <VBtn @click="save">Save</VBtn>
+            <VBtn @click="save">{{ t('Save') }}</VBtn>
           </VCardText>
           <VDivider />
         </VCard>
         <VCard v-else>
           <VCardText class="d-flex gap-4">
-            <VBtn @click="requestTherapy(true)" v-if="!requested"
-              >Request Therapy Session</VBtn
-            >
-            <VBtn @click="requestTherapy(false)" color="success" v-else
-              >Requested</VBtn
-            >
+            <VBtn @click="requestTherapy(true)" v-if="!requested">{{
+              t('Request Therapy Session')
+            }}</VBtn>
+            <VBtn @click="requestTherapy(false)" color="success" v-else>{{
+              t('Requested')
+            }}</VBtn>
           </VCardText>
         </VCard>
       </VCol>
     </VRow>
     <VSnackbar v-model="isSnackbarVisible" color="success">
-      Therapy Notes Was Saved Successfully
+      {{ t(' Therapy Notes Was Saved Successfully') }}
     </VSnackbar>
     <VSnackbar v-model="isErrorSnackbarVisible" color="success">
-      Error Saving Therapy Notes
+      {{ t('Error Saving Therapy Notes') }}
     </VSnackbar>
   </VWindowItem>
 </template>

@@ -188,10 +188,10 @@
   const duration = ref()
 
   const chief_complaint = ref<Chief_complaint>(
-    visit.chief_complaint || { complaint: '' }
+    visit.chief_complaint || { Complaint: '' }
   )
   const present_illness = ref<Present_illness>(
-    visit.present_illness || { notes: '' }
+    visit.present_illness || { Notes: '' }
   )
   const development = ref<Development>(
     visit.patient.development || {

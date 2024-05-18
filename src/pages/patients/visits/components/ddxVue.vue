@@ -51,12 +51,7 @@
 
     <VRow v-for="field in fields" :key="field">
       <VCol cols="6" md="6" v-if="model">
-        <AppTextarea
-          v-model="model[field]"
-          :label="t(field.charAt(0).toUpperCase() + field.slice(1))"
-          auto-grow
-          rows="2"
-        />
+        <AppTextarea v-model="model[field]" auto-grow rows="2" />
       </VCol>
       <VCol>
         <div class="my-5" v-if="model">
