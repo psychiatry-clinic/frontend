@@ -153,7 +153,6 @@ declare module 'vue-router/auto/routes' {
     'patients-add-patient': RouteRecordInfo<'patients-add-patient', '/patients/addPatient', Record<never, never>, Record<never, never>>,
     'patients-edit-patient': RouteRecordInfo<'patients-edit-patient', '/patients/editPatient', Record<never, never>, Record<never, never>>,
     'patients-visits-components-chief-complaint': RouteRecordInfo<'patients-visits-components-chief-complaint', '/patients/visits/components/chiefComplaint', Record<never, never>, Record<never, never>>,
-    'patients-visits-components-consult': RouteRecordInfo<'patients-visits-components-consult', '/patients/visits/components/consult', Record<never, never>, Record<never, never>>,
     'patients-visits-components-consultations-vue': RouteRecordInfo<'patients-visits-components-consultations-vue', '/patients/visits/components/consultationsVue', Record<never, never>, Record<never, never>>,
     'patients-visits-components-ddx-vue': RouteRecordInfo<'patients-visits-components-ddx-vue', '/patients/visits/components/ddxVue', Record<never, never>, Record<never, never>>,
     'patients-visits-components-development-vue': RouteRecordInfo<'patients-visits-components-development-vue', '/patients/visits/components/developmentVue', Record<never, never>, Record<never, never>>,

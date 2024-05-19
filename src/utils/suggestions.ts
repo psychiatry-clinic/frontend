@@ -747,3 +747,56 @@ export const PeripartumList = {
     'Difficult Weaning',
   ],
 }
+
+export const medicationSuggestions = [
+  'Sertraline',
+  'Fluoxetine',
+  'Citalopram',
+  'Escitalopram',
+  'Paroxetine',
+  'Venlafaxine',
+  'Duloxetine',
+  'Bupropion',
+  'Risperidone',
+  'Quetiapine',
+]
+
+export const medicationFormSuggestions = ['Tab', 'Cap', 'Amp', 'Vial', 'Depot']
+export const medicationDoseSuggestions = [
+  '5mg',
+  '10mg',
+  '15mg',
+  '20mg',
+  '25mg',
+  '30mg',
+  '40mg',
+  '50mg',
+  '75mg',
+  '100mg',
+  '150mg',
+  '300mg',
+]
+export const medicationUseSuggestions = [
+  '1X1',
+  '1X2',
+  '1X3',
+  '1X4',
+  '2X1',
+  '2X2',
+  '2X3',
+  '2X4',
+  '3X1',
+  '3X2',
+  '3X3',
+  '3X4',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  'X',
+]

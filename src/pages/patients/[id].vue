@@ -16,8 +16,6 @@
     | User
     | undefined
 
-  console.log(storedUserData)
-
   const patientData = ref<Patient>()
   const userTab = ref(null)
 

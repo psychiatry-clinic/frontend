@@ -16,8 +16,6 @@
   }
 
   const { patientData } = defineProps<Props>()
-
-  console.log(patientData.visits)
 </script>
 
 <template>

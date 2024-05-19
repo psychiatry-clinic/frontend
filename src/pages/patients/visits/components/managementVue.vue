@@ -73,6 +73,22 @@
             v-model="management.Name"
             @input="saveNameUppercase(index)"
           />
+          <div class="mt-5">
+            <VChip
+              class="me-2 mb-2"
+              v-for="suggestion in medicationSuggestions"
+              size="x-small"
+              @click="
+                () => {
+                  management.Name = suggestion
+                }
+              "
+            >
+              <span>
+                {{ suggestion }}
+              </span>
+            </VChip>
+          </div>
         </VCol>
         <!-- Form field -->
         <VCol cols="3">
@@ -81,6 +97,22 @@
             :placeholder="management.Form ? '' : t('Type Form')"
             v-model="management.Form"
           />
+          <div class="mt-5" v-if="management.Name">
+            <VChip
+              class="me-2 mb-2"
+              v-for="suggestion in medicationFormSuggestions"
+              size="x-small"
+              @click="
+                () => {
+                  management.Form = suggestion
+                }
+              "
+            >
+              <span>
+                {{ suggestion }}
+              </span>
+            </VChip>
+          </div>
         </VCol>
         <!-- Dose field -->
         <VCol cols="3">
@@ -89,6 +121,22 @@
             :placeholder="management.Dose ? '' : t('Type Dose')"
             v-model="management.Dose"
           />
+          <div class="mt-5" v-if="management.Form">
+            <VChip
+              class="me-2 mb-2"
+              v-for="suggestion in medicationDoseSuggestions"
+              size="x-small"
+              @click="
+                () => {
+                  management.Dose = suggestion
+                }
+              "
+            >
+              <span>
+                {{ suggestion }}
+              </span>
+            </VChip>
+          </div>
         </VCol>
         <!-- Use field -->
         <VCol cols="3">
@@ -97,6 +145,22 @@
             :placeholder="management.Use ? '' : t('Type Use')"
             v-model="management.Use"
           />
+          <div class="mt-5" v-if="management.Dose">
+            <VChip
+              class="me-2 mb-2"
+              v-for="suggestion in medicationUseSuggestions"
+              size="x-small"
+              @click="
+                () => {
+                  management.Use = suggestion
+                }
+              "
+            >
+              <span>
+                {{ suggestion }}
+              </span>
+            </VChip>
+          </div>
         </VCol>
       </VRow>
     </template>

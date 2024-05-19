@@ -116,6 +116,15 @@ declare global {
   const mapStores: typeof import('pinia')['mapStores']
   const mapWritableState: typeof import('pinia')['mapWritableState']
   const markRaw: typeof import('vue')['markRaw']
+  const medication: typeof import('./src/utils/suggestions')['medication']
+  const medicationDoseSuggestions: typeof import('./src/utils/suggestions')['medicationDoseSuggestions']
+  const medicationFormSuggestions: typeof import('./src/utils/suggestions')['medicationFormSuggestions']
+  const medicationForms: typeof import('./src/utils/suggestions')['medicationForms']
+  const medicationFormsSuggestions: typeof import('./src/utils/suggestions')['medicationFormsSuggestions']
+  const medicationSuggestions: typeof import('./src/utils/suggestions')['medicationSuggestions']
+  const medicationUseSuggestions: typeof import('./src/utils/suggestions')['medicationUseSuggestions']
+  const medicationUseSuggstions: typeof import('./src/utils/suggestions')['medicationUseSuggstions']
+  const medicationUseSugstions: typeof import('./src/utils/suggestions')['medicationUseSugstions']
   const myApi: typeof import('./src/utils/myApi')['myApi']
   const natalList: typeof import('./src/utils/suggestions')['natalList']
   const nextTick: typeof import('vue')['nextTick']
@@ -534,6 +543,10 @@ declare module 'vue' {
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly medicationDoseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationDoseSuggestions']>
+    readonly medicationFormSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationFormSuggestions']>
+    readonly medicationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationSuggestions']>
+    readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
@@ -924,6 +937,10 @@ declare module '@vue/runtime-core' {
     readonly mapStores: UnwrapRef<typeof import('pinia')['mapStores']>
     readonly mapWritableState: UnwrapRef<typeof import('pinia')['mapWritableState']>
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
+    readonly medicationDoseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationDoseSuggestions']>
+    readonly medicationFormSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationFormSuggestions']>
+    readonly medicationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationSuggestions']>
+    readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>

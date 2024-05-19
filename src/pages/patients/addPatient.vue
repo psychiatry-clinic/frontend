@@ -195,8 +195,6 @@
     const date = new Date(dob)
     date.setMonth(0)
     date.setDate(1)
-    console.log('date')
-    console.log(date)
     return date.toISOString().slice(0, 10)
   }
 
@@ -454,6 +452,16 @@
                   :placeholder="t('Select Education')"
                   :items="adultEducation"
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in adultEducation"
+                    size="x-small"
+                    @click="education.value = suggestion"
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <!-- related -->

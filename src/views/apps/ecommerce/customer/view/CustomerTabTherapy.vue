@@ -56,7 +56,6 @@
         },
       })
       if (res === 'OK') {
-        console.log(res)
         requested.value = x
       }
       // router.push(`/patients/${route.params.id}`)
@@ -79,9 +78,6 @@
           console.log(response._data)
         },
       })
-      if (res === 'OK') {
-        console.log(res)
-      }
       // router.push(`/patients/${route.params.id}`)
     } catch (error) {
       console.error(error)

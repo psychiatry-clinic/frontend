@@ -164,8 +164,6 @@
     const date = new Date(dob)
     date.setMonth(0)
     date.setDate(1)
-    console.log('date')
-    console.log(date)
     return date.toISOString().slice(0, 10)
   }
 
