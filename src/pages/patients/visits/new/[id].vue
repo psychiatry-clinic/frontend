@@ -262,6 +262,7 @@
 
   const addVisit = async () => {
     if (!storedUserData) return
+    // if (!storedUserData.clinic.id) return
     saving.value = true
 
     try {

@@ -68,7 +68,7 @@
   ]
 
   const selectedRadio = ref('child')
-  if (storedUserData?.clinic.name === 'Kadhimiya') {
+  if (storedUserData?.clinic?.name === 'Kadhimiya') {
     selectedRadio.value = 'adult'
   } else {
     selectedRadio.value = 'child'
