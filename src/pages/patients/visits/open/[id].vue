@@ -2,15 +2,29 @@
   const { t } = useI18n()
   import {
     Chief_complaint,
+    Consultations,
+    Management,
+    Investigation,
     Development,
     Present_illness,
     User,
     Visit,
+    Consultation,
   } from '@/utils/types'
 
   import { differenceInYears } from 'date-fns'
 
   import drawing from '../components/drawing.vue'
+  import { Examination } from '@/utils/types'
+  import { DDX } from '@/utils/types'
+  import { Managements } from '@/utils/types'
+  import { Notes } from '@/utils/types'
+  import { FamilyHX } from '@/utils/types'
+  import { PastHX } from '@/utils/types'
+  import { PersonalHX } from '@/utils/types'
+  import { SocialHX } from '@/utils/types'
+  import { OccupationHX } from '@/utils/types'
+  import { ForensicHX } from '@/utils/types'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -183,7 +197,7 @@
       {{ t('Back') }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
-      Patient :
+      {{ t('Patient') }} :
       {{ visit.patient.name }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
@@ -331,9 +345,11 @@
                 'Notes',
               ]"
             >
-              <template v-if="visit.present_illness[key]">
+              <template
+                v-if="visit.present_illness?.[key as keyof Present_illness]"
+              >
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-                {{ visit.present_illness[key] }}
+                {{ visit.present_illness[key as keyof Present_illness] }}
               </template>
             </div>
           </div>
@@ -353,9 +369,9 @@
               :key="consultation.branch"
             >
               <template v-for="key in ['Branch', 'Result']">
-                <template v-if="consultation[key]">
+                <template v-if="consultation?.[key as keyof Consultation]">
                   <span v-if="key !== 'result'">
-                    {{ consultation[key] }} -
+                    {{ consultation[key as keyof Consultation] }} -
                   </span>
                   <span v-else>
                     {{ consultation[key] }}
@@ -389,9 +405,9 @@
                 'Insight',
               ]"
             >
-              <template v-if="visit.examination[key]">
+              <template v-if="visit.examination?.[key as keyof Examination]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-                {{ visit.examination[key] }}
+                {{ visit.examination[key as keyof Examination] }}
               </template>
             </div>
           </div>
@@ -408,8 +424,8 @@
               >{{ t('Differential Diagnosis') }}:
             </span>
             <div v-for="key in ['Differential Diagnosis']">
-              <template v-if="visit.ddx[key]">
-                {{ visit.ddx[key] }}
+              <template v-if="visit.ddx?.[key as keyof DDX]">
+                {{ visit.ddx[key as keyof DDX] }}
               </template>
             </div>
           </div>
@@ -428,12 +444,12 @@
               :key="investigation.name"
             >
               <template v-for="key in ['Name', 'Result']">
-                <template v-if="investigation[key]">
+                <template v-if="investigation[key as keyof Investigation]">
                   <span v-if="key !== 'Result'">
-                    {{ investigation[key] }} -
+                    {{ investigation[key as keyof Investigation] }} -
                   </span>
                   <span v-else>
-                    {{ investigation[key] }}
+                    {{ investigation[key as keyof Investigation] }}
                   </span>
                 </template>
               </template>
@@ -454,8 +470,10 @@
               :key="management.Name"
             >
               <template v-for="key in ['Name', 'Form', 'Dose', 'Use']">
-                <template v-if="management[key]">
-                  <span v-if="key !== 'Use'"> {{ management[key] }} - </span>
+                <template v-if="management[key as keyof Management]">
+                  <span v-if="key !== 'Use'">
+                    {{ management[key as keyof Management] }} -
+                  </span>
                   <span v-else>
                     {{ management[key] }}
                   </span>
@@ -474,8 +492,8 @@
           >
             <span class="text-primary">{{ t('Notes') }}: </span>
             <div v-for="key in ['Notes']">
-              <template v-if="visit.notes[key]">
-                {{ visit.notes[key] }}
+              <template v-if="visit.notes?.[key as keyof Notes]">
+                {{ visit.notes[key as keyof Notes] }}
               </template>
             </div>
           </div>
@@ -493,9 +511,9 @@
           >
             <span class="text-primary">{{ t('Family History') }}: </span>
             <div v-for="key in ['Similar', 'Different', 'Medical', 'Other']">
-              <template v-if="visit.patient.family_hx[key]">
+              <template v-if="visit.patient.family_hx[key as keyof FamilyHX]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-                {{ visit.patient.family_hx[key] }}
+                {{ visit.patient.family_hx[key as keyof FamilyHX] }}
               </template>
             </div>
           </div>
@@ -519,14 +537,14 @@
                 'Past Substance',
               ]"
             >
-              <template v-if="visit.patient.past_hx[key]">
+              <template v-if="visit.patient.past_hx?.[key as keyof PastHX]">
                 {{
                   key
                     .split('_')
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ')
                 }}:
-                {{ visit.patient.past_hx[key] }}
+                {{ visit.patient.past_hx[key as keyof PastHX] }}
               </template>
             </div>
           </div>
@@ -551,13 +569,15 @@
                 'Adolescence',
               ]"
             >
-              <template v-if="visit.patient.personal_hx[key]">
+              <template
+                v-if="visit.patient.personal_hx?.[key as keyof PersonalHX]"
+              >
                 {{
                   key
                     .split('_')
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ')
-                }}: {{ visit.patient.personal_hx[key] }}
+                }}: {{ visit.patient.personal_hx[key as keyof PersonalHX] }}
               </template>
             </div>
           </div>
@@ -582,9 +602,9 @@
                 'Caregivers',
               ]"
             >
-              <template v-if="visit.patient.social_hx[key]">
+              <template v-if="visit.patient.social_hx?.[key as keyof SocialHX]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-                {{ visit.patient.social_hx[key] }}
+                {{ visit.patient.social_hx[key as keyof SocialHX] }}
               </template>
             </div>
           </div>
@@ -601,9 +621,11 @@
           >
             <span class="text-primary">{{ t('Occupation History') }}: </span>
             <div v-for="key in ['jobs', 'unemployment']">
-              <template v-if="visit.patient.occupation_hx[key]">
+              <template
+                v-if="visit.patient.occupation_hx?.[key as keyof OccupationHX]"
+              >
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
-                {{ visit.patient.occupation_hx[key] }}
+                {{ visit.patient.occupation_hx[key as keyof OccupationHX] }}
               </template>
             </div>
             <br />
@@ -628,14 +650,16 @@
                 'prison',
               ]"
             >
-              <template v-if="visit.patient.forensic_hx[key]">
+              <template
+                v-if="visit.patient.forensic_hx?.[key as keyof ForensicHX]"
+              >
                 {{
                   key
                     .split('_')
                     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                     .join(' ')
                 }}:
-                {{ visit.patient.forensic_hx[key] }}
+                {{ visit.patient.forensic_hx[key as keyof ForensicHX] }}
               </template>
             </div>
             <br />
@@ -654,7 +678,7 @@
           >
             <span class="text-primary">{{ t('Peripartum') }}:</span>
             <div
-              v-for="selected in visit.patient.development.selectedPeripartum"
+              v-for="selected in visit.patient.development?.selectedPeripartum"
               :key="selected"
             >
               <template v-if="selected">
@@ -678,7 +702,7 @@
           >
             <span class="text-primary">{{ t('Development - Years') }}:</span>
             <div
-              v-for="selected in visit.patient.development.selectedYear"
+              v-for="selected in visit.patient.development?.selectedYear"
               :key="selected"
             >
               <template v-if="selected">

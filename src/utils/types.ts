@@ -245,7 +245,7 @@ export interface Examination {
   insight?: string
 }
 
-interface Investigation {
+export interface Investigation {
   name?: string
   result?: string
 }
@@ -258,7 +258,7 @@ export interface Notes {
   notes?: string
 }
 
-interface Consultation {
+export interface Consultation {
   branch?: string
   result?: string
 }
@@ -267,7 +267,7 @@ export interface Consultations {
   consultations?: Consultation[]
 }
 
-interface Management {
+export interface Management {
   Name?: string
   Form?: string
   Dose?: string

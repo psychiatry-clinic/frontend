@@ -55,7 +55,12 @@
 
 <template>
   <div class="d-flex justify-space-between">
-    <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
+    <VBtn
+      variant="flat"
+      color="warning"
+      class="mb-5"
+      @click="router.push('/patients')"
+    >
       {{ t('Back') }}
     </VBtn>
   </div>
