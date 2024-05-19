@@ -1,8 +1,20 @@
 <script lang="ts" setup>
   import {
     Chief_complaint,
+    Consultations,
+    DDX,
     Development,
+    Examination,
+    FamilyHX,
+    ForensicHX,
+    Ix,
+    Managements,
+    Notes,
+    OccupationHX,
+    PastHX,
+    PersonalHX,
     Present_illness,
+    SocialHX,
     User,
     Visit,
   } from '@/utils/types'
@@ -23,6 +35,7 @@
   import presentIllnessChild from '../components/presentIllnessChild.vue'
   import socialHx from '../components/socialHx.vue'
   import therapyVue from '../components/therapyVue.vue'
+  const { t } = useI18n()
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -44,75 +57,75 @@
 
   const numberedStepsAdult = [
     {
-      title: 'Chief Complaint',
+      title: t('Chief Complaint'),
       subtitle: '',
     },
     {
-      title: 'Present Illness',
+      title: t('Present Illness'),
       subtitle: '',
     },
     {
-      title: 'Family History',
+      title: t('Family History'),
       subtitle: '',
     },
     {
-      title: 'Past History',
+      title: t('Past History'),
       subtitle: '',
     },
     {
-      title: 'Social History',
+      title: t('Social History'),
       subtitle: '',
     },
     {
-      title: 'Personal History',
+      title: t('Personal History'),
       subtitle: '',
     },
     {
-      title: 'Occupational History',
+      title: t('Occupational History'),
       subtitle: '',
     },
     {
-      title: 'Forensic History',
+      title: t('Forensic History'),
       subtitle: '',
     },
     {
-      title: 'Examination',
+      title: t('Examination'),
       subtitle: '',
     },
     {
-      title: 'Differential Diagnosis',
+      title: t('Differential Diagnosis'),
       subtitle: '',
     },
     {
-      title: 'Investigation',
+      title: t('Investigation'),
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: t('Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
     {
-      title: 'Therapy',
+      title: t('Therapy'),
       subtitle: '',
     },
   ]
   const numberedStepsShort = [
     {
-      title: 'Follow up Notes',
+      title: t('Follow up Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
   ]
   const numberedStepsChild = [
     {
-      title: 'Chief Complaint',
+      title: t('Chief Complaint'),
       subtitle: '',
     },
     {
@@ -124,46 +137,53 @@
       subtitle: '',
     },
     {
-      title: 'Family History',
+      title: t('Family History'),
       subtitle: '',
     },
     {
-      title: 'Past History',
+      title: t('Past History'),
       subtitle: '',
     },
     {
-      title: 'Social History',
+      title: t('Social History'),
       subtitle: '',
     },
     {
-      title: 'Examination',
+      title: t('Examination'),
       subtitle: '',
     },
     {
-      title: 'Consultations',
+      title: t('Consultations'),
       subtitle: '',
     },
     {
-      title: 'Differential Diagnosis',
+      title: t('Differential Diagnosis'),
       subtitle: '',
     },
     {
-      title: 'Investigations',
+      title: t('Investigations'),
       subtitle: '',
     },
     {
-      title: 'Notes',
+      title: t('Notes'),
       subtitle: '',
     },
     {
-      title: 'Management',
+      title: t('Management'),
       subtitle: '',
     },
     {
-      title: 'Therapy',
+      title: t('Therapy'),
       subtitle: '',
     },
   ]
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }
 
   let numberedSteps = ref<any>()
   numberedSteps.value = short.value
@@ -195,29 +215,30 @@
   )
   const development = ref<Development>(
     visit.patient.development || {
-      selectedYear: [''],
-      selectedPeripartum: [''],
+      selectedYear: [],
+      selectedPeripartum: [],
     }
   )
-  const family_hx = ref(visit.patient.family_hx)
-  const past_hx = ref(visit.patient.past_hx)
-  const social_hx = ref(visit.patient.social_hx)
-  const personal_hx = ref(visit.patient.personal_hx)
-  const occupation_hx = ref(visit.patient.occupation_hx)
-  const forensic_hx = ref(visit.patient.forensic_hx)
-  const ix = ref(visit.ix)
-  const examination = ref(visit.examination)
-  const consultations = ref(visit.consultations)
-  const management = ref(visit.management)
-  const ddx = ref(visit.ddx)
-  const notes = ref(visit.notes)
+  const family_hx = ref<FamilyHX>(visit.patient.family_hx || {})
+  const past_hx = ref<PastHX>(visit.patient.past_hx || {})
+  const social_hx = ref<SocialHX>(visit.patient.social_hx || {})
+  const personal_hx = ref<PersonalHX>(visit.patient.personal_hx || {})
+  const occupation_hx = ref<OccupationHX>(visit.patient.occupation_hx || {})
+  const forensic_hx = ref<ForensicHX>(visit.patient.forensic_hx || {})
+  const ix = ref<Ix>(visit.ix || {})
+  const examination = ref<Examination>(visit.examination || {})
+  const consultations = ref<Consultations>(visit.consultations || {})
+  const management = ref<Managements>(visit.management || { managements: [] })
+  const ddx = ref<DDX>(visit.ddx || { 'Differential Diagnosis': '' })
+  const notes = ref<Notes>(visit.notes || { Notes: '' })
 
   const link = `/visits-edit/${storedUserData?.id}/${route.query.visit}/${visit.patient.id}`
+  const saving = ref(false)
 
   const saveVisit = async () => {
     if (!storedUserData) return
-    console.log('short.value')
-    console.log(short.value)
+    saving.value = true
+
     try {
       const res = await $api(link, {
         method: 'POST',
@@ -245,8 +266,10 @@
         },
       })
       router.push(`/patients/${route.params.id}`)
+      saving.value = false
     } catch (error) {
       console.error(error)
+      saving.value = false
     }
   }
 </script>
@@ -254,14 +277,14 @@
 <template>
   <div class="d-flex justify-space-between">
     <VBtn variant="flat" color="warning" class="mb-5" @click="router.back">
-      Back
+      {{ t('Back') }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
-      Patient :
+      {{ t('Patient') }} :
       {{ visit.patient.name }}
     </VBtn>
     <VBtn variant="outlined" color="secondary">
-      Dr.
+      {{ 'Dr' }}.
       {{ visit.doctor?.fullName }}
     </VBtn>
   </div>
@@ -286,6 +309,7 @@
             v-model:current-step="currentStep"
             direction="vertical"
             :items="numberedSteps"
+            @click="scrollToTop"
           />
         </VCardText>
       </VCol>
@@ -345,19 +369,28 @@
                 color="secondary"
                 variant="tonal"
                 :disabled="currentStep === 0"
-                @click="currentStep--"
+                @click="currentStep--, scrollToTop()"
               >
                 <VIcon icon="tabler-arrow-left" start class="flip-in-rtl" />
-                Previous
+                {{ t('Previous') }}
               </VBtn>
 
-              <VBtn color="success" @click="saveVisit"> Save </VBtn>
+              <VBtn color="success" @click.once="saveVisit" v-if="!saving">
+                {{ t('Save') }}
+              </VBtn>
+              <VProgressCircular
+                v-else
+                :size="30"
+                width="3"
+                color="success"
+                indeterminate
+              />
 
               <VBtn
                 v-if="currentStep !== numberedSteps.length - 1"
-                @click="currentStep++"
+                @click="currentStep++, scrollToTop()"
               >
-                Next
+                {{ t('Next') }}
 
                 <VIcon icon="tabler-arrow-right" end class="flip-in-rtl" />
               </VBtn>

@@ -29,77 +29,77 @@
     differenceInYears(new Date(), new Date(visit.patient.dob)) < 14
 
   const patient = ref(route.params.id)
-  const doctor = ref(visit.doctor?.name)
+  const doctor = ref(visit.doctor?.fullName)
   const prescription = ref()
   const clinic = ref(visit.clinic)
   const duration = ref()
 
   const chief_complaint = ref<Chief_complaint>(
-    visit.chief_complaint || { complaint: '' }
+    visit.chief_complaint || { Complaint: '' }
   )
   const present_illness = ref<Present_illness>(
-    visit.present_illness || { notes: '' }
+    visit.present_illness || { Notes: '' }
   )
   const development = ref<Development>(
     visit.patient.development || {
-      selectedYear: [''],
-      selectedPeripartum: [''],
+      selectedYear: [],
+      selectedPeripartum: [],
     }
   )
 
   const patientFields = [
     {
       key: 'name',
-      label: 'Patient',
+      label: t('Patient'),
       value: visit.patient.name,
       newLine: false,
       color: 'info',
     },
     {
       key: 'dob',
-      label: 'Birth Date',
+      label: t('Birth Date'),
       value: removeTimeFromDate(visit.patient.dob),
       newLine: false,
       color: 'info',
     },
     {
       key: 'age',
-      label: 'Age',
+      label: t('Age'),
       value: calculateAge(visit.patient.dob),
       newLine: false,
       color: 'info',
     },
     {
       key: 'residence',
-      label: 'Residence',
+      label: t('Residence'),
       value: visit.patient?.demographics?.[0].residence,
       newLine: false,
       color: 'info',
     },
     {
       key: 'education',
-      label: 'Education',
+      label: t('Education'),
       value: visit.patient?.demographics?.[0].education,
       newLine: false,
       color: 'info',
     },
     {
       key: 'occupation',
-      label: 'Occupation',
+      label: t('Occupation'),
       value: visit.patient?.demographics?.[0].occupation,
       newLine: false,
       color: 'info',
     },
     {
       key: 'maritalStatus',
-      label: 'Marital Status',
+      label: t('Marital Status'),
       value: visit.patient?.demographics?.[0].marital_status,
       newLine: false,
       color: 'success',
     },
     {
       key: 'children',
-      label: 'Children',
+      label: t('Children'),
       value: visit.patient?.demographics?.[0].children,
       newLine: false,
       color: 'success',
@@ -109,14 +109,14 @@
   const patientFather = [
     {
       key: 'father_dob',
-      label: 'Birth Date',
+      label: t('Birth Date'),
       value: visit.patient?.father_dob?.split('-')[0],
       newLine: true,
       color: 'warning',
     },
     {
       key: 'father_age',
-      label: 'Age at Birth of Child',
+      label: t('Age at Birth of Child'),
       value: visit.patient?.father_dob
         ? (calculateAge(
             new Date(visit.patient?.father_dob).toString()
@@ -127,14 +127,14 @@
     },
     {
       key: 'father_edu',
-      label: 'Education',
+      label: t('Education'),
       value: visit.patient?.father_edu,
       newLine: false,
       color: 'warning',
     },
     {
       key: 'father_work',
-      label: 'Work',
+      label: t('Work'),
       value: visit.patient?.father_work,
       newLine: false,
       color: 'warning',
@@ -144,14 +144,14 @@
   const patientMother = [
     {
       key: 'mother_dob',
-      label: 'Birth Date',
+      label: t('Birth Date'),
       value: visit.patient?.mother_dob?.split('-')[0],
       newLine: true,
       color: 'warning',
     },
     {
       key: 'mother_age',
-      label: 'Age at Birth of Child',
+      label: t('Age at Birth of Child'),
       value: visit.patient?.mother_dob
         ? (calculateAge(
             new Date(visit.patient?.mother_dob).toString()
@@ -162,14 +162,14 @@
     },
     {
       key: 'mother_edu',
-      label: 'Education',
+      label: t('Education'),
       value: visit.patient?.mother_edu,
       newLine: false,
       color: 'warning',
     },
     {
       key: 'mother_work',
-      label: 'Work',
+      label: t('Work'),
       value: visit.patient?.mother_work,
       newLine: false,
       color: 'warning',
@@ -188,19 +188,21 @@
     </VBtn>
     <VBtn variant="outlined" color="secondary">
       Dr.
-      {{ visit.doctor?.name }}
+      {{ visit.doctor?.fullName }}
     </VBtn>
   </div>
   <VCard>
     <VCardItem>
-      <VCardTitle>Demographic Data</VCardTitle>
+      <VCardTitle>{{ t('Demographic Data') }}</VCardTitle>
     </VCardItem>
 
     <VCardText>
       <VRow>
         <VCol cols="12">
           <div class="patient-info">
-            <span class="text-info">Dr. {{ visit.doctor?.fullName }}</span>
+            <span class="text-info"
+              >{{ t('Dr') }}. {{ visit.doctor?.fullName }}</span
+            >
           </div>
         </VCol>
       </VRow>
@@ -224,7 +226,7 @@
         <VCol>
           <div class="patient-info">
             <span class="me-4 text-info" v-if="patientFather[0].value">
-              Father:
+              {{ t('Father') }}:
             </span>
             <template v-for="field in patientFather" :key="field.key">
               <div v-if="field.value">
@@ -243,7 +245,7 @@
         <VCol>
           <div class="patient-info">
             <span class="me-4 text-info" v-if="patientMother[0].value">
-              Mother:
+              {{ t('Mother') }}:
             </span>
             <template v-for="field in patientMother" :key="field.key">
               <div v-if="field.value">
@@ -261,7 +263,7 @@
     </VCardText>
 
     <VCardItem>
-      <VCardTitle>History & Examination</VCardTitle>
+      <VCardTitle>{{ t('History & Examination') }}</VCardTitle>
     </VCardItem>
 
     <VCardText>
@@ -270,25 +272,26 @@
           <!-- chief complaint -->
           <div
             v-if="
-              visit.chief_complaint?.complaint ||
-              visit.chief_complaint?.duration ||
-              visit.chief_complaint?.referral ||
-              visit.chief_complaint?.source
+              visit.chief_complaint?.Complaint ||
+              visit.chief_complaint?.Duration ||
+              visit.chief_complaint?.Referral ||
+              visit.chief_complaint?.Source
             "
           >
             <div>
-              <span class="text-primary"> Chief complaint: </span>
-              {{ visit.chief_complaint?.complaint
-              }}<span v-if="visit.chief_complaint?.duration">
-                for {{ visit.chief_complaint?.duration }}
+              <span class="text-primary"> {{ t('Chief Complaint') }}: </span>
+              {{ visit.chief_complaint?.Complaint
+              }}<span v-if="visit.chief_complaint?.Duration">
+                for {{ visit.chief_complaint?.Duration }}
               </span>
             </div>
 
-            <div v-if="visit.chief_complaint?.source">
-              Source of information: {{ visit.chief_complaint?.source }}
+            <div v-if="visit.chief_complaint?.Source">
+              {{ t('Source of information') }}:
+              {{ visit.chief_complaint?.Source }}
             </div>
-            <div v-if="visit.chief_complaint?.referral">
-              Referral: {{ visit.chief_complaint?.referral }}
+            <div v-if="visit.chief_complaint?.Referral">
+              {{ t('Referral') }}: {{ visit.chief_complaint?.Referral }}
             </div>
             <br />
           </div>
@@ -303,17 +306,17 @@
               )
             "
           >
-            <span class="text-primary">Present Illness: </span>
+            <span class="text-primary">{{ t('Present Illness') }}: </span>
             <div
               v-for="key in [
-                'course',
-                'circumstances',
-                'vegetative',
-                'associated',
-                'functioning',
-                'relationships',
-                'substances',
-                'treatments',
+                'Course',
+                'Circumstances',
+                'Vegetative',
+                'Associated',
+                'Functioning',
+                'Relationships',
+                'Substances',
+                'Treatments',
                 'ASD',
                 'ADHD',
                 'Speech',
@@ -324,8 +327,8 @@
                 'Learning',
                 'Movement',
                 'Coordination',
-                'risk',
-                'notes',
+                'Risk',
+                'Notes',
               ]"
             >
               <template v-if="visit.present_illness[key]">
@@ -344,12 +347,12 @@
               )
             "
           >
-            <span class="text-primary">Consultations:</span>
+            <span class="text-primary">{{ t('Consultations') }}:</span>
             <div
               v-for="consultation in visit.consultations?.consultations"
               :key="consultation.branch"
             >
-              <template v-for="key in ['branch', 'result']">
+              <template v-for="key in ['Branch', 'Result']">
                 <template v-if="consultation[key]">
                   <span v-if="key !== 'result'">
                     {{ consultation[key] }} -
@@ -370,20 +373,20 @@
               )
             "
           >
-            <span class="text-primary">Examination: </span>
+            <span class="text-primary">{{ t('Examination') }}: </span>
             <div
               v-for="key in [
-                'physical',
-                'appearance',
-                'behavior',
-                'speech',
-                'mood',
-                'affect',
-                'form',
-                'content',
-                'perception',
-                'cognition',
-                'insight',
+                'Physical',
+                'Appearance',
+                'Behavior',
+                'Speech',
+                'Mood',
+                'Affect',
+                'Form',
+                'Content',
+                'Perception',
+                'Cognition',
+                'Insight',
               ]"
             >
               <template v-if="visit.examination[key]">
@@ -401,8 +404,10 @@
               )
             "
           >
-            <span class="text-primary">Differential Diagnosis: </span>
-            <div v-for="key in ['differential']">
+            <span class="text-primary"
+              >{{ t('Differential Diagnosis') }}:
+            </span>
+            <div v-for="key in ['Differential Diagnosis']">
               <template v-if="visit.ddx[key]">
                 {{ visit.ddx[key] }}
               </template>
@@ -417,14 +422,14 @@
               )
             "
           >
-            <span class="text-primary">Investigations:</span>
+            <span class="text-primary">{{ t('Investigations') }}:</span>
             <div
               v-for="investigation in visit.ix.investigations"
               :key="investigation.name"
             >
-              <template v-for="key in ['name', 'result']">
+              <template v-for="key in ['Name', 'Result']">
                 <template v-if="investigation[key]">
-                  <span v-if="key !== 'result'">
+                  <span v-if="key !== 'Result'">
                     {{ investigation[key] }} -
                   </span>
                   <span v-else>
@@ -443,14 +448,14 @@
               )
             "
           >
-            <span class="text-primary">Managements:</span>
+            <span class="text-primary">{{ t('Management') }}:</span>
             <div
               v-for="management in visit.management?.managements"
-              :key="management.name"
+              :key="management.Name"
             >
-              <template v-for="key in ['name', 'form', 'dose', 'use']">
+              <template v-for="key in ['Name', 'Form', 'Dose', 'Use']">
                 <template v-if="management[key]">
-                  <span v-if="key !== 'use'"> {{ management[key] }} - </span>
+                  <span v-if="key !== 'Use'"> {{ management[key] }} - </span>
                   <span v-else>
                     {{ management[key] }}
                   </span>
@@ -467,8 +472,8 @@
               )
             "
           >
-            <span class="text-primary">Notes: </span>
-            <div v-for="key in ['notes']">
+            <span class="text-primary">{{ t('Notes') }}: </span>
+            <div v-for="key in ['Notes']">
               <template v-if="visit.notes[key]">
                 {{ visit.notes[key] }}
               </template>
@@ -480,14 +485,14 @@
         <VCol cols="6">
           <div
             v-if="
-              visit.patient.family_hx?.similar ||
-              visit.patient.family_hx?.different ||
-              visit.patient.family_hx?.medical ||
-              visit.patient.family_hx?.other
+              visit.patient.family_hx?.Similar ||
+              visit.patient.family_hx?.Different ||
+              visit.patient.family_hx?.Medical ||
+              visit.patient.family_hx?.Other
             "
           >
-            <span class="text-primary">Family History: </span>
-            <div v-for="key in ['similar', 'different', 'medical', 'other']">
+            <span class="text-primary">{{ t('Family History') }}: </span>
+            <div v-for="key in ['Similar', 'Different', 'Medical', 'Other']">
               <template v-if="visit.patient.family_hx[key]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
                 {{ visit.patient.family_hx[key] }}
@@ -505,13 +510,13 @@
               )
             "
           >
-            <span class="text-primary">Past History: </span>
+            <span class="text-primary">{{ t('Past History') }}: </span>
             <div
               v-for="key in [
-                'past_psychiatric',
-                'past_medical',
-                'past_surgical',
-                'past_substance',
+                'Past Psychiatric',
+                'Past Medical',
+                'Past Surgical',
+                'Past Substance',
               ]"
             >
               <template v-if="visit.patient.past_hx[key]">
@@ -536,14 +541,14 @@
               )
             "
           >
-            <span class="text-primary">Personal History: </span>
+            <span class="text-primary">{{ t('Personal History') }}: </span>
             <div
               v-for="key in [
-                'family_background',
-                'family_atmosphere',
-                'childhood',
-                'school',
-                'adolescence',
+                'Family Background',
+                'Family Atmosphere',
+                'Childhood',
+                'School',
+                'Adolescence',
               ]"
             >
               <template v-if="visit.patient.personal_hx[key]">
@@ -567,14 +572,14 @@
               )
             "
           >
-            <span class="text-primary">Social History: </span>
+            <span class="text-primary">{{ t('Social History') }}: </span>
             <div
               v-for="key in [
-                'accommodation',
-                'finances',
-                'indoor',
-                'outdoor',
-                'caregivers',
+                'Accommodation',
+                'Finances',
+                'Indoor',
+                'Outdoor',
+                'Caregivers',
               ]"
             >
               <template v-if="visit.patient.social_hx[key]">
@@ -594,7 +599,7 @@
               )
             "
           >
-            <span class="text-primary">Occupation History: </span>
+            <span class="text-primary">{{ t('Occupation History') }}: </span>
             <div v-for="key in ['jobs', 'unemployment']">
               <template v-if="visit.patient.occupation_hx[key]">
                 {{ key.charAt(0).toUpperCase() + key.slice(1) }}:
@@ -613,7 +618,7 @@
               )
             "
           >
-            <span class="text-primary">Forensic History: </span>
+            <span class="text-primary">{{ t('Forensic History') }}: </span>
             <div
               v-for="key in [
                 'offense_type',
@@ -647,7 +652,7 @@
               ) && childBoolean
             "
           >
-            <span class="text-primary">Peripartum:</span>
+            <span class="text-primary">{{ t('Peripartum') }}:</span>
             <div
               v-for="selected in visit.patient.development.selectedPeripartum"
               :key="selected"
@@ -671,7 +676,7 @@
               ) && childBoolean
             "
           >
-            <span class="text-primary">Development - Years:</span>
+            <span class="text-primary">{{ t('Development - Years') }}:</span>
             <div
               v-for="selected in visit.patient.development.selectedYear"
               :key="selected"
