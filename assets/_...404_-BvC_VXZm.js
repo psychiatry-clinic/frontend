@@ -1,0 +1,1 @@
+import{_ as o}from"./_plugin-vue_export-helper-DlAUqK2U.js";import{a as t,o as a,c as s,b as c,f as n,e as r,v as _}from"./index-C3CY-prX.js";const l={},p=r("p",null,"Oops, You are lost",-1);function d(f,i){const e=t("RouterLink");return a(),s("div",null,[p,c(e,{tag:"p",to:"/"},{default:n(()=>[_(" Go back home ")]),_:1})])}const k=o(l,[["render",d]]);export{k as default};
