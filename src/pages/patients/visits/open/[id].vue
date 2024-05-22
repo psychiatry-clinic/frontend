@@ -716,9 +716,6 @@
       </VRow>
     </VCardText>
   </VCard>
-  <VCard>
-    <drawing></drawing>
-  </VCard>
 </template>
 
 <style lang="scss">

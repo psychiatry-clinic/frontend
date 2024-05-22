@@ -3,7 +3,7 @@
   import type { Patient, User } from '@/utils/types'
   import { BlobServiceClient } from '@azure/storage-blob'
   import type { CustomInputContent } from '@core/types'
-  import { differenceInCalendarYears } from 'date-fns'
+  import { differenceInCalendarYears, differenceInYears } from 'date-fns'
   import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
   import { VForm } from 'vuetify/components/VForm'
 
@@ -74,7 +74,12 @@
     },
   ]
 
-  const selectedRadio = ref('child')
+  const selectedRadio = ref(
+    differenceInYears(new Date(), patientData.value.dob) < 14
+      ? 'child'
+      : 'adult'
+  )
+  console.log(selectedRadio.value)
 
   const refVForm = ref<VForm>()
   const avatar = ref()
@@ -102,7 +107,7 @@
   const father_work = ref(patientData.value.father_work)
   const mother_dob = ref()
   const mother_age = ref()
-  const dobAdult = ref<number>()
+  const dobAdult = ref<number>(+removeTimeAndDate(patientData.value.dob))
 
   if (patientData.value.mother_dob) {
     mother_dob.value = new Date(patientData.value.mother_dob).getFullYear()
@@ -460,6 +465,16 @@
                   :placeholder="t('Write an Occupation')"
                   :label="t('Occupation')"
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in occupationSuggestions"
+                    size="x-small"
+                    @click="toggleSuggestion('occupation', suggestion)"
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <!-- child education -->
@@ -507,6 +522,16 @@
                   placeholder="Select Education"
                   :items="adultEducation"
                 />
+                <div class="mt-5">
+                  <VChip
+                    class="me-2 mb-2"
+                    v-for="suggestion in adultEducation"
+                    size="x-small"
+                    @click="education = suggestion"
+                  >
+                    {{ suggestion }}
+                  </VChip>
+                </div>
               </VCol>
 
               <!-- related -->

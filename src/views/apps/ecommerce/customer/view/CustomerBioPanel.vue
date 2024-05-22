@@ -102,7 +102,7 @@
               <h6 class="text-h6">
                 {{ t('Birth Date') }} :
                 <span class="text-body-1 d-inline-block">
-                  {{ removeTimeFromDate(props.patientData.dob) }}
+                  {{ removeTimeAndDate(props.patientData.dob) }}
                 </span>
               </h6>
             </VListItem>

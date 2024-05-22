@@ -78,7 +78,12 @@
             <div class="app-timeline-text mt-1">
               <span class="text-warning"> {{ t('Chief Complaint') }}: </span>
               <li>
-                {{ visit.chief_complaint?.Complaint }} for
+                {{
+                  visit.chief_complaint?.Complaint
+                    ? visit.chief_complaint?.Complaint
+                    : visit.present_illness?.Course
+                }}
+                {{ visit.chief_complaint?.Duration ? 'for' : '' }}
                 {{ visit.chief_complaint?.Duration }}
               </li>
             </div>
