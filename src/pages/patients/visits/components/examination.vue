@@ -1,19 +1,30 @@
 <script setup lang="ts">
   import {} from '@/utils/suggestions'
+  const {
+    appearances,
+    behaviors,
+    moods,
+    speeches,
+    thought_forms,
+    thought_contents,
+    cognitive,
+    insights,
+    perceptions,
+  } = getExportedData()
   const { t } = useI18n()
 
   const suggestions: { [key: string]: string[] } = {
     Physical: [],
-    Appearance: [],
-    Behavior: [],
-    Speech: [],
-    Mood: [],
+    Appearance: appearances as string[],
+    Behavior: behaviors as string[],
+    Speech: speeches as string[],
+    Mood: moods as string[],
     Affect: [],
-    Form: [],
-    Content: [],
-    Perception: [],
-    Cognition: [],
-    Insight: [],
+    Form: thought_forms as string[],
+    Content: thought_contents as string[],
+    Perception: perceptions as string[],
+    Cognition: cognitive as string[],
+    Insight: insights as string[],
   }
 
   const fields1 = ['Physical']

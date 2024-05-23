@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  const { substances, suicides, functioning } = getExportedData()
+  console.log(substances)
+
   import {
     courseSuggestions,
     circumstancesSuggestions,
@@ -22,11 +25,11 @@
     Learning: [],
     Movement: [],
     Coordination: [],
-    Functioning: [],
+    Functioning: functioning as string[],
     Relationships: [],
     Treatments: [],
-    Substances: [],
-    Risk: [],
+    Substances: substances as string[],
+    Risk: suicides as string[],
   }
 
   const { t } = useI18n()

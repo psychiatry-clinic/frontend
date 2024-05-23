@@ -1,4 +1,8 @@
 <script setup lang="ts">
+  import { Managements } from '@/utils/types'
+
+  const { medicationSuggestion } = getExportedData()
+
   interface Management {
     Name?: string
     Form?: string
@@ -36,23 +40,6 @@
     if (!managements.value || !managements.value[index]) return
     managements.value[index].Name = managements.value[index].Name?.toUpperCase()
   }
-
-  // const toggleSuggestion = (field: string, suggestion: string) => {
-  //   if (!model) return
-  //   if (!model.value) return
-  //   if (model.value?.[field] === undefined || model.value[field] === '') {
-  //     model.value[field] = suggestion
-  //   } else {
-  //     const suggestionsArray = model.value[field].split(', ').filter((s) => s)
-  //     const index = suggestionsArray.indexOf(suggestion)
-  //     if (index === -1) {
-  //       suggestionsArray.push(suggestion)
-  //     } else {
-  //       suggestionsArray.splice(index, 1)
-  //     }
-  //     model.value[field] = suggestionsArray.join(', ')
-  //   }
-  // }
 </script>
 
 <template>
@@ -76,7 +63,7 @@
           <div class="mt-5">
             <VChip
               class="me-2 mb-2"
-              v-for="suggestion in medicationSuggestions"
+              v-for="suggestion in medicationSuggestion"
               size="x-small"
               @click="
                 () => {
@@ -152,7 +139,11 @@
               size="x-small"
               @click="
                 () => {
-                  management.Use = suggestion
+                  management.Use === '' ||
+                  management.Use === undefined ||
+                  management.Use === null
+                    ? (management.Use = suggestion)
+                    : (management.Use = management.Use + ' ' + suggestion)
                 }
               "
             >

@@ -23,11 +23,13 @@ declare global {
   const alphaDashValidator: typeof import('./src/@core/utils/validators')['alphaDashValidator']
   const alphaValidator: typeof import('./src/@core/utils/validators')['alphaValidator']
   const api: typeof import('./src/utils/api')['api']
+  const appearances: typeof import('./src/utils/suggestions')['appearances']
   const associatedSymptomsSuggestions: typeof import('./src/utils/suggestions')['associatedSymptomsSuggestions']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const avatarText: typeof import('./src/@core/utils/formatters')['avatarText']
   const baghdadRegions: typeof import('./src/utils/suggestions')['baghdadRegions']
+  const behaviors: typeof import('./src/utils/suggestions')['behaviors']
   const betweenValidator: typeof import('./src/@core/utils/validators')['betweenValidator']
   const calculateAge: typeof import('./src/utils/myFormat')['calculateAge']
   const calculateAgeF: typeof import('./src/utils/myFormat')['calculateAgeF']
@@ -37,6 +39,7 @@ declare global {
   const childFamilyHx: typeof import('./src/utils/suggestions')['childFamilyHx']
   const circumstancesSuggestions: typeof import('./src/utils/suggestions')['circumstancesSuggestions']
   const cities: typeof import('./src/utils/suggestions')['cities']
+  const cognitive: typeof import('./src/utils/suggestions')['cognitive']
   const computed: typeof import('vue')['computed']
   const computedAsync: typeof import('@vueuse/core')['computedAsync']
   const computedEager: typeof import('@vueuse/core')['computedEager']
@@ -86,11 +89,13 @@ declare global {
   const getActivePinia: typeof import('pinia')['getActivePinia']
   const getCurrentInstance: typeof import('vue')['getCurrentInstance']
   const getCurrentScope: typeof import('vue')['getCurrentScope']
+  const getExportedData: typeof import('./src/utils/suggestions')['getExportedData']
   const getVisitNumber: typeof import('./src/utils/myFormat')['getVisitNumber']
   const h: typeof import('vue')['h']
   const ignorableWatch: typeof import('@vueuse/core')['ignorableWatch']
   const inject: typeof import('vue')['inject']
   const injectLocal: typeof import('@vueuse/core')['injectLocal']
+  const insights: typeof import('./src/utils/suggestions')['insights']
   const integerValidator: typeof import('./src/@core/utils/validators')['integerValidator']
   const isDarkPreferred: typeof import('./src/@core/composable/useThemeConfig')['isDarkPreferred']
   const isDefined: typeof import('@vueuse/core')['isDefined']
@@ -125,6 +130,7 @@ declare global {
   const medicationUseSuggestions: typeof import('./src/utils/suggestions')['medicationUseSuggestions']
   const medicationUseSuggstions: typeof import('./src/utils/suggestions')['medicationUseSuggstions']
   const medicationUseSugstions: typeof import('./src/utils/suggestions')['medicationUseSugstions']
+  const moods: typeof import('./src/utils/suggestions')['moods']
   const myApi: typeof import('./src/utils/myApi')['myApi']
   const natalList: typeof import('./src/utils/suggestions')['natalList']
   const nextTick: typeof import('vue')['nextTick']
@@ -155,6 +161,7 @@ declare global {
   const pastPsychiatricHistorySuggestions: typeof import('./src/utils/suggestions')['pastPsychiatricHistorySuggestions']
   const pastSurgicalHistorySuggestions: typeof import('./src/utils/suggestions')['pastSurgicalHistorySuggestions']
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
+  const perceptions: typeof import('./src/utils/suggestions')['perceptions']
   const peripartumList: typeof import('./src/utils/suggestions')['peripartumList']
   const phoneNumberValidator: typeof import('./src/@core/utils/validators')['phoneNumberValidator']
   const postnatalList: typeof import('./src/utils/suggestions')['postnatalList']
@@ -195,11 +202,17 @@ declare global {
   const shallowReadonly: typeof import('vue')['shallowReadonly']
   const shallowRef: typeof import('vue')['shallowRef']
   const sourceOfInfo: typeof import('./src/utils/suggestions')['sourceOfInfo']
+  const speeches: typeof import('./src/utils/suggestions')['speeches']
   const storeToRefs: typeof import('pinia')['storeToRefs']
+  const substances: typeof import('./src/utils/suggestions')['substances']
   const substancesSuggestions: typeof import('./src/utils/suggestions')['substancesSuggestions']
+  const suggestions: typeof import('./src/utils/suggestions')['default']
+  const suicides: typeof import('./src/utils/suggestions')['suicides']
   const syncRef: typeof import('@vueuse/core')['syncRef']
   const syncRefs: typeof import('@vueuse/core')['syncRefs']
   const templateRef: typeof import('@vueuse/core')['templateRef']
+  const thought_contents: typeof import('./src/utils/suggestions')['thought_contents']
+  const thought_forms: typeof import('./src/utils/suggestions')['thought_forms']
   const throttledRef: typeof import('@vueuse/core')['throttledRef']
   const throttledWatch: typeof import('@vueuse/core')['throttledWatch']
   const toRaw: typeof import('vue')['toRaw']
@@ -514,6 +527,7 @@ declare module 'vue' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getExportedData: UnwrapRef<typeof import('./src/utils/suggestions')['getExportedData']>
     readonly getVisitNumber: UnwrapRef<typeof import('./src/utils/myFormat')['getVisitNumber']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -545,7 +559,6 @@ declare module 'vue' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly medicationDoseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationDoseSuggestions']>
     readonly medicationFormSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationFormSuggestions']>
-    readonly medicationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationSuggestions']>
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
@@ -611,6 +624,7 @@ declare module 'vue' {
     readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
+    readonly suggestions: UnwrapRef<typeof import('./src/utils/suggestions')['default']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
@@ -908,6 +922,7 @@ declare module '@vue/runtime-core' {
     readonly getActivePinia: UnwrapRef<typeof import('pinia')['getActivePinia']>
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
+    readonly getExportedData: UnwrapRef<typeof import('./src/utils/suggestions')['getExportedData']>
     readonly getVisitNumber: UnwrapRef<typeof import('./src/utils/myFormat')['getVisitNumber']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
@@ -939,7 +954,6 @@ declare module '@vue/runtime-core' {
     readonly markRaw: UnwrapRef<typeof import('vue')['markRaw']>
     readonly medicationDoseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationDoseSuggestions']>
     readonly medicationFormSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationFormSuggestions']>
-    readonly medicationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationSuggestions']>
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
@@ -1005,6 +1019,7 @@ declare module '@vue/runtime-core' {
     readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
+    readonly suggestions: UnwrapRef<typeof import('./src/utils/suggestions')['default']>
     readonly syncRef: UnwrapRef<typeof import('@vueuse/core')['syncRef']>
     readonly syncRefs: UnwrapRef<typeof import('@vueuse/core')['syncRefs']>
     readonly templateRef: UnwrapRef<typeof import('@vueuse/core')['templateRef']>
