@@ -475,7 +475,6 @@ declare module 'vue' {
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/suggestions')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
-    readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
     readonly childDdx: UnwrapRef<typeof import('./src/utils/suggestions')['childDdx']>
     readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
     readonly childFamilyHx: UnwrapRef<typeof import('./src/utils/suggestions')['childFamilyHx']>
@@ -513,7 +512,6 @@ declare module 'vue' {
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly differentialDiagnosis: UnwrapRef<typeof import('./src/utils/suggestions')['differentialDiagnosis']>
-    readonly durations: UnwrapRef<typeof import('./src/utils/suggestions')['durations']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
@@ -621,7 +619,6 @@ declare module 'vue' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
     readonly suggestions: UnwrapRef<typeof import('./src/utils/suggestions')['default']>
@@ -870,7 +867,6 @@ declare module '@vue/runtime-core' {
     readonly baghdadRegions: UnwrapRef<typeof import('./src/utils/suggestions')['baghdadRegions']>
     readonly betweenValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['betweenValidator']>
     readonly calculateAge: UnwrapRef<typeof import('./src/utils/myFormat')['calculateAge']>
-    readonly chief_complains: UnwrapRef<typeof import('./src/utils/suggestions')['chief_complains']>
     readonly childDdx: UnwrapRef<typeof import('./src/utils/suggestions')['childDdx']>
     readonly childEducation: UnwrapRef<typeof import('./src/utils/suggestions')['childEducation']>
     readonly childFamilyHx: UnwrapRef<typeof import('./src/utils/suggestions')['childFamilyHx']>
@@ -908,7 +904,6 @@ declare module '@vue/runtime-core' {
     readonly definePage: UnwrapRef<typeof import('unplugin-vue-router/runtime')['_definePage']>
     readonly defineStore: UnwrapRef<typeof import('pinia')['defineStore']>
     readonly differentialDiagnosis: UnwrapRef<typeof import('./src/utils/suggestions')['differentialDiagnosis']>
-    readonly durations: UnwrapRef<typeof import('./src/utils/suggestions')['durations']>
     readonly eagerComputed: UnwrapRef<typeof import('@vueuse/core')['eagerComputed']>
     readonly effectScope: UnwrapRef<typeof import('vue')['effectScope']>
     readonly emailValidator: UnwrapRef<typeof import('./src/@core/utils/validators')['emailValidator']>
@@ -1016,7 +1011,6 @@ declare module '@vue/runtime-core' {
     readonly shallowReactive: UnwrapRef<typeof import('vue')['shallowReactive']>
     readonly shallowReadonly: UnwrapRef<typeof import('vue')['shallowReadonly']>
     readonly shallowRef: UnwrapRef<typeof import('vue')['shallowRef']>
-    readonly sourceOfInfo: UnwrapRef<typeof import('./src/utils/suggestions')['sourceOfInfo']>
     readonly storeToRefs: UnwrapRef<typeof import('pinia')['storeToRefs']>
     readonly substancesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['substancesSuggestions']>
     readonly suggestions: UnwrapRef<typeof import('./src/utils/suggestions')['default']>

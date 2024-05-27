@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { chief_complains, durations, sourceOfInfo } from '@/utils/suggestions'
+  const { chief_complains, durations, sourceOfInfo } = getExportedData()
   const { t } = useI18n()
 
-  const suggestions: { [key: string]: string[] } = {
+  const suggestions: { [key: string]: { text: string; color: string }[] } = {
     Complaint: chief_complains,
     Duration: durations,
     Source: sourceOfInfo,
@@ -32,10 +32,6 @@
   }
 
   const model = defineModel<Model>()
-
-  const appendTo = (target: string | undefined, text: string) => {
-    return target ? target + ', ' + text : text
-  }
 </script>
 
 <template>
@@ -65,9 +61,10 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="toggleSuggestion(field, suggestion)"
+            :color="suggestion.color"
+            @click="toggleSuggestion(field, suggestion.text)"
           >
-            {{ suggestion }}
+            {{ suggestion.text }}
           </VChip>
         </div>
       </VCol>

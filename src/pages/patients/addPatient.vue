@@ -457,7 +457,7 @@
                     class="me-2 mb-2"
                     v-for="suggestion in adultEducation"
                     size="x-small"
-                    @click="education.value = suggestion"
+                    @click="education = suggestion"
                   >
                     {{ suggestion }}
                   </VChip>
