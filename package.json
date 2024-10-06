@@ -10,7 +10,7 @@
   "scripts": {
     "deploy": "vite build",
     "dev": "vite",
-    "serve": "gh-pages -d dist",
+    "serve": "npx serve dist",
     "build": "vite build",
     "preview": "vite preview --port 5050",
     "typecheck": "vue-tsc --noEmit",
@@ -120,7 +120,7 @@
     "unplugin-auto-import": "0.17.5",
     "unplugin-vue-components": "0.26.0",
     "unplugin-vue-router": "0.7.0",
-    "video.js": "8.6.0",
+    "video.js": "7.21.6",
     "vite": "5.1.4",
     "vite-plugin-vue-devtools": "7.0.16",
     "vite-plugin-vue-layouts": "0.11.0",
