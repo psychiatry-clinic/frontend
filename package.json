@@ -4,6 +4,9 @@
   "private": true,
   "type": "module",
   "main": "./dist/mockServiceWorker.js",
+  "engines": {
+    "node": "18.0.0"
+  },
   "scripts": {
     "deploy": "vite build",
     "dev": "vite",
