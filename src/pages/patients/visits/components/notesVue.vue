@@ -1,18 +1,16 @@
 <script setup lang="ts">
   const { t } = useI18n()
+  import { notesSuggestions } from '@/utils/suggestions'
 
   const suggestions: { [key: string]: string[] } = {
-    'Past Psychiatric': [],
-    'Past Medical': [],
-    'Past Surgical': [],
-    'Past Substance': [],
+    notesSuggestions: notesSuggestions,
   }
 
   interface Model {
     [key: string | number]: string
   }
 
-  const fields = ['Notes']
+  const fields = ['notesSuggestions']
 
   const model = defineModel<Model>()
 

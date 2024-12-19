@@ -6,6 +6,12 @@ const storedUserData: User | undefined = useCookie('userData').value as
 
 const child = storedUserData?.clinic.name === 'Autism Center' ? true : false
 
+export const notesSuggestions = [
+  'current symptoms',
+  'mental state exam',
+  'compliance',
+]
+
 export const courseSuggestions = [
   'Acute',
   'Chronic',

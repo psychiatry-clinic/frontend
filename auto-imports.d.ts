@@ -134,6 +134,7 @@ declare global {
   const myApi: typeof import('./src/utils/myApi')['myApi']
   const natalList: typeof import('./src/utils/suggestions')['natalList']
   const nextTick: typeof import('vue')['nextTick']
+  const notesSuggestions: typeof import('./src/utils/suggestions')['notesSuggestions']
   const occupation: typeof import('./src/utils/suggestions')['occupation']
   const occupationSuggestions: typeof import('./src/utils/suggestions')['occupationSuggestions']
   const onActivated: typeof import('vue')['onActivated']
@@ -560,6 +561,7 @@ declare module 'vue' {
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly notesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['notesSuggestions']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -952,6 +954,7 @@ declare module '@vue/runtime-core' {
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
+    readonly notesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['notesSuggestions']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>

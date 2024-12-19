@@ -44,7 +44,7 @@
 
   const router = useRouter()
   const route = useRoute('patients-visits-new-id')
-  const short = ref(false)
+  const short = ref(true)
 
   const numberedStepsAdult = [
     {
@@ -192,6 +192,15 @@
   const { data } = await useApi<Patient>(
     `/patient/${storedUserData?.id}/${route.params.id}`
   )
+
+  console.log('data')
+  console.log(data.value?.visits?.length)
+
+  if (data && data.value?.visits && data.value?.visits.length > 0) {
+    short.value = true
+  } else {
+    short.value = false
+  }
 
   let numberedSteps = ref<any>()
   numberedSteps.value = short.value
