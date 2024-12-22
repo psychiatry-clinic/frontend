@@ -159,6 +159,7 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-components-drawing': RouteRecordInfo<'patients-visits-components-drawing', '/patients/visits/components/drawing', Record<never, never>, Record<never, never>>,
     'patients-visits-components-examination': RouteRecordInfo<'patients-visits-components-examination', '/patients/visits/components/examination', Record<never, never>, Record<never, never>>,
     'patients-visits-components-family-hx': RouteRecordInfo<'patients-visits-components-family-hx', '/patients/visits/components/familyHx', Record<never, never>, Record<never, never>>,
+    'patients-visits-components-follow-up': RouteRecordInfo<'patients-visits-components-follow-up', '/patients/visits/components/followUp', Record<never, never>, Record<never, never>>,
     'patients-visits-components-forensic-hx': RouteRecordInfo<'patients-visits-components-forensic-hx', '/patients/visits/components/forensicHx', Record<never, never>, Record<never, never>>,
     'patients-visits-components-ix-vue': RouteRecordInfo<'patients-visits-components-ix-vue', '/patients/visits/components/ixVue', Record<never, never>, Record<never, never>>,
     'patients-visits-components-management-vue': RouteRecordInfo<'patients-visits-components-management-vue', '/patients/visits/components/managementVue', Record<never, never>, Record<never, never>>,

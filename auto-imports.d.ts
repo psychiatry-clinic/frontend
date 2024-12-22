@@ -561,7 +561,6 @@ declare module 'vue' {
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
-    readonly notesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['notesSuggestions']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>
@@ -954,7 +953,6 @@ declare module '@vue/runtime-core' {
     readonly medicationUseSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['medicationUseSuggestions']>
     readonly myApi: UnwrapRef<typeof import('./src/utils/myApi')['myApi']>
     readonly nextTick: UnwrapRef<typeof import('vue')['nextTick']>
-    readonly notesSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['notesSuggestions']>
     readonly occupationSuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['occupationSuggestions']>
     readonly onActivated: UnwrapRef<typeof import('vue')['onActivated']>
     readonly onBeforeMount: UnwrapRef<typeof import('vue')['onBeforeMount']>

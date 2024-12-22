@@ -25,6 +25,7 @@
   import developmentVue from '../components/developmentVue.vue'
   import examinationVue from '../components/examination.vue'
   import familyHx from '../components/familyHx.vue'
+  import FollowUp from '../components/followUp.vue'
   import forensicHx from '../components/forensicHx.vue'
   import ixVue from '../components/ixVue.vue'
   import managementVue from '../components/managementVue.vue'
@@ -355,7 +356,8 @@
                 />
                 <ddxVue v-model="ddx" :child="childBoolean" v-if="!short" />
                 <ixVue v-model="ix" v-if="!short" />
-                <notesVue v-model="notes" />
+                <notesVue v-model="notes" v-if="!short" />
+                <FollowUp v-model="notes" v-if="short" />
                 <managementVue v-model="management" />
                 <therapyVue :visit="visit" :psychologist="false" />
               </VWindow>

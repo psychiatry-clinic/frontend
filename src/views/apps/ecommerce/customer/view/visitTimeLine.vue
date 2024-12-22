@@ -99,8 +99,17 @@
           </div>
           <div v-else class="app-timeline-text mt-1">
             <span class="text-warning"> {{ t('Follow up notes') }}: </span>
-            <li>
+            <li v-if="visit.notes?.Notes">
               {{ visit.notes?.Notes }}
+            </li>
+            <li v-if="visit.notes?.['Current Symptoms']">
+              {{ visit.notes?.['Current Symptoms'] }}
+            </li>
+            <li v-if="visit.notes?.Compliance">
+              {{ visit.notes?.Compliance + ' compliance' }}
+            </li>
+            <li v-if="visit.notes?.['Mental State']">
+              {{ visit.notes?.['Mental State'] }}
             </li>
           </div>
           <div class="app-timeline-text mt-1">

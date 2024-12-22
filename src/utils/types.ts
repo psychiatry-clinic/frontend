@@ -106,10 +106,17 @@ export interface Visit {
   tests: Test[]
   therapyId?: number
   therapy?: Therapy
-  notes?: Notes
+  notes?: notes
   insight?: string
   createdAt: string
   updatedAt: string
+}
+
+interface notes {
+  Notes: string
+  Compliance: string
+  'Mental State': string
+  'Current Symptoms': string
 }
 
 interface ManagementItem {

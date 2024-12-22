@@ -1,10 +1,7 @@
 <script setup lang="ts">
   const { t } = useI18n()
-  import { notesSuggestions } from '@/utils/suggestions'
 
-  const suggestions: { [key: string]: string[] } = {
-    notesSuggestions: notesSuggestions,
-  }
+  const suggestions: { [key: string]: string[] } = {}
 
   interface Model {
     [key: string | number]: string

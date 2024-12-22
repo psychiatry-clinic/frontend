@@ -35,6 +35,7 @@
   import presentIllnessChild from '../components/presentIllnessChild.vue'
   import socialHx from '../components/socialHx.vue'
   import therapyVue from '../components/therapyVue.vue'
+  import followUp from '../components/followUp.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -192,9 +193,6 @@
   const { data } = await useApi<Patient>(
     `/patient/${storedUserData?.id}/${route.params.id}`
   )
-
-  console.log('data')
-  console.log(data.value?.visits?.length)
 
   if (data && data.value?.visits && data.value?.visits.length > 0) {
     short.value = true
@@ -377,7 +375,8 @@
                 />
                 <ddxVue v-model="ddx" :child="childBoolean" v-if="!short" />
                 <ixVue v-model="ix" v-if="!short" />
-                <notesVue v-model="notes" />
+                <notesVue v-model="notes" v-if="!short" />
+                <followUp v-model="notes" v-if="short" />
                 <managementVue v-model="management" />
                 <therapyVue :psychologist="false" />
               </VWindow>
