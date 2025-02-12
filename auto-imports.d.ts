@@ -10,6 +10,7 @@ declare global {
   const CreateUrl: typeof import('./src/@core/composable/CreateUrl')['CreateUrl']
   const EffectScope: typeof import('vue')['EffectScope']
   const PeripartumList: typeof import('./src/utils/suggestions')['PeripartumList']
+  const PsychiatricHistorySuggestions: typeof import('./src/utils/suggestions')['PsychiatricHistorySuggestions']
   const Year1List: typeof import('./src/utils/suggestions')['Year1List']
   const Year2List: typeof import('./src/utils/suggestions')['Year2List']
   const Year3List: typeof import('./src/utils/suggestions')['Year3List']
@@ -457,6 +458,7 @@ declare module 'vue' {
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly PeripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['PeripartumList']>
+    readonly PsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['PsychiatricHistorySuggestions']>
     readonly Year1List: UnwrapRef<typeof import('./src/utils/suggestions')['Year1List']>
     readonly Year2List: UnwrapRef<typeof import('./src/utils/suggestions')['Year2List']>
     readonly Year3List: UnwrapRef<typeof import('./src/utils/suggestions')['Year3List']>
@@ -849,6 +851,7 @@ declare module '@vue/runtime-core' {
     readonly COOKIE_MAX_AGE_1_YEAR: UnwrapRef<typeof import('./src/utils/constants')['COOKIE_MAX_AGE_1_YEAR']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
     readonly PeripartumList: UnwrapRef<typeof import('./src/utils/suggestions')['PeripartumList']>
+    readonly PsychiatricHistorySuggestions: UnwrapRef<typeof import('./src/utils/suggestions')['PsychiatricHistorySuggestions']>
     readonly Year1List: UnwrapRef<typeof import('./src/utils/suggestions')['Year1List']>
     readonly Year2List: UnwrapRef<typeof import('./src/utils/suggestions')['Year2List']>
     readonly Year3List: UnwrapRef<typeof import('./src/utils/suggestions')['Year3List']>

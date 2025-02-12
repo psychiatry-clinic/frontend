@@ -69,9 +69,8 @@
 
       await nextTick(() => {
         router.push('/patients')
+        isLoading.value = false
       })
-
-      isLoading.value = false
     } catch (err) {
       console.error(err)
       isLoading.value = false

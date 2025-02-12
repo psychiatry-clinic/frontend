@@ -13,18 +13,18 @@
   } = getExportedData()
   const { t } = useI18n()
 
-  const suggestions: { [key: string]: string[] } = {
+  const suggestions: { [key: string]: { text: string; color: string }[] } = {
     Physical: [],
-    Appearance: appearances as string[],
-    Behavior: behaviors as string[],
-    Speech: speeches as string[],
-    Mood: moods as string[],
+    Appearance: appearances as { text: string; color: string }[],
+    Behavior: behaviors as { text: string; color: string }[],
+    Speech: speeches as { text: string; color: string }[],
+    Mood: moods as { text: string; color: string }[],
     Affect: [],
-    Form: thought_forms as string[],
-    Content: thought_contents as string[],
-    Perception: perceptions as string[],
-    Cognition: cognitive as string[],
-    Insight: insights as string[],
+    Form: thought_forms as { text: string; color: string }[],
+    Content: thought_contents as { text: string; color: string }[],
+    Perception: perceptions as { text: string; color: string }[],
+    Cognition: cognitive as { text: string; color: string }[],
+    Insight: insights as { text: string; color: string }[],
   }
 
   const fields1 = ['Physical']
@@ -47,6 +47,23 @@
   }
 
   const model = defineModel<Model>()
+
+  // const toggleSuggestion = (field: string, suggestion: string) => {
+  //   if (!model) return
+  //   if (!model.value) return
+  //   if (model.value?.[field] === undefined || model.value[field] === '') {
+  //     model.value[field] = suggestion
+  //   } else {
+  //     const suggestionsArray = model.value[field].split(', ').filter((s) => s)
+  //     const index = suggestionsArray.indexOf(suggestion)
+  //     if (index === -1) {
+  //       suggestionsArray.push(suggestion)
+  //     } else {
+  //       suggestionsArray.splice(index, 1)
+  //     }
+  //     model.value[field] = suggestionsArray.join(', ')
+  //   }
+  // }
 
   const toggleSuggestion = (field: string, suggestion: string) => {
     if (!model) return
@@ -88,9 +105,10 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="toggleSuggestion(field, suggestion)"
+            :color="suggestion.color"
+            @click="toggleSuggestion(field, suggestion.text)"
           >
-            {{ suggestion }}
+            {{ suggestion.text }}
           </VChip>
         </div>
       </VCol>
@@ -121,9 +139,10 @@
             v-for="suggestion in suggestions[field]"
             :key="suggestion"
             size="x-small"
-            @click="toggleSuggestion(field, suggestion)"
+            :color="suggestion.color"
+            @click="toggleSuggestion(field, suggestion.text)"
           >
-            {{ suggestion }}
+            {{ suggestion.text }}
           </VChip>
         </div>
       </VCol>

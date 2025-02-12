@@ -25,6 +25,7 @@
   import developmentVue from '../components/developmentVue.vue'
   import examinationVue from '../components/examination.vue'
   import familyHx from '../components/familyHx.vue'
+  import followUp from '../components/followUp.vue'
   import forensicHx from '../components/forensicHx.vue'
   import ixVue from '../components/ixVue.vue'
   import managementVue from '../components/managementVue.vue'
@@ -35,7 +36,6 @@
   import presentIllnessChild from '../components/presentIllnessChild.vue'
   import socialHx from '../components/socialHx.vue'
   import therapyVue from '../components/therapyVue.vue'
-  import followUp from '../components/followUp.vue'
 
   const storedUserData: User | undefined = useCookie('userData').value as
     | User
@@ -45,7 +45,7 @@
 
   const router = useRouter()
   const route = useRoute('patients-visits-new-id')
-  const short = ref(true)
+  const short = ref(false)
 
   const numberedStepsAdult = [
     {
@@ -201,19 +201,34 @@
   }
 
   let numberedSteps = ref<any>()
-  numberedSteps.value = short.value
-    ? numberedStepsShort
-    : childBoolean
-    ? numberedStepsChild
-    : numberedStepsAdult
 
-  watch(short, (newValue) => {
+  // numberedSteps.value = short.value
+  //   ? numberedStepsShort
+  //   : childBoolean
+  //   ? numberedStepsChild
+  //   : numberedStepsAdult
+
+  // watch(short, (newValue) => {
+  //   numberedSteps.value = newValue
+  //     ? numberedStepsShort
+  //     : childBoolean
+  //     ? numberedStepsChild
+  //     : numberedStepsAdult
+  // })
+
+  const updateNumberedSteps = () => {
     numberedSteps.value = short.value
       ? numberedStepsShort
       : childBoolean
       ? numberedStepsChild
       : numberedStepsAdult
-  })
+  }
+
+  // Initial update
+  updateNumberedSteps()
+
+  // Watchers
+  watch(short, updateNumberedSteps)
 
   const currentStep = ref(0)
 
@@ -342,44 +357,51 @@
         <VCardText>
           <VForm>
             <div v-if="numberedSteps">
-              <VWindow v-model="currentStep" class="disable-tab-transition">
-                <chiefComplaint v-model="chief_complaint" v-if="!short" />
-                <presentIllnessChild
-                  v-model="present_illness"
-                  :child="childBoolean"
-                  v-if="!short"
-                />
-                <developmentVue
-                  v-model="development"
-                  v-if="childBoolean && !short"
-                />
-                <familyHx v-model="family_hx" v-if="!short" />
-                <pastHx v-model="past_hx" v-if="!short" />
-                <socialHx v-model="social_hx" v-if="!short" />
-                <personalHx
-                  v-model="personal_hx"
-                  v-if="!childBoolean && !short"
-                />
-                <occupationHx
-                  v-model="occupation_hx"
-                  v-if="!childBoolean && !short"
-                />
-                <forensicHx
-                  v-model="forensic_hx"
-                  v-if="!childBoolean && !short"
-                />
-                <examinationVue v-model="examination" v-if="!short" />
-                <consultationsVue
-                  v-model="consultations"
-                  v-if="childBoolean && !short"
-                />
-                <ddxVue v-model="ddx" :child="childBoolean" v-if="!short" />
-                <ixVue v-model="ix" v-if="!short" />
-                <notesVue v-model="notes" v-if="!short" />
-                <followUp v-model="notes" v-if="short" />
-                <managementVue v-model="management" />
-                <therapyVue :psychologist="false" />
-              </VWindow>
+              <div v-if="!short">
+                <VWindow v-model="currentStep" class="disable-tab-transition">
+                  <chiefComplaint v-model="chief_complaint" />
+                  <presentIllnessChild
+                    v-model="present_illness"
+                    :child="childBoolean"
+                  />
+                  <developmentVue
+                    v-model="development"
+                    v-if="childBoolean && !short"
+                  />
+                  <familyHx v-model="family_hx" />
+                  <pastHx v-model="past_hx" />
+                  <socialHx v-model="social_hx" />
+                  <personalHx
+                    v-model="personal_hx"
+                    v-if="!childBoolean && !short"
+                  />
+                  <occupationHx
+                    v-model="occupation_hx"
+                    v-if="!childBoolean && !short"
+                  />
+                  <forensicHx
+                    v-model="forensic_hx"
+                    v-if="!childBoolean && !short"
+                  />
+                  <examinationVue v-model="examination" />
+                  <consultationsVue
+                    v-model="consultations"
+                    v-if="childBoolean && !short"
+                  />
+                  <ddxVue v-model="ddx" :child="childBoolean" />
+                  <ixVue v-model="ix" />
+                  <notesVue v-model="notes" />
+                  <managementVue v-model="management" />
+                  <therapyVue :psychologist="false" />
+                </VWindow>
+              </div>
+              <div v-else>
+                <VWindow v-model="currentStep" class="disable-tab-transition">
+                  <followUp v-model="notes" />
+                  <managementVue v-model="management" />
+                  <therapyVue :psychologist="false" />
+                </VWindow>
+              </div>
             </div>
 
             <div

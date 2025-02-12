@@ -3,17 +3,16 @@
   const { t } = useI18n()
 
   const suggestions: { [key: string]: string[] } = {
-    Similar: familyHistorySuggestions,
-    Different: familyHistorySuggestions,
-    Medical: familyHistorySuggestions,
-    Other: [],
+    'Psychiatric Illness': PsychiatricHistorySuggestions,
+    'Medical Illness': familyHistorySuggestions,
+    'Other Illness': [],
   }
 
   interface Model {
     [key: string | number]: string
   }
 
-  const fields = ['Similar', 'Different', 'Medical', 'Other']
+  const fields = ['Psychiatric Illness', 'Medical Illness', 'Other Illness']
 
   const model = defineModel<Model>()
 

@@ -3,10 +3,10 @@
   console.log(substances)
 
   import {
-    courseSuggestions,
-    circumstancesSuggestions,
-    vegetativeSymptomsSuggestions,
     associatedSymptomsSuggestions,
+    circumstancesSuggestions,
+    courseSuggestions,
+    vegetativeSymptomsSuggestions,
   } from '@/utils/suggestions'
 
   const suggestions: { [key: string]: string[] } = {
