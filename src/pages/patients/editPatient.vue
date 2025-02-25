@@ -74,6 +74,10 @@
     },
   ]
 
+  const childBoolean = ref(
+    differenceInYears(new Date(), patientData.value.dob) < 14
+  )
+
   const selectedRadio = ref(
     differenceInYears(new Date(), patientData.value.dob) < 14
       ? 'child'
@@ -85,6 +89,7 @@
   const avatar = ref()
   const name = ref(patientData.value.name)
   const dob = ref<string>(patientData.value.dob)
+  const dobAdult = ref<number>(+removeTimeAndDate(patientData.value.dob))
   const age = ref<string>()
 
   const gender = ref(patientData.value.gender)
@@ -107,7 +112,6 @@
   const father_work = ref(patientData.value.father_work)
   const mother_dob = ref()
   const mother_age = ref()
-  const dobAdult = ref<number>(+removeTimeAndDate(patientData.value.dob))
 
   if (patientData.value.mother_dob) {
     mother_dob.value = new Date(patientData.value.mother_dob).getFullYear()
@@ -165,11 +169,19 @@
 
   const link = `/patients-edit/${storedUserData?.id}/${patientData.value.id}`
 
-  const convertDob = (dob: number) => {
-    const date = new Date(dob)
-    date.setMonth(0)
-    date.setDate(1)
-    return date.toISOString().slice(0, 10)
+  const convertDob = (timestamp: string): string | number => {
+    console.log('timestamp')
+    console.log(timestamp)
+    const date = new Date(timestamp)
+    const currentYear = new Date().getFullYear()
+    const birthYear = date.getFullYear()
+    const age = currentYear - birthYear
+
+    if (age < 14) {
+      return date.toISOString().split('T')[0] // Format: YYYY-MM-DD
+    } else {
+      return birthYear // Format: YYYY
+    }
   }
 
   const toggleSuggestion = (modelName: string, suggestion: any) => {
@@ -202,8 +214,8 @@
         method: 'POST',
         body: {
           name: name.value,
-          dob: dobAdult.value
-            ? addTimeToDateString(convertDob(dobAdult.value))
+          dob: !childBoolean
+            ? addTimeToDateString(convertDob(`${dobAdult.value}`) as string)
             : addTimeToDateString(dob.value),
           gender: gender.value,
           phone: phone.value,

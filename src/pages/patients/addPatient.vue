@@ -123,7 +123,7 @@
           doctor: storedUserData.id,
           name: name.value,
           dob: dobAdult.value
-            ? addTimeToDateString(convertDob(dobAdult.value))
+            ? addTimeToDateString(`${convertDob(dobAdult.value)}`)
             : addTimeToDateString(dob.value),
           gender: gender.value,
           phone: phone.value,
@@ -192,10 +192,12 @@
   })
 
   const convertDob = (dob: number) => {
-    const date = new Date(dob)
-    date.setMonth(0)
-    date.setDate(1)
-    return date.toISOString().slice(0, 10)
+    if (dob) {
+      const date = new Date(dob)
+      date.setMonth(0)
+      date.setDate(1)
+      return date.toISOString().slice(0, 10)
+    }
   }
 
   const toggleSuggestion = (modelName: string, suggestion: any) => {
@@ -250,11 +252,11 @@
                 />
               </VCol>
 
-              <VCol cols="12">
+              <!-- <VCol cols="12">
                 <h6 class="text-h6 text-primary">{{ t('Image') }}</h6>
-              </VCol>
+              </VCol> -->
 
-              <VCol cols="12">
+              <!-- <VCol cols="12">
                 <VAvatar
                   circle
                   :size="100"
@@ -266,8 +268,8 @@
                     {{ avatarText(name) }}
                   </span>
                 </VAvatar>
-              </VCol>
-              <VCol cols="12">
+              </VCol> -->
+              <!-- <VCol cols="12">
                 <label for="picture"></label>
                 <input
                   type="file"
@@ -277,7 +279,7 @@
                   capture="environment"
                   @change="uploadFiles"
                 />
-              </VCol>
+              </VCol> -->
 
               <VCol cols="12">
                 <h6 class="text-h6 text-primary">
