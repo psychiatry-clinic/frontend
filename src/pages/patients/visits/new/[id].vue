@@ -44,7 +44,7 @@
   const { t } = useI18n()
 
   const router = useRouter()
-  const route = useRoute('patients-visits-new-id')
+  const route = useRoute('patients-visits-new-id') as any
   const short = ref(false)
 
   const numberedStepsAdult = [
@@ -313,7 +313,6 @@
           errors.value = response._data
         },
       })
-      console.log(res)
       router.push(`/patients/${route.params.id}`)
       saving.value = false
     } catch (error) {

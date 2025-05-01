@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { Patient, User } from '@/utils/types'
   import { formatDistanceToNow } from 'date-fns'
+  import { marked } from 'marked'
+  const renderedMarkdown = computed(() => marked(gptResponse.value))
 
   const { t } = useI18n()
 
@@ -16,30 +18,47 @@
   }
 
   const { patientData } = defineProps<Props>()
+
+  const { isAnalyzing, gptResponse, errorMessage, analyzeWithGPT } =
+    useGPTAnalysis()
+
+  const analyze = () => {
+    analyzeWithGPT(patientData?.visits)
+  }
 </script>
 
 <template>
-  <VCard :title="t('Visits Timeline')">
+  <VCard :title="t('Visits Timeline')" class="mb-4">
     <VCardText>
-      <VBtn
-        v-if="
-          (storedUserData?.role === 'DOCTOR' &&
-            patientData?.visits?.[patientData.visits.length - 1] &&
-            !patientData.visits[patientData.visits.length - 1].active) ||
-          patientData.visits?.length === 0
-        "
-        variant="outlined"
-        class="mb-5"
-        @click="
-          router.push({
-            name: 'patients-visits-new-id',
-            params: { id: patientData.id },
-            query: { dob: patientData.dob, name: patientData.name },
-          })
-        "
-      >
-        {{ t('New Visit') }}
-      </VBtn>
+      <div class="d-flex justify-start">
+        <VBtn
+          v-if="
+            (storedUserData?.role === 'DOCTOR' &&
+              patientData?.visits?.[patientData.visits.length - 1] &&
+              !patientData.visits[patientData.visits.length - 1].active) ||
+            patientData.visits?.length === 0
+          "
+          variant="outlined"
+          class="mb-5 mr-4"
+          @click="
+            router.push({
+              name: 'patients-visits-new-id',
+              params: { id: patientData.id },
+              query: { dob: patientData.dob, name: patientData.name } as any,
+            } as any)
+          "
+        >
+          {{ t('New Visit') }}
+        </VBtn>
+        <VBtn
+          color="primary"
+          :loading="isAnalyzing"
+          :disabled="isAnalyzing"
+          @click="analyze"
+        >
+          {{ t('Analyze with GPT') }}
+        </VBtn>
+      </div>
 
       <VTimeline
         side="end"
@@ -99,16 +118,16 @@
           </div>
           <div v-else class="app-timeline-text mt-1">
             <span class="text-warning"> {{ t('Follow up notes') }}: </span>
-            <li v-if="visit.notes?.Notes">
+            <li v-if="visit.notes && visit.notes?.Notes">
               {{ visit.notes?.Notes }}
             </li>
-            <li v-if="visit.notes?.['Current Symptoms']">
+            <li v-if="visit.notes && visit.notes?.['Current Symptoms']">
               {{ visit.notes?.['Current Symptoms'] }}
             </li>
-            <li v-if="visit.notes?.Compliance">
+            <li v-if="visit.notes && visit.notes?.Compliance">
               {{ visit.notes?.Compliance + ' compliance' }}
             </li>
-            <li v-if="visit.notes?.['Mental State']">
+            <li v-if="visit.notes && visit.notes?.['Mental State']">
               {{ visit.notes?.['Mental State'] }}
             </li>
           </div>
@@ -136,7 +155,7 @@
                 query: {
                   visit: visit.id,
                 },
-              })
+              } as any)
             "
           >
             {{
@@ -158,7 +177,7 @@
                   dob: patientData.dob,
                   name: patientData.name,
                 },
-              })
+              } as any)
             "
             >{{ t('Summary') }}
           </VBtn>
@@ -167,4 +186,65 @@
       </VTimeline>
     </VCardText>
   </VCard>
+  <VCard v-if="gptResponse" class="mb-4">
+    <VCardItem>
+      <VCardTitle>{{ t('GPT Analysis') }}</VCardTitle>
+    </VCardItem>
+    <VCardText>
+      <div class="markdown-content" v-html="renderedMarkdown"></div>
+    </VCardText>
+  </VCard>
 </template>
+
+<style>
+  .markdown-content {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 1em;
+      margin-bottom: 0.5em;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 1em;
+      line-height: 1.6;
+    }
+
+    ul,
+    ol {
+      margin-bottom: 1em;
+      padding-left: 2em;
+    }
+
+    li {
+      margin-bottom: 0.5em;
+    }
+
+    code {
+      background-color: rgba(var(--v-theme-primary), 0.1);
+      padding: 0.2em 0.4em;
+      border-radius: 3px;
+      font-family: monospace;
+    }
+
+    pre {
+      background-color: rgba(var(--v-theme-primary), 0.05);
+      padding: 1em;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-bottom: 1em;
+    }
+
+    blockquote {
+      border-left: 4px solid rgba(var(--v-theme-primary), 0.5);
+      padding-left: 1em;
+      margin-left: 0;
+      margin-bottom: 1em;
+      color: rgba(var(--v-theme-on-surface), 0.7);
+    }
+  }
+</style>

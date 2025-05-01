@@ -1,6 +1,5 @@
 <script setup lang="ts">
   const { substances, suicides, functioning } = getExportedData()
-  console.log(substances)
 
   import {
     associatedSymptomsSuggestions,

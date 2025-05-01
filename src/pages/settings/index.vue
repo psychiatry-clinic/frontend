@@ -15,8 +15,6 @@
     try {
       const data = await $api(link)
       suggestions.value = data
-      console.log('data')
-      console.log(data)
     } catch (error) {
       console.log(error)
     }

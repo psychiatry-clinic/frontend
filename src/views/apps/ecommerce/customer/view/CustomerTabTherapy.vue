@@ -51,9 +51,7 @@
         body: {
           therapyRequest: x,
         },
-        onResponseError({ response }) {
-          console.log(response._data)
-        },
+        onResponseError({ response }) {},
       })
       if (res === 'OK') {
         requested.value = x

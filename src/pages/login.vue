@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { VForm } from 'vuetify/components/VForm'
   import authV1BottomShape from '@images/svg/auth-v1-bottom-shape.svg?raw'
   import authV1TopShape from '@images/svg/auth-v1-top-shape.svg?raw'
   import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
   import { themeConfig } from '@themeConfig'
+  import { VForm } from 'vuetify/components/VForm'
 
   const { t } = useI18n()
 

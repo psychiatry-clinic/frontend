@@ -46,7 +46,6 @@
 
   const requestTherapy = async (x: boolean) => {
     if (!activeVisit) return
-    console.log('save 1')
     const link = `/visits-edit/${storedUserData?.id}/${visit.id}/${visit.patient.id}`
     try {
       const res = await $api(link, {
@@ -54,9 +53,7 @@
         body: {
           therapyRequest: x,
         },
-        onResponseError({ response }) {
-          console.log(response._data)
-        },
+        onResponseError({ response }) {},
       })
       if (res === 'OK') {
         requested.value = x
@@ -77,9 +74,7 @@
           notes: therapy.value,
           clinicId: storedUserData?.clinic.id,
         },
-        onResponseError({ response }) {
-          console.log(response._data)
-        },
+        onResponseError({ response }) {},
       })
       if (res.success) {
         isSnackbarVisible.value = true

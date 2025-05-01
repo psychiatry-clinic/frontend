@@ -44,6 +44,7 @@ export interface User {
 interface Clinic {
   name: string
   id: number
+  key: string
 }
 
 export interface Prescription {

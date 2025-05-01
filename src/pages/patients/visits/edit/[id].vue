@@ -43,7 +43,7 @@
     | undefined
 
   const router = useRouter()
-  const route = useRoute('patients-visits-edit-id')
+  const route = useRoute('patients-visits-edit-id') as any
 
   const { data } = await useApi<any>(
     `/patients/visits/${storedUserData?.id}/${route.query.visit}`
@@ -262,9 +262,7 @@
           development: development.value,
           follow_up: short.value,
         },
-        onResponseError({ response }) {
-          console.log(response._data)
-        },
+        onResponseError({ response }) {},
       })
       router.push(`/patients/${route.params.id}`)
       saving.value = false

@@ -175,6 +175,8 @@ declare module 'vue-router/auto/routes' {
     'patients-visits-edit-id': RouteRecordInfo<'patients-visits-edit-id', '/patients/visits/edit/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'patients-visits-new-id': RouteRecordInfo<'patients-visits-new-id', '/patients/visits/new/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
     'patients-visits-open-id': RouteRecordInfo<'patients-visits-open-id', '/patients/visits/open/:id', { id: ParamValue<true> }, { id: ParamValue<false> }>,
+    'patients-visits-open-new': RouteRecordInfo<'patients-visits-open-new', '/patients/visits/open/new', Record<never, never>, Record<never, never>>,
+    'patients-visits-open-old': RouteRecordInfo<'patients-visits-open-old', '/patients/visits/open/old', Record<never, never>, Record<never, never>>,
     'register': RouteRecordInfo<'register', '/register', Record<never, never>, Record<never, never>>,
     'settings': RouteRecordInfo<'settings', '/settings', Record<never, never>, Record<never, never>>,
     'tables-data-table': RouteRecordInfo<'tables-data-table', '/tables/data-table', Record<never, never>, Record<never, never>>,
