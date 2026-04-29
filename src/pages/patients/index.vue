@@ -46,7 +46,7 @@
         sortBy,
         orderBy,
       },
-    })
+    }),
   )
 
   const patients = computed((): Patient[] => {
@@ -60,7 +60,13 @@
     }))
   })
 
-  const totalPatients = computed(() => data.value?.total)
+  const totalPatients = computed(() => {
+    // Use patients array length if no patients returned (API returns wrong total for doctors with no patients)
+    const apiTotal = data.value?.total
+    const patientsArray = data.value?.patients || []
+    if (patientsArray.length === 0 && apiTotal > 0) return 0
+    return apiTotal || patientsArray.length
+  })
 </script>
 
 <template>
@@ -98,7 +104,7 @@
         class="text-no-wrap"
         @update:options="updateOptions"
       >
-        <template #bottom>
+        <template v-if="totalPatients > 0" #bottom>
           <TablePagination
             v-model:page="page"
             :items-per-page="itemsPerPage"
@@ -111,6 +117,12 @@
             <IconBtn @click="router.push(`/patients/${item.id}`)">
               <VIcon icon="tabler-edit" />
             </IconBtn>
+          </div>
+        </template>
+
+        <template #no-data>
+          <div class="text-center text-h6 py-8">
+            {{ t('No patients found') }}
           </div>
         </template>
       </VDataTableServer>
