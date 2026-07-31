@@ -31,13 +31,18 @@
     orderBy.value = options.sortBy[0]?.order
   }
 
-  const storedUserData: User | undefined = useCookie('userData').value as
-    | User
-    | undefined
+  let storedUserData: any = useCookie('userData').value
+  if (typeof storedUserData === 'string') {
+    try {
+      storedUserData = JSON.parse(storedUserData)
+    } catch (e) {
+      console.error('Error parsing userData:', e)
+    }
+  }
 
-  const link = `/patients/${storedUserData?.id}`
+  const link = `/patients/${storedUserData?.id || ''}`
 
-  let { data } = await useApi<any>(
+  let { data, error, isFetching } = await useApi<any>(
     createUrl(link, {
       query: {
         q: searchQuery,
@@ -134,8 +139,11 @@
         </template>
 
         <template #no-data>
-          <div class="text-center text-h6 py-8">
-            {{ t('No patients found') }}
+          <div class="text-center py-8">
+            <h6 class="text-h6">{{ t('No patients found') }}</h6>
+            <div v-if="error" class="text-body-2 text-error mt-2">
+              {{ error?.message || error }}
+            </div>
           </div>
         </template>
       </VDataTableServer>
