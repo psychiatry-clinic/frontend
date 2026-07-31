@@ -50,22 +50,35 @@
   )
 
   const patients = computed((): Patient[] => {
-    if (!data.value) return []
-    return data.value.patients.map((patient: Patient) => ({
+    const rawList = Array.isArray(data.value?.patients)
+      ? data.value.patients
+      : Array.isArray(data.value?.data)
+        ? data.value.data
+        : Array.isArray(data.value)
+          ? data.value
+          : []
+
+    return rawList.map((patient: Patient) => ({
       ...patient,
-      createdAt: removeTimeFromDate(patient.createdAt), // Format createdAt date
-      age: calculateAge(patient.dob.toString()),
-      dob: removeTimeAndDate(patient.dob),
-      gender: t(patient.gender),
+      createdAt: patient.createdAt ? removeTimeFromDate(patient.createdAt) : '',
+      age: patient.dob ? calculateAge(patient.dob.toString()) : '',
+      dob: patient.dob ? removeTimeAndDate(patient.dob) : '',
+      gender: patient.gender ? t(patient.gender) : '',
     }))
   })
 
   const totalPatients = computed(() => {
-    // Use patients array length if no patients returned (API returns wrong total for doctors with no patients)
     const apiTotal = data.value?.total
-    const patientsArray = data.value?.patients || []
-    if (patientsArray.length === 0 && apiTotal > 0) return 0
-    return apiTotal || patientsArray.length
+    const patientsArray = Array.isArray(data.value?.patients)
+      ? data.value.patients
+      : Array.isArray(data.value?.data)
+        ? data.value.data
+        : Array.isArray(data.value)
+          ? data.value
+          : []
+
+    if (patientsArray.length === 0 && (apiTotal ?? 0) > 0) return 0
+    return apiTotal ?? patientsArray.length
   })
 </script>
 
@@ -82,7 +95,7 @@
           <div class="d-flex flex-row gap-4 align-center flex-wrap">
             <AppSelect v-model="itemsPerPage" :items="[5, 10, 20, 50, 100]" />
             <VBtn
-              v-if="storedUserData?.role === 'DOCTOR' || 'ADMIN'"
+              v-if="storedUserData?.role === 'DOCTOR' || storedUserData?.role === 'ADMIN'"
               prepend-icon="tabler-plus"
               @click="isAddPatientDrawerOpen = !isAddPatientDrawerOpen"
             >
