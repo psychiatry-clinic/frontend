@@ -38,9 +38,6 @@ const worker = setupWorker(
 )
 
 export default function () {
-  if (import.meta.env.PROD)
-    return
-
   const workerUrl = `${import.meta.env.BASE_URL ?? '/'}mockServiceWorker.js`
 
   worker.start({
